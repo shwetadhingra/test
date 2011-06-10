@@ -128,9 +128,22 @@ public abstract class AbstractBaseServiceImpl {
 				}
 			}
 		}
-		return data;
+		if (isValidRelationship(data.getFromType(), data.getType(), 
+				data.getToType())) {
+			return data;
+		} else {
+			return null;
+		}
 	}
 
+	private boolean isValidRelationship(String fromType, String relationType, 
+			String toType) {
+		
+		MetaClassRelationshipDO entity = metaClassRelationshipDAO.findByTypes(
+				fromType, relationType, toType);
+		return (entity != null);
+	}
+	
 	protected ObjectDO toData(CIObject domain) {
 		ObjectDO data = null;
 		if (domain.getNamespace() == null) {

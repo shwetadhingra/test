@@ -105,6 +105,10 @@ public class RelationshipDO extends BaseDO implements Serializable {
 		this.klass = klass;
 	}
 
+	public String getType() {
+		return this.klass.getName();
+	}
+	
 	public MetaStatusDO getStatus() {
 		return status;
 	}
@@ -121,12 +125,20 @@ public class RelationshipDO extends BaseDO implements Serializable {
 		this.fromObject = fromObject;
 	}
 
+	public String getFromType() {
+		return this.fromObject.getType();
+	}
+	
 	public ObjectDO getToObject() {
 		return toObject;
 	}
 
 	public void setToObject(ObjectDO toObject) {
 		this.toObject = toObject;
+	}
+	
+	public String getToType() {
+		return this.toObject.getType();
 	}
 	
 	public List<RelationshipAttributeDO> getAttributes() {

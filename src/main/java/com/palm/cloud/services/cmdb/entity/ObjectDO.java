@@ -109,6 +109,10 @@ public class ObjectDO extends BaseDO implements Serializable {
 		this.klass = klass;
 	}
 
+	public String getType() {
+		return this.klass.getName();
+	}
+	
 	public MetaStatusDO getStatus() {
 		return status;
 	}
