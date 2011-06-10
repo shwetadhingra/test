@@ -1,0 +1,152 @@
+CREATE DATABASE IF NOT EXISTS oocmdb;
+
+USE oocmdb;
+
+DROP TABLE IF EXISTS `ci_relationship_attributes`;
+
+DROP TABLE IF EXISTS `ci_relationships`;
+
+DROP TABLE IF EXISTS `ci_object_attributes`;
+
+DROP TABLE IF EXISTS `ci_objects`;
+
+DROP TABLE IF EXISTS `ci_meta_class_attributes`;
+
+DROP TABLE IF EXISTS `ci_meta_class_relationships`;
+
+DROP TABLE IF EXISTS `ci_meta_classes`;
+
+DROP TABLE IF EXISTS `ci_meta_attributes`;
+
+DROP TABLE IF EXISTS `ci_meta_statuses`;
+
+CREATE TABLE IF NOT EXISTS `ci_meta_classes` (
+  `class_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `parent_class_id` int(10) unsigned NULL DEFAULT 0,
+  `class_name` varchar(256) NOT NULL,
+  `is_relationship` bit(1) NOT NULL,
+  `created` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`class_id`)
+);
+
+CREATE TABLE IF NOT EXISTS `ci_meta_attributes` (
+  `attribute_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `attribute_name` varchar(256) NOT NULL,
+  `created` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`attribute_id`)
+);
+
+CREATE TABLE IF NOT EXISTS `ci_meta_class_attributes` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `class_id` int(10) unsigned NOT NULL,
+  `attribute_id` int(10) unsigned NOT NULL,
+  `created` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`class_id`) REFERENCES `ci_meta_classes` (`class_id`),
+  FOREIGN KEY (`attribute_id`) REFERENCES `ci_meta_attributes` (`attribute_id`)
+);
+
+CREATE TABLE IF NOT EXISTS `ci_meta_class_relationships` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `from_class` int(10) unsigned NOT NULL,
+  `to_class` int(10) unsigned NOT NULL,
+  `relationship_class` int(10) unsigned NOT NULL,
+  `created` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`from_class`) REFERENCES `ci_meta_classes` (`class_id`),
+  FOREIGN KEY (`to_class`) REFERENCES `ci_meta_classes` (`class_id`),
+  FOREIGN KEY (`relationship_class`) REFERENCES `ci_meta_classes` (`class_id`)
+);
+
+CREATE TABLE IF NOT EXISTS `ci_meta_statuses` (
+  `status_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `status_name` varchar(256) NOT NULL,
+  `created` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`status_id`)
+);
+
+CREATE TABLE IF NOT EXISTS `ci_objects` (
+  `object_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `object_name` varchar(200) NOT NULL,
+  `namespace` varchar(256) NOT NULL DEFAULT 'DEFAULT',
+  `class_id` int(10) unsigned NOT NULL,
+  `status_id` int(10) unsigned NOT NULL,
+  `created` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`object_id`),
+  FOREIGN KEY (`class_id`) REFERENCES `ci_meta_classes` (`class_id`),
+  FOREIGN KEY (`status_id`) REFERENCES `ci_meta_statuses` (`status_id`)
+);
+
+CREATE TABLE IF NOT EXISTS `ci_relationships` (
+  `relationship_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `relationship_name` varchar(512) NOT NULL,
+  `namespace` varchar(256) NOT NULL DEFAULT 'DEFAULT',
+  `status_id` int(10) unsigned NOT NULL,
+  `class_id` int(10) unsigned NOT NULL,
+  `from_object` int(10) unsigned NOT NULL,
+  `to_object` int(10) unsigned NOT NULL,
+  `created` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`relationship_id`),
+  FOREIGN KEY (`class_id`) REFERENCES `ci_meta_classes` (`class_id`),
+  FOREIGN KEY (`status_id`) REFERENCES `ci_meta_statuses` (`status_id`),
+  FOREIGN KEY (`from_object`) REFERENCES `ci_objects` (`object_id`) ON DELETE CASCADE,
+  FOREIGN KEY (`to_object`) REFERENCES `ci_objects` (`object_id`) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS `ci_object_attributes` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `object_id` int(10) unsigned NOT NULL,
+  `attribute_id` int(10) unsigned NOT NULL,
+  `attribute_value` varchar(4096),
+  `created` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`object_id`) REFERENCES `ci_objects` (`object_id`) ON DELETE CASCADE,
+  FOREIGN KEY (`attribute_id`) REFERENCES `ci_meta_attributes` (`attribute_id`)
+);
+
+CREATE TABLE IF NOT EXISTS `ci_relationship_attributes` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `relationship_id` int(10) unsigned NOT NULL,
+  `attribute_id` int(10) unsigned NOT NULL,
+  `attribute_value` varchar(4096),
+  `created` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`relationship_id`) REFERENCES `ci_relationships` (`relationship_id`) ON DELETE CASCADE,
+  FOREIGN KEY (`attribute_id`) REFERENCES `ci_meta_attributes` (`attribute_id`)
+);
+
+CREATE UNIQUE INDEX `UX_ci_meta_classes_class_name` ON `ci_meta_classes` (`class_name`);
+
+CREATE UNIQUE INDEX `UX_ci_meta_atts_attr_name` ON `ci_meta_attributes` (`attribute_name`);
+
+CREATE UNIQUE INDEX `UX_ci_meta_class_atts_class_id_attr_id` ON `ci_meta_class_attributes` (`class_id`, `attribute_id`);
+
+CREATE UNIQUE INDEX `UX_ci_meta_class_rels_from_to_rel` ON `ci_meta_class_relationships` (`from_class`, `to_class`, `relationship_class`);
+
+CREATE UNIQUE INDEX `UX_ci_meta_statuses_status_name` ON `ci_meta_statuses` (`status_name`);
+
+CREATE INDEX `IX_ci_objs_obj_name` ON `ci_objects` (`object_name`);
+
+CREATE UNIQUE INDEX `UX_ci_objs_obj_name_namespace` ON `ci_objects` (`object_name`, `namespace`);
+
+CREATE INDEX `IX_ci_rels_rel_name` ON `ci_relationships` (`relationship_name`);
+
+CREATE UNIQUE INDEX `UX_ci_rels_rel_name_namespace` ON `ci_relationships` (`relationship_name`, `namespace`);
+
+CREATE INDEX `IX_ci_obj_atts_obj_id` ON `ci_object_attributes` (`object_id`);
+
+CREATE UNIQUE INDEX `UX_ci_obj_atts_obj_id_attr_id` ON `ci_object_attributes` (`object_id`, `attribute_id`);
+
+CREATE INDEX `IX_ci_rel_atts_rel_id` ON `ci_relationship_attributes` (`relationship_id`);
+
+CREATE UNIQUE INDEX `UX_ci_rel_atts_rel_id_attr_id` ON `ci_relationship_attributes` (`relationship_id`, `attribute_id`);
+

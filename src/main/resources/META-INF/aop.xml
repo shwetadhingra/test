@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<aspectj>
+	<weaver>
+		<include within="com.palm.cloud.services.cmdb"/>
+	</weaver>
+</aspectj>

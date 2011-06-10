@@ -1,0 +1,16 @@
+<vertex type="server">
+	<edge type="partof" direction="forward">
+		<vertex type="function">
+			<edge type="partof" direction="reverse">
+				<vertex type="server"/>
+			</edge>
+		</vertex>
+	</edge>
+	<edge type="memberof" direction="forward">
+		<vertex type="function">
+			<edge type="memberof" direction="reverse">
+				<vertex type="server"/>
+			</edge>
+		</vertex>
+	</edge>
+</vertex>

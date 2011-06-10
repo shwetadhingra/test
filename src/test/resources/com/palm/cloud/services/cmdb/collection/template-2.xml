@@ -1,0 +1,8 @@
+<vertex type="Function">
+	<edge type="PartOf" direction="reverse">
+		<vertex type="Server"/>
+	</edge>
+	<edge type="MemberOf" direction="reverse">
+		<vertex type="Server"/>
+	</edge>
+</vertex>

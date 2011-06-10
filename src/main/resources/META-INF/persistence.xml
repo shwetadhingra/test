@@ -1,0 +1,51 @@
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+             version="2.0">
+
+    <persistence-unit name="com.palm.cloud.services.cmdb.jpa">
+
+        <class>com.palm.cloud.services.cmdb.entity.MetaAttributeDO</class>
+        <class>com.palm.cloud.services.cmdb.entity.MetaClassDO</class>
+        <class>com.palm.cloud.services.cmdb.entity.MetaStatusDO</class>
+        <class>com.palm.cloud.services.cmdb.entity.ObjectDO</class>
+        <class>com.palm.cloud.services.cmdb.entity.ObjectAttributeDO</class>
+        <class>com.palm.cloud.services.cmdb.entity.RelationshipDO</class>
+        <class>com.palm.cloud.services.cmdb.entity.RelationshipAttributeDO</class>
+
+    </persistence-unit>
+
+    <persistence-unit name="com.palm.cloud.services.cmdb.test">
+
+        <class>com.palm.cloud.services.cmdb.entity.MetaAttributeDO</class>
+        <class>com.palm.cloud.services.cmdb.entity.MetaClassDO</class>
+        <class>com.palm.cloud.services.cmdb.entity.MetaStatusDO</class>
+        <class>com.palm.cloud.services.cmdb.entity.ObjectDO</class>
+        <class>com.palm.cloud.services.cmdb.entity.ObjectAttributeDO</class>
+        <class>com.palm.cloud.services.cmdb.entity.RelationshipDO</class>
+        <class>com.palm.cloud.services.cmdb.entity.RelationshipAttributeDO</class>
+
+        <properties>
+        	<!-- HSQL -->
+            <property name="javax.persistence.jdbc.driver" value="org.hsqldb.jdbcDriver" />
+            <property name="javax.persistence.jdbc.url" value="jdbc:hsqldb:mem:oocmdb" />
+            <property name="javax.persistence.jdbc.user" value="sa" />
+            <property name="javax.persistence.jdbc.password" value="" />
+
+            <property name="hibernate.show_sql" value="true" />
+            <property name="hibernate.hbm2ddl.auto" value="create" />
+
+        	<!-- MySQL -->
+			<!-- 
+            <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/oocmdb" />
+            <property name="javax.persistence.jdbc.user" value="cmdb" />
+            <property name="javax.persistence.jdbc.password" value="cmdb" />
+
+            <property name="hibernate.show_sql" value="true" />
+            <property name="hibernate.hbm2ddl.auto" value="validate" />
+ 			-->
+        </properties>
+    </persistence-unit>
+
+</persistence>
