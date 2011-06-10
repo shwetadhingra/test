@@ -21,7 +21,9 @@
 		implements LoadTimeWeaverAware (such as LocalContainerEntityManagerFactoryBean)
 		will receive a reference to the autodetected load-time weaver.
 	-->
+	<!-- 
 	<context:load-time-weaver/>
+	 -->
 
 	<!-- Configurer that replaces ${...} placeholders with values from a properties file -->
 	<!-- (in this case, JDBC-related settings for the JPA EntityManager definition below) -->

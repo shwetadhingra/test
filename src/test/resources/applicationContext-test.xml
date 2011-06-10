@@ -35,7 +35,9 @@
 		implements LoadTimeWeaverAware (such as LocalContainerEntityManagerFactoryBean)
 		will receive a reference to the autodetected load-time weaver.
 	-->
+	<!-- 
 	<context:load-time-weaver/>
+	 -->
 
 	<!-- JPA EntityManagerFactory -->
 	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
