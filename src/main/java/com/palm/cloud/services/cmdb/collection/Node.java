@@ -37,4 +37,15 @@ public class Node implements Serializable {
 		this.links.add(link);
 	}
 
+	public List<Node> getNodes() {
+		List<Node> nodes = null;
+		if (this.links != null) {
+			nodes = new ArrayList<Node>();
+			for (Link link : this.links) {
+				nodes.add(link.getNode());
+			}
+		}
+		return nodes;
+	}
+	
 }

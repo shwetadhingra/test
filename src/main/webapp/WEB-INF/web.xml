@@ -34,6 +34,11 @@
 		</param-value>
 	</context-param>
 
+	<context-param>
+	    <param-name>javax.faces.FACELETS_VIEW_MAPPINGS</param-name>
+	    <param-value>*.xhtml</param-value>
+	</context-param>
+
 	<!--
 		- Configures Log4J for this web app.
 		- As this context specifies a context-param "log4jConfigLocation", its file path
@@ -94,6 +99,17 @@
 		<url-pattern>/rs/*</url-pattern>
 	</servlet-mapping>	
 	
+	<servlet>
+		<servlet-name>Faces Servlet</servlet-name>
+		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+		<load-on-startup>0</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>Faces Servlet</servlet-name>
+		<url-pattern>*.jsf</url-pattern>
+	</servlet-mapping>
+
 	<session-config>
 		<session-timeout>60</session-timeout>
 	</session-config>

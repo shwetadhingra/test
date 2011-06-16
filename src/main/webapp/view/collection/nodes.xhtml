@@ -1,0 +1,48 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	template="/view/template/main.xhtml">
+	<ui:define name="body">
+		<h:panelGrid columns="2" columnClasses="top,top" width="60%">
+			<h:form>
+			<rich:tree id="tree" var="node" toggleType="client">
+			   <rich:treeModelRecursiveAdaptor roots="#{it}" nodes="#{node.nodes}">
+			      <rich:treeNode id="treeNode">
+			      	<a href="#{node.object.name}">#{node.object.name} [#{node.object.type}]</a>
+					<a4j:outputPanel ajaxRendered="true" layout="block">
+						<rich:panel header="#{node.object.name}"
+							rendered="false">
+							Name: #{node.object.name}
+							<br></br>
+							Namespace: #{node.object.namespace}
+							<br></br>
+							Type: #{node.object.type}
+							<br></br>
+							Status: #{node.object.status}
+							<br></br>
+							<rich:dataTable id="nodeDetail"
+								value="#{node.object.attributes}" var="oa"
+								rendered="#{fn:length(node.object.attributes) > 0}">
+								<rich:column>
+									<f:facet name="header">Attribute Name</f:facet>
+									<h:outputText value="#{oa.name}"/>
+								</rich:column>
+								<rich:column>
+									<f:facet name="header">Attribute Value</f:facet>
+									<h:outputText value="#{oa.value}"/>
+								</rich:column>
+							</rich:dataTable>
+						</rich:panel>
+					</a4j:outputPanel>
+			      </rich:treeNode>
+			   </rich:treeModelRecursiveAdaptor>
+			</rich:tree>
+			</h:form>
+		</h:panelGrid>
+	</ui:define>
+</ui:composition>

@@ -15,6 +15,7 @@ import com.palm.cloud.services.cmdb.domain.CIAttribute;
 import com.palm.cloud.services.cmdb.domain.CIObject;
 import com.palm.cloud.services.cmdb.domain.CIRelationship;
 import com.palm.cloud.services.cmdb.resource.AbstractBaseResource;
+import com.sun.jersey.api.view.Viewable;
 
 @Path("/data/object/{name}")
 @Produces(MediaType.APPLICATION_JSON)
@@ -28,6 +29,12 @@ public class ObjectResource extends AbstractBaseResource {
 	@GET
 	public CIObject getObject(@PathParam("name") String name) {
 		return cmdbDataService.getObject(name);
+	}
+	
+	@GET
+	@Produces(MediaType.TEXT_HTML)
+	public Viewable getObjectAsHtml(@PathParam("name") String name) {
+		return new Viewable("/view/object/object.jsp", this.getObject(name));
 	}
 	
 	@DELETE
@@ -84,9 +91,25 @@ public class ObjectResource extends AbstractBaseResource {
 	}
 	
 	@GET
+	@Produces(MediaType.TEXT_HTML)
+	@Path("froms")
+	public Viewable getFromObjectsAsHtml(@PathParam("name") String objectName) {
+		return new Viewable("/view/object/objects.jsp", 
+				this.getFromObjects(objectName));
+	}
+	
+	@GET
 	@Path("tos")
 	public List<CIObject> getToObjects(@PathParam("name") String objectName) {
 		return cmdbDataService.getToObjects(objectName);
+	}
+	
+	@GET
+	@Produces(MediaType.TEXT_HTML)
+	@Path("tos")
+	public Viewable getToObjectsAsHtml(@PathParam("name") String objectName) {
+		return new Viewable("/view/object/objects.jsp", 
+				this.getToObjects(objectName));
 	}
 	
 	@GET
