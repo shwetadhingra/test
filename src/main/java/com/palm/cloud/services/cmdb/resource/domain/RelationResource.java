@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import com.palm.cloud.services.cmdb.domain.CIRelationship;
 import com.palm.cloud.services.cmdb.domain.CIRelationshipAttribute;
 import com.palm.cloud.services.cmdb.resource.AbstractBaseResource;
+import com.sun.jersey.api.view.Viewable;
 
 @Path("/data/relation/{name}")
 @Produces(MediaType.APPLICATION_JSON)
@@ -27,6 +28,13 @@ public class RelationResource extends AbstractBaseResource {
 	@GET
 	public CIRelationship getRelation(@PathParam("name") String name) {
 		return cmdbDataService.getRelation(name);
+	}
+	
+	@GET
+	@Produces(MediaType.TEXT_HTML)
+	public Viewable getRelationAsHtml(@PathParam("name") String name) {
+		return new Viewable("/view/relation/relation.jsp", 
+				this.getRelation(name));
 	}
 	
 	@DELETE

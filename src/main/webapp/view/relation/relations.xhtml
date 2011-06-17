@@ -9,25 +9,25 @@
 	template="/view/template/main.xhtml">
 	<ui:define name="body">
 		<rich:panel>
-			<rich:dataTable id="objects" value="#{it}" var="o"
+			<rich:dataTable id="relations" value="#{it}" var="r"
 				rendered="#{fn:length(it) > 0}">
 				<rich:column>
-					<f:facet name="header">Name</f:facet>
-					<h:outputLink value="#{facesContext.externalContext.requestContextPath}/rs/data/object/#{o.name}/">
-						<h:outputText value="#{o.name}"/>
+					<f:facet name="header">Relationship Name</f:facet>
+					<h:outputLink value="#{facesContext.externalContext.requestContextPath}/rs/data/relation/#{r.name}/">
+						<h:outputText value="#{r.name}"/>
 					</h:outputLink>
 				</rich:column>
 				<rich:column>
 					<f:facet name="header">Namespace</f:facet>
-					<h:outputText value="#{o.namespace}"/>
+					<h:outputText value="#{r.namespace}"/>
 				</rich:column>
 				<rich:column>
 					<f:facet name="header">Type</f:facet>
-					<h:outputText value="#{o.type}"/>
+					<h:outputText value="#{r.type}"/>
 				</rich:column>
 				<rich:column>
 					<f:facet name="header">Status</f:facet>
-					<h:outputText value="#{o.status}"/>
+					<h:outputText value="#{r.status}"/>
 				</rich:column>
 			</rich:dataTable>
 		</rich:panel>

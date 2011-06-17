@@ -1,0 +1,66 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	template="/view/template/main.xhtml">
+	<ui:define name="body">
+		<rich:panel header="#{it.name}">
+			<rich:dataTable id="relation" value="#{it}">
+				<rich:column>
+					<f:facet name="header">Relationship Name</f:facet>
+					<h:outputLink value="#{facesContext.externalContext.requestContextPath}/rs/data/relation/#{it.name}/">
+						<h:outputText value="#{it.name}"/>
+					</h:outputLink>
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">Namespace</f:facet>
+					<h:outputText value="#{it.namespace}"/>
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">Type</f:facet>
+					<h:outputText value="#{it.type}"/>
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">Status</f:facet>
+					<h:outputText value="#{it.status}"/>
+				</rich:column>
+			</rich:dataTable>
+			<br></br>
+			<rich:dataTable id="relationAttributes"
+				value="#{it.attributes}" var="ra"
+				rendered="#{fn:length(it.attributes) > 0}">
+				<rich:column>
+					<f:facet name="header">Attribute Name</f:facet>
+					<h:outputText value="#{ra.name}"/>
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">Attribute Value</f:facet>
+					<h:outputText value="#{ra.value}" 
+						rendered="#{fn:length(ra.value) lt 20}"/>
+					<h:inputTextarea value="#{ra.value}" cols="40" rows="10" 
+						rendered="#{fn:length(ra.value) ge 20}" readonly="true"/>
+				</rich:column>
+			</rich:dataTable>
+		</rich:panel>
+		<rich:panel header="Relationship Objects">
+			<rich:dataTable id="relationObjects" value="#{it}">
+				<rich:column>
+					<f:facet name="header">From Object</f:facet>
+					<h:outputLink value="#{facesContext.externalContext.requestContextPath}/rs/data/object/#{it.fromObject}/">
+						<h:outputText value="#{it.fromObject}"/>
+					</h:outputLink>
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">To Object</f:facet>
+					<h:outputLink value="#{facesContext.externalContext.requestContextPath}/rs/data/object/#{it.toObject}/">
+						<h:outputText value="#{it.toObject}"/>
+					</h:outputLink>
+				</rich:column>
+			</rich:dataTable>
+		</rich:panel>
+	</ui:define>
+</ui:composition>

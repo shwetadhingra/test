@@ -9,13 +9,26 @@
 	template="/view/template/main.xhtml">
 	<ui:define name="body">
 		<rich:panel header="#{it.name}">
-			Name: #{it.name}
-			<br></br>
-			Namespace: #{it.namespace}
-			<br></br>
-			Type: #{it.type}
-			<br></br>
-			Status: #{it.status}
+			<rich:dataTable id="object" value="#{it}">
+				<rich:column>
+					<f:facet name="header">Name</f:facet>
+					<h:outputLink value="#{facesContext.externalContext.requestContextPath}/rs/data/object/#{it.name}/">
+						<h:outputText value="#{it.name}"/>
+					</h:outputLink>
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">Namespace</f:facet>
+					<h:outputText value="#{it.namespace}"/>
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">Type</f:facet>
+					<h:outputText value="#{it.type}"/>
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">Status</f:facet>
+					<h:outputText value="#{it.status}"/>
+				</rich:column>
+			</rich:dataTable>
 			<br></br>
 			<rich:dataTable id="objectAttributes"
 				value="#{it.attributes}" var="oa"
@@ -33,19 +46,27 @@
 				</rich:column>
 			</rich:dataTable>
 		</rich:panel>
-		<rich:panel>
-			<ul>
-				<li>
-					<h:outputLink value="froms/">
-						<h:outputText value="From Objects"/>
+		<rich:panel header="Relationships">
+			<h:panelGroup>
+			<h:panelGrid columns="4">
+					this ==&gt;
+					<h:outputLink value="#{facesContext.externalContext.requestContextPath}/rs/data/object/#{it.name}/from-rels/">
+						<h:outputText value="From Relations"/>
 					</h:outputLink>
-				</li>
-				<li>
-					<h:outputLink value="tos/">
+					==&gt;
+					<h:outputLink value="#{facesContext.externalContext.requestContextPath}/rs/data/object/#{it.name}/tos/">
 						<h:outputText value="To Objects"/>
 					</h:outputLink>
-				</li>
-			</ul>
+					this &lt;==
+					<h:outputLink value="#{facesContext.externalContext.requestContextPath}/rs/data/object/#{it.name}/to-rels/">
+						<h:outputText value="To Relations"/>
+					</h:outputLink>
+					&lt;==
+					<h:outputLink value="#{facesContext.externalContext.requestContextPath}/rs/data/object/#{it.name}/froms/">
+						<h:outputText value="From Objects"/>
+					</h:outputLink>
+			</h:panelGrid>
+			</h:panelGroup>
 		</rich:panel>
 	</ui:define>
 </ui:composition>

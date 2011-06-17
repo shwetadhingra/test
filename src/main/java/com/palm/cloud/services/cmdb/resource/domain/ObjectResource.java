@@ -59,11 +59,31 @@ public class ObjectResource extends AbstractBaseResource {
 	}
 
 	@GET
+	@Produces(MediaType.TEXT_HTML)
+	@Path("from-rels")
+	public Viewable getAllFromRelationsAsHtml(
+			@PathParam("name") String objectName) {
+		
+		return new Viewable("/view/relation/relations.jsp", 
+				this.getAllFromRelations(objectName));
+	}
+
+	@GET
 	@Path("to-rels")
 	public List<CIRelationship> getAllToRelations(
 			@PathParam("name") String objectName) {
 		
 		return cmdbDataService.getAllToRelations(objectName);
+	}
+
+	@GET
+	@Produces(MediaType.TEXT_HTML)
+	@Path("to-rels")
+	public Viewable getAllToRelationsAsHtml(
+			@PathParam("name") String objectName) {
+		
+		return new Viewable("/view/relation/relations.jsp", 
+				this.getAllToRelations(objectName));
 	}
 
 	@GET

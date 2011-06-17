@@ -13,7 +13,7 @@
 			<rich:tree id="tree" var="node" toggleType="client">
 			   <rich:treeModelRecursiveAdaptor roots="#{it}" nodes="#{node.nodes}">
 			      <rich:treeNode id="treeNode">
-			      	<a href="#{node.object.name}">#{node.object.name} [#{node.object.type}]</a>
+			      	<a href="#{facesContext.externalContext.requestContextPath}/rs/data/object/#{node.object.name}">#{node.object.name} [#{node.object.type}]</a>
 					<a4j:outputPanel ajaxRendered="true" layout="block">
 						<rich:panel header="#{node.object.name}"
 							rendered="false">
