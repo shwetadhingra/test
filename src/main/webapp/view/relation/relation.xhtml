@@ -12,9 +12,7 @@
 			<rich:dataTable id="relation" value="#{it}">
 				<rich:column>
 					<f:facet name="header">Relationship Name</f:facet>
-					<h:outputLink value="#{facesContext.externalContext.requestContextPath}/rs/data/relation/#{it.name}/">
-						<h:outputText value="#{it.name}"/>
-					</h:outputLink>
+					<h:outputText value="#{it.name}"/>
 				</rich:column>
 				<rich:column>
 					<f:facet name="header">Namespace</f:facet>
