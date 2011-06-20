@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 
 import com.palm.cloud.services.cmdb.domain.CIObject;
 import com.palm.cloud.services.cmdb.resource.AbstractBaseResource;
+import com.sun.jersey.api.view.Viewable;
 
 @Path("/data/objects")
 @Produces(MediaType.APPLICATION_JSON)
@@ -36,6 +37,17 @@ public class ObjectsResource extends AbstractBaseResource {
 		return cmdbDataService.getObjects(type, offset, maxResults);
 	}
 
+	@Path("{type}")
+	@Produces(MediaType.TEXT_HTML)
+	@GET
+	public Viewable getObjectsAsHtml(@PathParam("type") String type,
+			@QueryParam("offset") @DefaultValue("0") int offset,
+			@QueryParam("maxResults") @DefaultValue("100") int maxResults) {
+		
+		return new Viewable("/view/object/objects.jsp", this.getObjects(type, 
+				offset, maxResults));
+	}
+	
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public void addObject(CIObject object) {
