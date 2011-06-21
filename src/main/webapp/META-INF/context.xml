@@ -10,4 +10,12 @@
 	<!--
 	<Loader loaderClass="org.springframework.instrument.classloading.tomcat.TomcatInstrumentableClassLoader" useSystemClassLoaderAsParent="false"/>
 	-->
+	<Valve className="org.apache.catalina.valves.FastCommonAccessLogValve"
+		directory="logs"
+		resolveHosts="false"
+		prefix="oocmdb-access."
+		suffix=".log"
+		pattern="common"
+		fileDateFormat="yyyy-MM-dd"
+		/>
 </Context>
