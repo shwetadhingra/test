@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import com.palm.cloud.services.cmdb.meta.MetaClassRelationship;
 import com.palm.cloud.services.cmdb.resource.AbstractBaseResource;
+import com.sun.jersey.api.view.Viewable;
 
 @Path("/meta/relationships")
 @Produces(MediaType.APPLICATION_JSON)
@@ -25,6 +26,13 @@ public class MetaClassRelationshipsResource extends AbstractBaseResource {
 	@GET
 	public List<MetaClassRelationship> getAllTypeRelationships() {
 		return cmdbMetaService.getAllTypeRelationships();
+	}
+	
+	@Produces(MediaType.TEXT_HTML)
+	@GET
+	public Viewable getAllTypeRelationshipsAsHtml() {
+		return new Viewable("/view/meta/relationships.jsp", 
+				this.getAllTypeRelationships());
 	}
 	
 	@GET

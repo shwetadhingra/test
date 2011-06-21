@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import com.palm.cloud.services.cmdb.meta.MetaClass;
 import com.palm.cloud.services.cmdb.resource.AbstractBaseResource;
 import com.sun.jersey.api.NotFoundException;
+import com.sun.jersey.api.view.Viewable;
 
 @Path("/meta/types/{type}")
 @Produces(MediaType.APPLICATION_JSON)
@@ -29,6 +30,12 @@ public class MetaClassResource extends AbstractBaseResource {
 		if (result == null)
 			throw new NotFoundException("Type not found");
 		return result;
+	}
+	
+	@Produces(MediaType.TEXT_HTML)
+	@GET
+	public Viewable getTypeAsHtml(@PathParam("type") String type) {
+		return new Viewable("/view/meta/type.jsp", this.getType(type));
 	}
 	
 	@DELETE

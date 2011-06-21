@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import com.palm.cloud.services.cmdb.meta.MetaClass;
 import com.palm.cloud.services.cmdb.resource.AbstractBaseResource;
+import com.sun.jersey.api.view.Viewable;
 
 @Path("/meta/types")
 @Produces(MediaType.APPLICATION_JSON)
@@ -29,6 +30,12 @@ public class MetaClassesResource extends AbstractBaseResource {
 		return cmdbMetaService.getAllTypes();
 	}
 
+	@Produces(MediaType.TEXT_HTML)
+	@GET
+	public Viewable getTypesAsHtml() {
+		return new Viewable("/view/meta/types.jsp", this.getTypes());
+	}
+	
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public void addType(MetaClass type) {
