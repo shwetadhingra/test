@@ -20,7 +20,9 @@
 				</rich:column>
 				<rich:column>
 					<f:facet name="header">Type</f:facet>
-					<h:outputText value="#{it.type}"/>
+					<h:outputLink value="#{facesContext.externalContext.requestContextPath}/rs/meta/types/#{it.type}/">
+						<h:outputText value="#{it.type}"/>
+					</h:outputLink>
 				</rich:column>
 				<rich:column>
 					<f:facet name="header">Status</f:facet>
@@ -66,5 +68,8 @@
 			</h:panelGrid>
 			</h:panelGroup>
 		</rich:panel>
+		<h:outputLink value="#{facesContext.externalContext.requestContextPath}/rs/data/collection/#{it.name}/">
+			<h:outputText value="Browse Collection" rendered="#{it.type == 'Collection'}"/>
+		</h:outputLink>
 	</ui:define>
 </ui:composition>

@@ -6,13 +6,35 @@
 <f:view contentType="text/html">
 <h:head>
 	<title>Object-Oriented CMDB</title>
+	<h:outputStylesheet library="css" name="application.css"/>	
 </h:head>
 <h:body>
-	<div class="content-container">
-		<ui:insert name="body">
-			Body content missed
-		</ui:insert>
-	</div>
+    <div id="page">
+        <div id="header">
+           	<a href="#{facesContext.externalContext.requestContextPath}/" class="logo"><img src="#{facesContext.externalContext.requestContextPath}/images/cmdb-logo.jpg" alt="CMDB logo"/></a>
+            <div class="right-controls">
+                <ul class="top-links layout">
+                    <li><a href="#{facesContext.externalContext.requestContextPath}/ws/CMDBMetaService?wsdl" target="_blank">Meta Service API</a></li>
+                    <li><a href="#{facesContext.externalContext.requestContextPath}/ws/CMDBDataService?wsdl" target="_blank">Data Service API</a></li>
+                    <li><a href="#{facesContext.externalContext.requestContextPath}/ws/CollectionService?wsdl" target="_blank">Collection Service API</a></li>
+                    <li><a href="#{facesContext.externalContext.requestContextPath}/rs/application.wadl" target="_blank">REST API</a></li>
+                </ul>
+            </div>
+        </div>
+        <div id="page-content">
+            <div class="left-menu">
+				<ui:include src="/view/template/includes/navigation.xhtml" />
+            </div>
+            <div class="content-container">
+				<ui:insert name="body">
+				     	Body content missed
+				</ui:insert>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div id="footer">
+        </div>
+    </div>
 </h:body> 
 </f:view>
 </html>
