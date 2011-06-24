@@ -362,7 +362,7 @@ public class DAOTests {
 		oa1.setValue("label-value");
 		ObjectAttributeDO oa2 = new ObjectAttributeDO();
 		oa2.setAttribute(attributeMaster2);
-		oa2.setValue("version-value");
+		oa2.setValue("1.0");
 		
 		ObjectDO object1 = new ObjectDO();
 		object1.setName("10.1.1.11");
@@ -378,7 +378,7 @@ public class DAOTests {
 		oa3.setValue("label-value");
 		ObjectAttributeDO oa4 = new ObjectAttributeDO();
 		oa4.setAttribute(attributeMaster2);
-		oa4.setValue("version-value");
+		oa4.setValue("1.0");
 		
 		ObjectDO object2 = new ObjectDO();
 		object2.setName("pws");
@@ -389,12 +389,19 @@ public class DAOTests {
 		object2.setKlass(metaClassDAO.findById(class2.getId()));
 		object2 = objectDAO.create(object2);
 
+		ObjectAttributeDO oa5 = new ObjectAttributeDO();
+		oa5.setAttribute(attributeMaster1);
+		oa5.setValue("label-value");
+		ObjectAttributeDO oa6 = new ObjectAttributeDO();
+		oa6.setAttribute(attributeMaster2);
+		oa6.setValue("2.0");
+		
 		ObjectDO object3 = new ObjectDO();
 		object3.setName("10.1.1.12");
 		object3.setNamespace("DEFAULT");
 		object3.setStatus(status);
-		object3.addAttribute(oa1);
-		object3.addAttribute(oa2);
+		object3.addAttribute(oa5);
+		object3.addAttribute(oa6);
 		object3.setKlass(class1);
 		object3 = objectDAO.create(object3);
 
@@ -521,6 +528,19 @@ public class DAOTests {
 				relationship.getFromObject().getName(), 
 				relationship.getKlass().getName(), 
 				relationship.getToObject().getKlass().getName());
+		Assert.assertTrue(objects.size() > 0);
+		for (ObjectDO o : objects) {
+			print(o);
+		}
+		
+		objects = objectDAO.findAllByClassAndAttribute("function", "version", 
+				"1.0");
+		Assert.assertTrue(objects.size() > 0);
+		for (ObjectDO o : objects) {
+			print(o);
+		}
+		objects = objectDAO.findAllByClassAndAttribute("server", "version", 
+				"2.0");
 		Assert.assertTrue(objects.size() > 0);
 		for (ObjectDO o : objects) {
 			print(o);

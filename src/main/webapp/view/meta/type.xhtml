@@ -29,10 +29,10 @@
 				</rich:column>
 			</rich:dataTable>
 		</rich:panel>
-		<h:outputLink value="#{facesContext.externalContext.requestContextPath}/rs/data/objects/#{it.name}/">
+		<h:outputLink value="#{facesContext.externalContext.requestContextPath}/rs/data/objects/type/#{it.name}/">
 			<h:outputText value="Browse First 100 Objects" rendered="#{not it.relationshipType}"/>
 		</h:outputLink>
-		<h:outputLink value="#{facesContext.externalContext.requestContextPath}/rs/data/relations/#{it.name}/">
+		<h:outputLink value="#{facesContext.externalContext.requestContextPath}/rs/data/relations/type/#{it.name}/">
 			<h:outputText value="Browse First 100 Relationship Objects" rendered="#{it.relationshipType}"/>
 		</h:outputLink>
 	</ui:define>

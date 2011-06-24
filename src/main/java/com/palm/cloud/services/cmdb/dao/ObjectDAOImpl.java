@@ -4,12 +4,24 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.Root;
 
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.palm.cloud.services.cmdb.entity.MetaAttributeDO;
+import com.palm.cloud.services.cmdb.entity.MetaAttributeDO_;
+import com.palm.cloud.services.cmdb.entity.MetaClassDO;
+import com.palm.cloud.services.cmdb.entity.MetaClassDO_;
+import com.palm.cloud.services.cmdb.entity.ObjectAttributeDO;
+import com.palm.cloud.services.cmdb.entity.ObjectAttributeDO_;
 import com.palm.cloud.services.cmdb.entity.ObjectDO;
+import com.palm.cloud.services.cmdb.entity.ObjectDO_;
 
 @Repository
 @Transactional
@@ -194,6 +206,27 @@ public class ObjectDAOImpl extends GenericDAOImpl<ObjectDO, Integer>
 			noRollbackFor = EmptyResultDataAccessException.class)
 	public List<ObjectDO> findToObjects(String name) {
 		return this.findToObjectsByNamespace(name, DEFAULT_NAMESPACE);
+	}
+	
+	@Transactional(readOnly = true, 
+			noRollbackFor = EmptyResultDataAccessException.class)
+	public List<ObjectDO> findAllByClassAndAttribute(String className, 
+			String attributeName, String attributeValue) {
+		
+		CriteriaBuilder cb = this.getEntityManager().getCriteriaBuilder();
+		CriteriaQuery<ObjectDO> cq = cb.createQuery(ObjectDO.class);
+		Root<ObjectDO> o = cq.from(ObjectDO.class);
+		Join<ObjectDO, ObjectAttributeDO> oa = o.join(ObjectDO_.attributes);
+		Join<ObjectDO, MetaClassDO> om = o.join(ObjectDO_.klass);
+		Join<ObjectAttributeDO, MetaAttributeDO> am = oa.join(
+				ObjectAttributeDO_.attribute);
+		cq.where(cb.and(
+				cb.equal(om.get(MetaClassDO_.name), className),
+				cb.equal(am.get(MetaAttributeDO_.name), attributeName),
+				cb.equal(oa.get(ObjectAttributeDO_.value), attributeValue)));
+		TypedQuery<ObjectDO> q = this.getEntityManager().createQuery(cq);
+		List<ObjectDO> objects = q.getResultList();
+		return objects;
 	}
 	
 }

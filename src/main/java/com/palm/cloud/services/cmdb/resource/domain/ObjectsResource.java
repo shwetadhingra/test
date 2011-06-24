@@ -28,7 +28,7 @@ public class ObjectsResource extends AbstractBaseResource {
 		
 	}
 	
-	@Path("{type}")
+	@Path("type/{type}")
 	@GET
 	public List<CIObject> getObjects(@PathParam("type") String type,
 			@QueryParam("offset") @DefaultValue("0") int offset,
@@ -37,7 +37,7 @@ public class ObjectsResource extends AbstractBaseResource {
 		return cmdbDataService.getObjects(type, offset, maxResults);
 	}
 
-	@Path("{type}")
+	@Path("type/{type}")
 	@Produces(MediaType.TEXT_HTML)
 	@GET
 	public Viewable getObjectsAsHtml(@PathParam("type") String type,

@@ -33,7 +33,7 @@ public class RelationsResource extends AbstractBaseResource {
 		cmdbDataService.addRelation(relation);
 	}
 
-	@Path("{type}")
+	@Path("type/{type}")
 	@GET
 	public List<CIRelationship> getRelations(@PathParam("type") String type,
 			@QueryParam("offset") @DefaultValue("0") int offset,
@@ -42,7 +42,7 @@ public class RelationsResource extends AbstractBaseResource {
 		return cmdbDataService.getRelations(type, offset, maxResults);
 	}
 
-	@Path("{type}")
+	@Path("type/{type}")
 	@GET
 	@Produces(MediaType.TEXT_HTML)
 	public Viewable getRelationsAsHtml(@PathParam("type") String type,

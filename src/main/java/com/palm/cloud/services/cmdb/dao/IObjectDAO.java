@@ -46,5 +46,8 @@ public interface IObjectDAO extends IGenericDAO<ObjectDO, Integer> {
 	List<ObjectDO> findToObjectsByNamespace(String name, String namespace);
 	
 	List<ObjectDO> findToObjects(String name);
-	
+
+	List<ObjectDO> findAllByClassAndAttribute(
+			String className, String attributeName, String attributeValue);	
+
 }

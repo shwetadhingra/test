@@ -163,6 +163,12 @@
 			</exclusions>
 	</dependency>
 	
+	<dependency>
+		<groupId>org.hibernate</groupId>
+		<artifactId>hibernate-jpamodelgen</artifactId>
+		<version>1.1.1.Final</version>
+	</dependency>
+	
 	<!-- MySQL -->
 	<dependency>
 		<groupId>org.hibernate</groupId>
@@ -317,6 +323,25 @@
 	<build>
 		<plugins>
 			<plugin>
+			   <groupId>org.codehaus.mojo</groupId>
+			   <artifactId>build-helper-maven-plugin</artifactId>
+			   <version>1.5</version>
+			   <executions>
+			      <execution>
+			         <id>add-source</id>
+			         <phase>generate-sources</phase>
+			         <goals>
+			            <goal>add-source</goal>
+			         </goals>
+			         <configuration>
+			            <sources>
+			               <source>${project.build.directory}/generated-sources/annotations</source>
+			            </sources>
+			         </configuration>
+			      </execution>
+			   </executions>
+			</plugin>
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
@@ -324,6 +349,9 @@
 					<source>1.6</source>
 					<target>1.6</target>
 					<showWarnings>true</showWarnings>
+					<annotationProcessors>
+						<annotationProcessor>org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor</annotationProcessor>
+					</annotationProcessors>
 				</configuration>
 			</plugin>
 			<plugin>
