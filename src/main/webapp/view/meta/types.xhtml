@@ -23,5 +23,11 @@
 				</rich:column>
 			</rich:dataTable>
 		</rich:panel>
+	    <rich:jQuery selector="#metaClasses tr:odd" query="addClass('odd-row')" />
+	    <rich:jQuery selector="#metaClasses tr:even" query="addClass('even-row')" />
+	    <rich:jQuery selector="#metaClasses tr" event="mouseover"
+	        query="jQuery(this).addClass('active-row')"/>
+	    <rich:jQuery selector="#metaClasses tr" event="mouseout"
+	        query="jQuery(this).removeClass('active-row')"/>
 	</ui:define>
 </ui:composition>

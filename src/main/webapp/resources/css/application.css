@@ -251,3 +251,16 @@ a.show, a.hide{
 textarea[disabled], input[type="text"][disabled], input[type="password"][disabled], select[disabled] {
     -webkit-text-fill-color: #B6AD84;
 }
+
+.even-row {
+    background-color: #FCFFFE;
+}
+
+.odd-row {
+    background-color: #ECF3FE;
+}
+
+.active-row {
+    background-color: #FFEBDA !important;
+    cursor: pointer;
+}
