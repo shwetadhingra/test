@@ -1,4 +1,4 @@
-CREATE DATABASE IF NOT EXISTS oocmdb;
+CREATE DATABASE IF NOT EXISTS oocmdb CHARACTER SET latin1;
 
 USE oocmdb;
 
@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS `ci_meta_classes` (
   `created` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`class_id`)
-);
+)ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS `ci_meta_attributes` (
   `attribute_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS `ci_meta_attributes` (
   `created` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`attribute_id`)
-);
+)ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS `ci_meta_class_attributes` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS `ci_meta_class_attributes` (
   PRIMARY KEY (`id`),
   FOREIGN KEY (`class_id`) REFERENCES `ci_meta_classes` (`class_id`),
   FOREIGN KEY (`attribute_id`) REFERENCES `ci_meta_attributes` (`attribute_id`)
-);
+)ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS `ci_meta_class_relationships` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS `ci_meta_class_relationships` (
   FOREIGN KEY (`from_class`) REFERENCES `ci_meta_classes` (`class_id`),
   FOREIGN KEY (`to_class`) REFERENCES `ci_meta_classes` (`class_id`),
   FOREIGN KEY (`relationship_class`) REFERENCES `ci_meta_classes` (`class_id`)
-);
+)ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS `ci_meta_statuses` (
   `status_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -68,7 +68,7 @@ CREATE TABLE IF NOT EXISTS `ci_meta_statuses` (
   `created` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`status_id`)
-);
+)ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS `ci_objects` (
   `object_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -81,7 +81,7 @@ CREATE TABLE IF NOT EXISTS `ci_objects` (
   PRIMARY KEY (`object_id`),
   FOREIGN KEY (`class_id`) REFERENCES `ci_meta_classes` (`class_id`),
   FOREIGN KEY (`status_id`) REFERENCES `ci_meta_statuses` (`status_id`)
-);
+)ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS `ci_relationships` (
   `relationship_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -98,7 +98,7 @@ CREATE TABLE IF NOT EXISTS `ci_relationships` (
   FOREIGN KEY (`status_id`) REFERENCES `ci_meta_statuses` (`status_id`),
   FOREIGN KEY (`from_object`) REFERENCES `ci_objects` (`object_id`) ON DELETE CASCADE,
   FOREIGN KEY (`to_object`) REFERENCES `ci_objects` (`object_id`) ON DELETE CASCADE
-);
+)ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS `ci_object_attributes` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -110,7 +110,7 @@ CREATE TABLE IF NOT EXISTS `ci_object_attributes` (
   PRIMARY KEY (`id`),
   FOREIGN KEY (`object_id`) REFERENCES `ci_objects` (`object_id`) ON DELETE CASCADE,
   FOREIGN KEY (`attribute_id`) REFERENCES `ci_meta_attributes` (`attribute_id`)
-);
+)ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS `ci_relationship_attributes` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -122,7 +122,7 @@ CREATE TABLE IF NOT EXISTS `ci_relationship_attributes` (
   PRIMARY KEY (`id`),
   FOREIGN KEY (`relationship_id`) REFERENCES `ci_relationships` (`relationship_id`) ON DELETE CASCADE,
   FOREIGN KEY (`attribute_id`) REFERENCES `ci_meta_attributes` (`attribute_id`)
-);
+)ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE UNIQUE INDEX `UX_ci_meta_classes_class_name` ON `ci_meta_classes` (`class_name`);
 
