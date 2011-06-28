@@ -1,0 +1,27 @@
+<vertex type="server">
+	<logical oper="and">
+		<conditional name="label" oper="equal" value="m"/>
+		<conditional name="label" oper="notEqual" value="n"/>
+		<logical oper="or">
+			<conditional name="label" oper="like" value="o"/>
+			<logical oper="not">
+				<conditional name="label" oper="like" value="p"/>
+			</logical>
+		</logical>
+	</logical>
+	<edge type="partof" direction="forward">
+		<vertex type="function">
+			<conditional name="label" oper="equal" value="q"/>
+			<edge type="partof" direction="reverse">
+				<vertex type="server"/>
+			</edge>
+		</vertex>
+	</edge>
+	<edge type="memberof" direction="forward">
+		<vertex type="function">
+			<edge type="memberof" direction="reverse">
+				<vertex type="server"/>
+			</edge>
+		</vertex>
+	</edge>
+</vertex>

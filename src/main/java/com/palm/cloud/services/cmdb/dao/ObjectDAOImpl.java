@@ -1,5 +1,7 @@
 package com.palm.cloud.services.cmdb.dao;
 
+import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -7,13 +9,18 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Join;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.palm.cloud.services.cmdb.condition.Condition;
+import com.palm.cloud.services.cmdb.condition.LogicalCondition;
+import com.palm.cloud.services.cmdb.condition.ValueCondition;
 import com.palm.cloud.services.cmdb.entity.MetaAttributeDO;
 import com.palm.cloud.services.cmdb.entity.MetaAttributeDO_;
 import com.palm.cloud.services.cmdb.entity.MetaClassDO;
@@ -210,23 +217,92 @@ public class ObjectDAOImpl extends GenericDAOImpl<ObjectDO, Integer>
 	
 	@Transactional(readOnly = true, 
 			noRollbackFor = EmptyResultDataAccessException.class)
-	public List<ObjectDO> findAllByClassAndAttribute(String className, 
-			String attributeName, String attributeValue) {
+	public List<ObjectDO> findAllByConditionsAndNamespace(String className, 
+			String namespace, int offset, int maxResults, 
+			Condition... conditions) {
 		
 		CriteriaBuilder cb = this.getEntityManager().getCriteriaBuilder();
 		CriteriaQuery<ObjectDO> cq = cb.createQuery(ObjectDO.class);
+		cq.distinct(true);
 		Root<ObjectDO> o = cq.from(ObjectDO.class);
-		Join<ObjectDO, ObjectAttributeDO> oa = o.join(ObjectDO_.attributes);
 		Join<ObjectDO, MetaClassDO> om = o.join(ObjectDO_.klass);
-		Join<ObjectAttributeDO, MetaAttributeDO> am = oa.join(
-				ObjectAttributeDO_.attribute);
-		cq.where(cb.and(
-				cb.equal(om.get(MetaClassDO_.name), className),
-				cb.equal(am.get(MetaAttributeDO_.name), attributeName),
-				cb.equal(oa.get(ObjectAttributeDO_.value), attributeValue)));
+		List<Predicate> predicates = new ArrayList<Predicate>();
+		predicates.add(cb.equal(o.get(ObjectDO_.namespace), namespace));
+		predicates.add(cb.equal(om.get(MetaClassDO_.name), className));
+		predicates.addAll(generatePredicates(cb, o, conditions));
+		cq.where(cb.and(predicates.toArray(new Predicate[predicates.size()])));
 		TypedQuery<ObjectDO> q = this.getEntityManager().createQuery(cq);
+		q.setFirstResult(offset);
+		q.setMaxResults(maxResults);
 		List<ObjectDO> objects = q.getResultList();
 		return objects;
 	}
+
+	@Transactional(readOnly = true, 
+			noRollbackFor = EmptyResultDataAccessException.class)
+	public List<ObjectDO> findAllByConditions(String className, int offset, 
+			int maxResults, Condition... conditions) {
+
+		return this.findAllByConditionsAndNamespace(className, 
+				DEFAULT_NAMESPACE, offset, maxResults, conditions);
+	}
 	
+	private List<Predicate> generatePredicates(CriteriaBuilder cb, 
+			Root<ObjectDO> o, Condition... conditions) {
+		
+		List<Predicate> predicates = new ArrayList<Predicate>();
+		for (Condition condition : conditions) {
+			if (condition instanceof ValueCondition) {
+				predicates.add(generateValueConditionPredicate(
+						cb, o, (ValueCondition) condition));
+			} else if (condition instanceof LogicalCondition) {
+				predicates.add(generateLogicalConditionPredicate(
+						cb, o, (LogicalCondition) condition));
+			}
+		}
+		return predicates;
+	}
+	
+	private Predicate generateValueConditionPredicate(CriteriaBuilder cb,
+			Root<ObjectDO> o, ValueCondition condition) {
+		
+		Predicate predicate = null;
+		try {
+			Join<ObjectDO, ObjectAttributeDO> oa = o
+				.join(ObjectDO_.attributes);
+			Join<ObjectAttributeDO, MetaAttributeDO> oam = oa.join(
+					ObjectAttributeDO_.attribute);
+			Predicate namePredicate = cb.equal(oam.get(MetaAttributeDO_.name), 
+					((ValueCondition) condition).getName());
+			Expression<?> lhs = oa.get(ObjectAttributeDO_.value);
+			String rhs = condition.getValue();
+			Method method = CriteriaBuilder.class.getMethod(
+					condition.getOper().name(), 
+					condition.getOper().getParameterTypes());
+			Predicate valuePredicate = (Predicate) method.invoke(cb, lhs, rhs);
+			predicate = cb.and(namePredicate, valuePredicate);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return predicate;
+	}
+
+	private Predicate generateLogicalConditionPredicate(CriteriaBuilder cb, 
+			Root<ObjectDO> o, LogicalCondition logical) {
+		
+		Predicate predicate = null;
+		try {
+			List<Predicate> predicates = generatePredicates(cb, o, 
+					logical.getConditions().toArray(new Condition[0]));
+			Method method = CriteriaBuilder.class.getMethod(
+					logical.getOper().name(), 
+					logical.getOper().getParameterTypes());
+			predicate = (Predicate) method.invoke(cb, (Object) predicates
+					.toArray(new Predicate[0]));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return predicate;
+	}
+
 }

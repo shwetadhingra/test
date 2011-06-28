@@ -1,5 +1,6 @@
 package com.palm.cloud.services.cmdb.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Assert;
@@ -10,6 +11,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.palm.cloud.services.cmdb.condition.LogicalCondition;
+import com.palm.cloud.services.cmdb.condition.ValueCondition;
 import com.palm.cloud.services.cmdb.entity.MetaAttributeDO;
 import com.palm.cloud.services.cmdb.entity.MetaClassDO;
 import com.palm.cloud.services.cmdb.entity.MetaClassRelationshipDO;
@@ -533,18 +536,76 @@ public class DAOTests {
 			print(o);
 		}
 		
-		objects = objectDAO.findAllByClassAndAttribute("function", "version", 
-				"1.0");
+		System.out.println("------------------------------------------------");
+		objects = objectDAO.findAllByConditions("function", 0, 100, 
+				new ValueCondition("version", "equal", "1.0"),
+				new ValueCondition("label", "equal", "label-value"));
 		Assert.assertTrue(objects.size() > 0);
 		for (ObjectDO o : objects) {
 			print(o);
 		}
-		objects = objectDAO.findAllByClassAndAttribute("server", "version", 
-				"2.0");
+		objects = objectDAO.findAllByConditions("server", 0, 100, 
+				new ValueCondition("version", "equal", "2.0"),
+				new ValueCondition("label", "equal", "label-value"));
 		Assert.assertTrue(objects.size() > 0);
 		for (ObjectDO o : objects) {
 			print(o);
 		}
+		
+		System.out.println("################################################");
+		List<ValueCondition> conditions = new ArrayList<ValueCondition>();
+		conditions.add(new ValueCondition("version", "equal", "1.0"));
+		conditions.add(new ValueCondition("label", "equal", "label-value"));
+		conditions.add(new ValueCondition("dummy", "equal", "dummy"));
+		LogicalCondition logical = new LogicalCondition("or");
+		logical.setConditions(conditions);
+		objects = objectDAO.findAllByConditions("function", 0, 100, logical);
+		Assert.assertTrue(objects.size() > 0);
+		for (ObjectDO o : objects) {
+			print(o);
+		}
+		
+		conditions = new ArrayList<ValueCondition>();
+		conditions.add(new ValueCondition("version", "equal", "1.0"));
+		conditions.add(new ValueCondition("label", "equal", "label-value"));
+		logical = new LogicalCondition("and");
+		logical.setConditions(conditions);
+		objects = objectDAO.findAllByConditions("server", 0, 100, logical);
+		Assert.assertTrue(objects.size() > 0);
+		for (ObjectDO o : objects) {
+			print(o);
+		}
+		conditions = new ArrayList<ValueCondition>();
+		conditions.add(new ValueCondition("version", "notEqual", "1.0"));
+		conditions.add(new ValueCondition("label", "equal", "label-value"));
+		logical = new LogicalCondition("and");
+		logical.setConditions(conditions);
+		objects = objectDAO.findAllByConditions("server", 0, 100, logical);
+		Assert.assertTrue(objects.size() > 0);
+		for (ObjectDO o : objects) {
+			print(o);
+		}
+		conditions = new ArrayList<ValueCondition>();
+		conditions.add(new ValueCondition("version", "like", "1%"));
+		conditions.add(new ValueCondition("label", "equal", "label-value"));
+		logical = new LogicalCondition("and");
+		logical.setConditions(conditions);
+		objects = objectDAO.findAllByConditions("server", 0, 100, logical);
+		Assert.assertTrue(objects.size() > 0);
+		for (ObjectDO o : objects) {
+			print(o);
+		}
+		conditions = new ArrayList<ValueCondition>();
+		conditions.add(new ValueCondition("version", "notLike", "1%"));
+		conditions.add(new ValueCondition("label", "equal", "label-value"));
+		logical = new LogicalCondition("and");
+		logical.setConditions(conditions);
+		objects = objectDAO.findAllByConditions("server", 0, 100, logical);
+		Assert.assertTrue(objects.size() > 0);
+		for (ObjectDO o : objects) {
+			print(o);
+		}
+		System.out.println("################################################");
 		
 		relationshipDAO.delete(relationship);
 		Assert.assertNull(relationshipDAO.findById(relationship.getId()));

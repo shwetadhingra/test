@@ -2,6 +2,7 @@ package com.palm.cloud.services.cmdb.dao;
 
 import java.util.List;
 
+import com.palm.cloud.services.cmdb.condition.Condition;
 import com.palm.cloud.services.cmdb.entity.ObjectDO;
 
 public interface IObjectDAO extends IGenericDAO<ObjectDO, Integer> {
@@ -47,7 +48,12 @@ public interface IObjectDAO extends IGenericDAO<ObjectDO, Integer> {
 	
 	List<ObjectDO> findToObjects(String name);
 
-	List<ObjectDO> findAllByClassAndAttribute(
-			String className, String attributeName, String attributeValue);	
+	List<ObjectDO> findAllByConditionsAndNamespace(
+			String className, String namespace, int offset, int maxResults, 
+			Condition... conditions);	
+
+	List<ObjectDO> findAllByConditions(
+			String className, int offset, int maxResults,
+			Condition... conditions);	
 
 }
