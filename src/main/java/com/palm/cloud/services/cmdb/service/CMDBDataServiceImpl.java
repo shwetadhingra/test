@@ -6,6 +6,7 @@ import javax.jws.WebService;
 
 import org.springframework.transaction.annotation.Transactional;
 
+import com.palm.cloud.services.cmdb.condition.Condition;
 import com.palm.cloud.services.cmdb.domain.CIAttribute;
 import com.palm.cloud.services.cmdb.domain.CIObject;
 import com.palm.cloud.services.cmdb.domain.CIRelationship;
@@ -456,6 +457,23 @@ public class CMDBDataServiceImpl extends AbstractBaseServiceImpl
 	public List<CIObject> getToObjectsNS(String objectName, String namespace) {
 		List<ObjectDO> entities = objectDAO.findToObjectsByNamespace(
 				objectName, namespace);
+		return toObjectDomains(entities);
+	}
+
+	public List<CIObject> getObjectsByConditionsNS(String type,
+			String namespace, int offset, int maxResults,
+			Condition... conditions) {
+		
+		List<ObjectDO> entities = objectDAO.findAllByConditionsAndNamespace(
+				type, namespace, offset, maxResults, conditions);
+		return toObjectDomains(entities);
+	}
+
+	public List<CIObject> getObjectsByConditions(String type, int offset,
+			int maxResults, Condition... conditions) {
+		
+		List<ObjectDO> entities = objectDAO.findAllByConditions(type, 
+				offset, maxResults, conditions);
 		return toObjectDomains(entities);
 	}
 

@@ -5,6 +5,7 @@ import java.util.List;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 
+import com.palm.cloud.services.cmdb.condition.Condition;
 import com.palm.cloud.services.cmdb.domain.CIAttribute;
 import com.palm.cloud.services.cmdb.domain.CIObject;
 import com.palm.cloud.services.cmdb.domain.CIRelationship;
@@ -231,4 +232,15 @@ public interface ICMDBDataService {
 			@WebParam(name="objectName") String objectName, 
 			@WebParam(name="namespace") String namespace);
 	
+	List<CIObject> getObjectsByConditionsNS(@WebParam(name="type") String type,
+			@WebParam(name="namespace") String namespace,
+			@WebParam(name="offset") int offset, 
+			@WebParam(name="maxResults") int maxResults,
+			@WebParam(name="conditions") Condition... conditions);
+
+	List<CIObject> getObjectsByConditions(@WebParam(name="type") String type,
+			@WebParam(name="offset") int offset, 
+			@WebParam(name="maxResults") int maxResults,
+			@WebParam(name="conditions") Condition... conditions);
+
 }

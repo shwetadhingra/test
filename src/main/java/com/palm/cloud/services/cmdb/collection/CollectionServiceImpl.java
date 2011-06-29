@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.palm.cloud.services.cmdb.collection.xml.Edge;
 import com.palm.cloud.services.cmdb.collection.xml.Vertex;
 import com.palm.cloud.services.cmdb.collection.xml.XMLParser;
+import com.palm.cloud.services.cmdb.condition.Condition;
 import com.palm.cloud.services.cmdb.domain.CIAttribute;
 import com.palm.cloud.services.cmdb.domain.CIObject;
 import com.palm.cloud.services.cmdb.service.ICMDBDataService;
@@ -51,8 +52,15 @@ public class CollectionServiceImpl implements ICollectionService {
 	
 	private List<Node> buildNodes(Vertex vertex, int offset, int maxResults) {
 		List<Node> nodes = new ArrayList<Node>();
-		List<CIObject> roots = cmdbDataService.getObjects(vertex.getType(), 
-				offset, maxResults);
+		List<CIObject> roots = null;
+		if (vertex.getFilterConditions() != null) {
+			roots = cmdbDataService.getObjectsByConditions(vertex.getType(), 
+					offset, maxResults, 
+					vertex.getFilterConditions().toArray(new Condition[0]));
+		} else {
+			roots = cmdbDataService.getObjects(vertex.getType(), 
+					offset, maxResults);
+		}
 		for (CIObject root : roots) {
 			nodes.add(buildNode(vertex, root));
 		}

@@ -8,6 +8,7 @@ import com.palm.cloud.services.cmdb.collection.CollectionServiceTests;
 import com.palm.cloud.services.cmdb.collection.xml.XMLParserTests;
 import com.palm.cloud.services.cmdb.dao.DAOTests;
 import com.palm.cloud.services.cmdb.entity.EntityTests;
+import com.palm.cloud.services.cmdb.resource.JsonTests;
 import com.palm.cloud.services.cmdb.resource.ResourceTests;
 import com.palm.cloud.services.cmdb.service.DataServiceTests;
 import com.palm.cloud.services.cmdb.service.MetaServiceTests;
@@ -19,6 +20,7 @@ import com.palm.cloud.services.cmdb.service.MetaServiceTests;
 	MetaServiceTests.class,
 	DataServiceTests.class,
 	ResourceTests.class,
+	JsonTests.class,
 	XMLParserTests.class,
 	CollectionServiceTests.class
 })

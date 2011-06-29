@@ -65,6 +65,8 @@ public class CollectionServiceTests {
 	
 	private String collection2 = "template-2";
 	
+	private String collection3 = "template-3";
+	
 	@Before
 	public void setup() {
 		cmdbMetaService.addStatus(status1);
@@ -169,6 +171,12 @@ public class CollectionServiceTests {
 				collectionType, status1);
 		collectionObject2.addAttribute(new CIAttribute(attribute4, definition));
 		cmdbDataService.addObject(collectionObject2);
+
+		definition = readFile(collection3 + ".xml");
+		CIObject collectionObject3 = new CIObject(collection3, null, 
+				collectionType, status1);
+		collectionObject3.addAttribute(new CIAttribute(attribute4, definition));
+		cmdbDataService.addObject(collectionObject3);
 	}
 	
 	@After
@@ -181,6 +189,7 @@ public class CollectionServiceTests {
 		cmdbDataService.deleteObject("acs");
 		cmdbDataService.deleteObject(collection1);
 		cmdbDataService.deleteObject(collection2);
+		cmdbDataService.deleteObject(collection3);
 		
 		cmdbMetaService.deleteTypeRelationship(fromType, relationType1, toType);
 		cmdbMetaService.deleteTypeRelationship(fromType, relationType2, toType);
@@ -227,6 +236,16 @@ public class CollectionServiceTests {
 	@Test
 	public void testGetCollection2() {
 		List<Node> nodes = collectionService.getCollection(collection2, 0, 10);
+		Assert.assertTrue(nodes.size() > 0);
+		for (Node node : nodes) {
+			print(node);
+			System.out.println("----------------------------------");
+		}
+	}
+	
+	@Test
+	public void testGetCollection3() {
+		List<Node> nodes = collectionService.getCollection(collection3, 0, 10);
 		Assert.assertTrue(nodes.size() > 0);
 		for (Node node : nodes) {
 			print(node);

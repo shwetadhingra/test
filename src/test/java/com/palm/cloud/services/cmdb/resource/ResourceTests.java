@@ -1,5 +1,8 @@
 package com.palm.cloud.services.cmdb.resource;
 
+import java.util.Arrays;
+import java.util.List;
+
 import javax.ws.rs.core.MediaType;
 
 import org.junit.Assert;
@@ -8,6 +11,10 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.springframework.web.context.ContextLoaderListener;
 
+import com.palm.cloud.services.cmdb.condition.Condition;
+import com.palm.cloud.services.cmdb.condition.LogicalCondition;
+import com.palm.cloud.services.cmdb.condition.ValueCondition;
+import com.palm.cloud.services.cmdb.domain.CIObject;
 import com.palm.cloud.services.cmdb.meta.MetaStatus;
 import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.client.WebResource;
@@ -75,4 +82,25 @@ public class ResourceTests extends JerseyTest {
 			.get(MetaStatus.class);
     }
 
+    @SuppressWarnings("unchecked")
+	@Test
+    public void testSearchResource() {
+    	String uri = "data/search/type/Location";
+    	ValueCondition condition1 = new ValueCondition(
+    			"country", "equal", "USA");
+    	LogicalCondition condition2 = new LogicalCondition("and");
+    	ValueCondition condition3 = new ValueCondition(
+    			"state", "notEqual", "CA");
+    	ValueCondition condition4 = new ValueCondition(
+    			"location", "like", "ORD");
+    	condition2.setConditions(Arrays.asList(
+    			new Condition[]{condition3, condition4}));
+    	Condition[] conditions = {condition1, condition2};
+    	List<CIObject> response = r.path(uri)
+    		.accept(MediaType.APPLICATION_JSON)
+    		.type(MediaType.APPLICATION_JSON)
+    		.post(List.class, conditions);
+    	Assert.assertNotNull(response);
+    }
+    
 }

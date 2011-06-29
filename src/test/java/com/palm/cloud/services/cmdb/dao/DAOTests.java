@@ -518,6 +518,144 @@ public class DAOTests {
 			print(ra);
 		}
 		
+		relationshipDAO.delete(relationship);
+		Assert.assertNull(relationshipDAO.findById(relationship.getId()));
+		
+		relationshipDAO.delete(relationship2);
+		Assert.assertNull(relationshipDAO.findById(relationship2.getId()));
+
+		objectDAO.delete(object1);
+		objectDAO.delete(object2);
+		objectDAO.delete(object3);
+		metaClassDAO.delete(class1);
+		metaClassDAO.delete(class2);
+		metaClassDAO.delete(relationshipClass);
+		metaAttributeDAO.delete(attributeMaster1);
+		metaAttributeDAO.delete(attributeMaster2);
+		metaStatusDAO.delete(status);
+	}
+
+	@Test
+	public void testAdvancedObjectDAO() {
+		
+		MetaStatusDO status = new MetaStatusDO();
+		status.setName("default");
+		status = metaStatusDAO.create(status);
+		
+		MetaClassDO class1 = new MetaClassDO();
+		class1.setName("server");
+		class1.setParent(null);;
+		class1.setRelationship(false);
+		class1 = metaClassDAO.create(class1);
+		
+		MetaClassDO class2 = new MetaClassDO();
+		class2.setName("function");
+		class2.setParent(null);;
+		class2.setRelationship(false);
+		class2 = metaClassDAO.create(class2);
+		
+		MetaClassDO relationshipClass = new MetaClassDO();
+		relationshipClass.setName("PartOf");
+		relationshipClass.setParent(null);;
+		relationshipClass.setRelationship(true);
+		relationshipClass = metaClassDAO.create(relationshipClass);
+		
+		MetaAttributeDO attributeMaster1 = new MetaAttributeDO();
+		attributeMaster1.setName("label");
+		attributeMaster1 = metaAttributeDAO.create(attributeMaster1);
+		
+		MetaAttributeDO attributeMaster2 = new MetaAttributeDO();
+		attributeMaster2.setName("version");
+		attributeMaster2 = metaAttributeDAO.create(attributeMaster2);
+		
+		ObjectAttributeDO oa1 = new ObjectAttributeDO();
+		oa1.setAttribute(attributeMaster1);
+		oa1.setValue("label-value");
+		ObjectAttributeDO oa2 = new ObjectAttributeDO();
+		oa2.setAttribute(attributeMaster2);
+		oa2.setValue("1.0");
+		
+		ObjectDO object1 = new ObjectDO();
+		object1.setName("10.1.1.11");
+		object1.setNamespace("DEFAULT");
+		object1.setStatus(status);
+		object1.addAttribute(oa1);
+		object1.addAttribute(oa2);
+		object1.setKlass(class1);
+		object1 = objectDAO.create(object1);
+		
+		ObjectAttributeDO oa3 = new ObjectAttributeDO();
+		oa3.setAttribute(attributeMaster1);
+		oa3.setValue("label-value");
+		ObjectAttributeDO oa4 = new ObjectAttributeDO();
+		oa4.setAttribute(attributeMaster2);
+		oa4.setValue("1.0");
+		
+		ObjectDO object2 = new ObjectDO();
+		object2.setName("pws");
+		object2.setNamespace("DEFAULT");
+		object2.setStatus(metaStatusDAO.findById(status.getId()));
+		object2.addAttribute(oa3);
+		object2.addAttribute(oa4);
+		object2.setKlass(metaClassDAO.findById(class2.getId()));
+		object2 = objectDAO.create(object2);
+
+		ObjectAttributeDO oa5 = new ObjectAttributeDO();
+		oa5.setAttribute(attributeMaster1);
+		oa5.setValue("label-value");
+		ObjectAttributeDO oa6 = new ObjectAttributeDO();
+		oa6.setAttribute(attributeMaster2);
+		oa6.setValue("2.0");
+		
+		ObjectDO object3 = new ObjectDO();
+		object3.setName("10.1.1.12");
+		object3.setNamespace("DEFAULT");
+		object3.setStatus(status);
+		object3.addAttribute(oa5);
+		object3.addAttribute(oa6);
+		object3.setKlass(class1);
+		object3 = objectDAO.create(object3);
+
+		RelationshipAttributeDO ra1 = new RelationshipAttributeDO();
+		ra1.setAttribute(attributeMaster1);
+		ra1.setValue("label-value");
+		RelationshipAttributeDO ra2 = new RelationshipAttributeDO();
+		ra2.setAttribute(attributeMaster2);
+		ra2.setValue("version-value");
+		
+		RelationshipDO relationship = new RelationshipDO();
+		relationship.setNamespace("DEFAULT");
+		relationship.setFromObject(object1);
+		relationship.setToObject(object2);
+		relationship.setKlass(relationshipClass);
+		relationship.setStatus(status);
+		relationship.setName(relationship.getFromObject().getName() + "->" 
+				+ relationship.getKlass().getName() + "->" 
+				+ relationship.getToObject().getName());
+		relationship.addAttribute(ra1);
+		relationship.addAttribute(ra2);
+		relationship = relationshipDAO.create(relationship);
+		
+		RelationshipAttributeDO ra3 = new RelationshipAttributeDO();
+		ra3.setAttribute(attributeMaster1);
+		ra3.setValue("label-value");
+		RelationshipAttributeDO ra4 = new RelationshipAttributeDO();
+		ra4.setAttribute(attributeMaster2);
+		ra4.setValue("version-value");
+		
+		RelationshipDO relationship2 = new RelationshipDO();
+		relationship2.setNamespace("DEFAULT");
+		relationship2.setFromObject(object3);
+		relationship2.setToObject(object2);
+		relationship2.setKlass(relationshipClass);
+		relationship2.setStatus(status);
+		relationship2.setName(relationship2.getFromObject().getName() + "->" 
+				+ relationship2.getKlass().getName() + "->" 
+				+ relationship2.getToObject().getName());
+		relationship2.addAttribute(ra3);
+		relationship2.addAttribute(ra4);
+		relationship2 = relationshipDAO.create(relationship2);
+		
 		List<ObjectDO> objects = objectDAO.findFromObjectsByClass(
 				relationship.getToObject().getName(), 
 				relationship.getKlass().getName(), 
@@ -623,7 +761,7 @@ public class DAOTests {
 		metaAttributeDAO.delete(attributeMaster2);
 		metaStatusDAO.delete(status);
 	}
-
+	
 	private void print(MetaClassDO klass) {
 		System.out.printf("%d %d %b %s %s %s\n", klass.getId(), 
 				klass.getParent(), klass.isRelationship(), 
