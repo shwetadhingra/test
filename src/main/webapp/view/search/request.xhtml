@@ -36,19 +36,24 @@
 				<rich:message for="type" />
                 <h:outputText value="Offset" />
                 <h:inputText value="0" id="offset" required="true">
+                	<f:validateRequired />
                     <f:validateLongRange minimum="0"/>
                     <rich:validator />
                 </h:inputText>
                 <rich:message for="offset" />
                 <h:outputText value="Maxresults" />
                 <h:inputText value="100" id="maxResults" required="true">
+                	<f:validateRequired />
                     <f:validateLongRange minimum="0" maximum="100"/>
-                    <rich:validator />
+                    <rich:validator event="keyup"/>
                 </h:inputText>
                 <rich:message for="maxResults" />
                 <h:outputText value="Conditions" />
 				<h:inputTextarea id="conditions" cols="80" rows="20" 
-					required="true"/>
+					required="true">
+                	<f:validateRequired />
+                    <rich:validator />
+				</h:inputTextarea>
                 <rich:message for="conditions" />
 			</h:panelGrid>
 			<input type="submit" value="Search" 
