@@ -22,5 +22,11 @@
 					onclick="document.location.href='#{facesContext.externalContext.requestContextPath}/rs/data/objects/type/Collection/'">
 				</rich:panelMenuItem>
 		</rich:panelMenuGroup>
+		<rich:panelMenuGroup label="Search">
+				<rich:panelMenuItem label="By Object Type and Conditions"
+					mode="client"
+					onclick="document.location.href='#{facesContext.externalContext.requestContextPath}/view/search/request.jsp'">
+				</rich:panelMenuItem>
+		</rich:panelMenuGroup>
 	</rich:panelMenu>
 </ui:composition>

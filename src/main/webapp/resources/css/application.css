@@ -264,3 +264,6 @@ textarea[disabled], input[type="text"][disabled], input[type="password"][disable
     background-color: #FFEBDA !important;
     cursor: pointer;
 }
+td{
+    font:normal 11px "Lucida Sans Unicode", "Lucida Grande", Geneva,Verdana,Arial,sans-serif;
+}
