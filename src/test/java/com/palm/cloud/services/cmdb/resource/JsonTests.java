@@ -46,7 +46,7 @@ public class JsonTests {
 	private static void printConditions(Condition[] deserialized) {
 		for (Condition condition : deserialized) {
 			if (condition instanceof LogicalCondition) {
-				System.out.println(condition.getOper().name());
+				System.out.println(condition.getOper().getOperation());
 				if (((LogicalCondition) condition).getConditions() != null) {
 					printConditions(((LogicalCondition) condition)
 							.getConditions().toArray(new Condition[0]));
@@ -54,7 +54,7 @@ public class JsonTests {
 			} else if (condition instanceof ValueCondition) {
 				System.out.printf("%s %s %s\n", 
 						((ValueCondition) condition).getName(), 
-						condition.getOper().name(),
+						condition.getOper().getOperation(),
 						((ValueCondition) condition).getValue());
 			}
 		}

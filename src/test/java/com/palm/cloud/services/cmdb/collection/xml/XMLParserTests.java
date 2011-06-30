@@ -74,8 +74,8 @@ public class XMLParserTests {
 			for (Condition condition : filterConditions) {
 				if (condition instanceof ValueCondition) {
 					ValueCondition vc = (ValueCondition) condition;
-					System.out.printf("\t%s %s %s\n", vc.getName(), vc.getOper(), 
-							vc.getValue());
+					System.out.printf("\t%s %s %s\n", vc.getName(), 
+							vc.getOper(), vc.getValue());
 				} else if (condition instanceof LogicalCondition) {
 					System.out.printf("\t%s\n", condition.getOper());
 					print(((LogicalCondition) condition).getConditions());

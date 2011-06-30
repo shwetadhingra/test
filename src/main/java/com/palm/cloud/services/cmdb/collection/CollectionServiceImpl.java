@@ -6,6 +6,7 @@ import java.util.List;
 import javax.jws.WebService;
 import javax.xml.bind.JAXBException;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +21,8 @@ import com.palm.cloud.services.cmdb.service.ICMDBDataService;
 @Transactional
 @WebService
 public class CollectionServiceImpl implements ICollectionService {
+	
+	protected static Logger log = Logger.getLogger(CollectionServiceImpl.class);
 	
 	private enum Direction {FORWARD, REVERSE}
 	
@@ -45,7 +48,7 @@ public class CollectionServiceImpl implements ICollectionService {
 			String definitionXML = attribute.getValue();
 			vertex = XMLParser.unmarshall(Vertex.class, definitionXML);
 		} catch (JAXBException e) {
-			e.printStackTrace();
+			log.error("Error parsing collection definition xml", e);
 		}
 		return vertex;
 	}

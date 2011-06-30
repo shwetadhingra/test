@@ -14,6 +14,7 @@ import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import org.apache.log4j.Logger;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,6 +36,8 @@ import com.palm.cloud.services.cmdb.entity.ObjectDO_;
 public class ObjectDAOImpl extends GenericDAOImpl<ObjectDO, Integer> 
 		implements IObjectDAO {
 
+	protected static Logger log = Logger.getLogger(ObjectDAOImpl.class);
+	
 	public ObjectDAOImpl() {
 		
 	}
@@ -252,10 +255,14 @@ public class ObjectDAOImpl extends GenericDAOImpl<ObjectDO, Integer>
 		
 		List<Predicate> predicates = new ArrayList<Predicate>();
 		for (Condition condition : conditions) {
-			if (condition instanceof ValueCondition) {
+			if (condition instanceof ValueCondition 
+					&& condition.getOper().isConditional()) {
+				
 				predicates.add(generateValueConditionPredicate(
 						cb, o, (ValueCondition) condition));
-			} else if (condition instanceof LogicalCondition) {
+			} else if (condition instanceof LogicalCondition 
+					&& condition.getOper().isLogical()) {
+				
 				predicates.add(generateLogicalConditionPredicate(
 						cb, o, (LogicalCondition) condition));
 			}
@@ -277,12 +284,12 @@ public class ObjectDAOImpl extends GenericDAOImpl<ObjectDO, Integer>
 			Expression<?> lhs = oa.get(ObjectAttributeDO_.value);
 			String rhs = condition.getValue();
 			Method method = CriteriaBuilder.class.getMethod(
-					condition.getOper().name(), 
+					condition.getOper().getOperation(), 
 					condition.getOper().getParameterTypes());
 			Predicate valuePredicate = (Predicate) method.invoke(cb, lhs, rhs);
 			predicate = cb.and(namePredicate, valuePredicate);
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("Error generating value condition predicate", e);
 		}
 		return predicate;
 	}
@@ -295,12 +302,12 @@ public class ObjectDAOImpl extends GenericDAOImpl<ObjectDO, Integer>
 			List<Predicate> predicates = generatePredicates(cb, o, 
 					logical.getConditions().toArray(new Condition[0]));
 			Method method = CriteriaBuilder.class.getMethod(
-					logical.getOper().name(), 
+					logical.getOper().getOperation(), 
 					logical.getOper().getParameterTypes());
 			predicate = (Predicate) method.invoke(cb, (Object) predicates
 					.toArray(new Predicate[0]));
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("Error generating logical condition predicate", e);
 		}
 		return predicate;
 	}
