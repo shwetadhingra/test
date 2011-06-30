@@ -42,11 +42,11 @@ public enum Operator {
 	}
 	
 	public boolean isConditional() {
-		return OperatorType.conditional.equals(operation);
+		return OperatorType.conditional == operatorType;
 	}
 
 	public boolean isLogical() {
-		return OperatorType.logical.equals(operation);
+		return OperatorType.logical == operatorType;
 	}
 
 }
