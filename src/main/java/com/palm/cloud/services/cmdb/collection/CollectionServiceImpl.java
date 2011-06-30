@@ -55,17 +55,19 @@ public class CollectionServiceImpl implements ICollectionService {
 	
 	private List<Node> buildNodes(Vertex vertex, int offset, int maxResults) {
 		List<Node> nodes = new ArrayList<Node>();
-		List<CIObject> roots = null;
-		if (vertex.getFilterConditions() != null) {
-			roots = cmdbDataService.getObjectsByConditions(vertex.getType(), 
-					offset, maxResults, 
-					vertex.getFilterConditions().toArray(new Condition[0]));
-		} else {
-			roots = cmdbDataService.getObjects(vertex.getType(), 
-					offset, maxResults);
-		}
-		for (CIObject root : roots) {
-			nodes.add(buildNode(vertex, root));
+		if (vertex != null) {
+			List<CIObject> roots = null;
+			if (vertex.getFilterConditions() != null) {
+				roots = cmdbDataService.getObjectsByConditions(vertex.getType(), 
+						offset, maxResults, 
+						vertex.getFilterConditions().toArray(new Condition[0]));
+			} else {
+				roots = cmdbDataService.getObjects(vertex.getType(), 
+						offset, maxResults);
+			}
+			for (CIObject root : roots) {
+				nodes.add(buildNode(vertex, root));
+			}
 		}
 		return nodes;
 	}

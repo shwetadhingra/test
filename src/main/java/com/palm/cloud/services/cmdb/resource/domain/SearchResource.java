@@ -12,6 +12,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
 import com.palm.cloud.services.cmdb.collection.xml.XMLParser;
@@ -25,6 +26,8 @@ import com.sun.jersey.api.view.Viewable;
 @Component
 public class SearchResource extends AbstractBaseResource {
 
+	protected static Logger log = Logger.getLogger(SearchResource.class);
+	
 	public SearchResource() {
 		
 	}
@@ -60,6 +63,7 @@ public class SearchResource extends AbstractBaseResource {
 					type, offset, maxResults, condition);
 			
 		} catch (Exception e) {
+			log.error("Exception while parsing conditions", e);
 		}
 		return new Viewable("/view/object/objects.jsp", objects);
 	}

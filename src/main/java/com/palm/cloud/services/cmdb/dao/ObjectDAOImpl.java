@@ -254,17 +254,19 @@ public class ObjectDAOImpl extends GenericDAOImpl<ObjectDO, Integer>
 			Root<ObjectDO> o, Condition... conditions) {
 		
 		List<Predicate> predicates = new ArrayList<Predicate>();
-		for (Condition condition : conditions) {
-			if (condition instanceof ValueCondition 
-					&& condition.getOper().isConditional()) {
-				
-				predicates.add(generateValueConditionPredicate(
-						cb, o, (ValueCondition) condition));
-			} else if (condition instanceof LogicalCondition 
-					&& condition.getOper().isLogical()) {
-				
-				predicates.add(generateLogicalConditionPredicate(
-						cb, o, (LogicalCondition) condition));
+		if (conditions != null) {
+			for (Condition condition : conditions) {
+				if (condition instanceof ValueCondition 
+						&& condition.getOper().isConditional()) {
+					
+					predicates.add(generateValueConditionPredicate(
+							cb, o, (ValueCondition) condition));
+				} else if (condition instanceof LogicalCondition 
+						&& condition.getOper().isLogical()) {
+					
+					predicates.add(generateLogicalConditionPredicate(
+							cb, o, (LogicalCondition) condition));
+				}
 			}
 		}
 		return predicates;
@@ -299,13 +301,15 @@ public class ObjectDAOImpl extends GenericDAOImpl<ObjectDO, Integer>
 		
 		Predicate predicate = null;
 		try {
-			List<Predicate> predicates = generatePredicates(cb, o, 
-					logical.getConditions().toArray(new Condition[0]));
-			Method method = CriteriaBuilder.class.getMethod(
-					logical.getOper().getOperation(), 
-					logical.getOper().getParameterTypes());
-			predicate = (Predicate) method.invoke(cb, (Object) predicates
-					.toArray(new Predicate[0]));
+			if (logical.getConditions() != null) {
+				List<Predicate> predicates = generatePredicates(cb, o, 
+						logical.getConditions().toArray(new Condition[0]));
+				Method method = CriteriaBuilder.class.getMethod(
+						logical.getOper().getOperation(), 
+						logical.getOper().getParameterTypes());
+				predicate = (Predicate) method.invoke(cb, (Object) predicates
+						.toArray(new Predicate[0]));
+			}
 		} catch (Exception e) {
 			log.error("Error generating logical condition predicate", e);
 		}
