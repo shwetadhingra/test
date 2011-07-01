@@ -35,12 +35,45 @@ public class CollectionServiceImpl implements ICollectionService {
 			int maxResults) {
 		
 		List<Node> nodes = null;
-		Vertex vertex = this.getDefinition(collectionName);
+		Vertex vertex = this.getDefinitionByName(collectionName);
 		nodes = buildNodes(vertex, offset, maxResults);
 		return nodes;
 	}
 
-	private Vertex getDefinition(String collectionName) {
+	public Node getCollectionByRoot(String collectionName, String root) {
+		Node node = null;
+		Vertex vertex = this.getDefinitionByName(collectionName);
+		CIObject rootObject = cmdbDataService.getObject(root);
+		node = buildNode(vertex, rootObject);
+		return node;
+	}
+
+	public List<Node> getCollectionByXML(String definition, int offset, 
+			int maxResults) {
+		
+		List<Node> nodes = null;
+		Vertex vertex = this.getDefinitionByXml(definition);
+		nodes = buildNodes(vertex, offset, maxResults);
+		return nodes;
+	}
+
+	public List<Node> getCollectionByDefinition(Vertex vertex, int offset,
+			int maxResults) {
+
+		return buildNodes(vertex, offset, maxResults);
+	}
+
+	private Vertex getDefinitionByXml(String definitionXML) {
+		Vertex vertex = null;
+		try {
+			vertex = XMLParser.unmarshall(Vertex.class, definitionXML);
+		} catch (JAXBException e) {
+			log.error("Error parsing collection definition xml", e);
+		}
+		return vertex;
+	}
+	
+	private Vertex getDefinitionByName(String collectionName) {
 		Vertex vertex = null;
 		try {
 			CIAttribute attribute = cmdbDataService.getAttribute(collectionName, 
@@ -121,12 +154,4 @@ public class CollectionServiceImpl implements ICollectionService {
 		}
 	}
 	
-	public Node getCollectionByRoot(String collectionName, String root) {
-		Node node = null;
-		Vertex vertex = this.getDefinition(collectionName);
-		CIObject rootObject = cmdbDataService.getObject(root);
-		node = buildNode(vertex, rootObject);
-		return node;
-	}
-
 }
