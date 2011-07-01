@@ -1,0 +1,44 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	template="/view/template/main.xhtml">
+	<ui:define name="body">
+	<form name="collectionSearchRequestForm" method="post" action="#{facesContext.externalContext.requestContextPath}/rs/data/search/collection/">
+		<rich:panel>
+			<f:facet name="header">
+				<h:outputText value="Inline Collection Request"></h:outputText>
+			</f:facet>
+			<h:panelGrid columns="3">
+                <h:outputText value="Offset" />
+                <h:inputText value="0" id="offset" required="true">
+                	<f:validateRequired />
+                    <f:validateLongRange minimum="0"/>
+                    <rich:validator />
+                </h:inputText>
+                <rich:message for="offset" />
+                <h:outputText value="Maxresults" />
+                <h:inputText value="100" id="maxResults" required="true">
+                	<f:validateRequired />
+                    <f:validateLongRange minimum="0" maximum="100"/>
+                    <rich:validator event="keyup"/>
+                </h:inputText>
+                <rich:message for="maxResults" />
+                <h:outputText value="Definition" />
+				<h:inputTextarea id="definition" cols="80" rows="20" 
+					required="true">
+                	<f:validateRequired />
+                    <rich:validator />
+				</h:inputTextarea>
+                <rich:message for="definition" />
+			</h:panelGrid>
+			<input type="submit" value="Search"/>
+			<input type="reset" value="Clear"/>              
+		</rich:panel>
+	</form>
+	</ui:define>
+</ui:composition>
