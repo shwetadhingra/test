@@ -61,7 +61,7 @@ public class XMLParserTests {
 	
 	private void print(Vertex vertex) {
 		System.out.println(vertex.getType());
-		print(vertex.getFilterConditions());
+		print(vertex.getConditions());
 		if (vertex.getEdge() != null) {
 			for (Edge edge : vertex.getEdge()) {
 				print(edge);

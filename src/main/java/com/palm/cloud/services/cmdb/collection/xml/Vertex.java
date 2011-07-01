@@ -21,7 +21,7 @@ public class Vertex {
 	private String type;
 	
 	@XmlAnyElement(lax = true)
-	private List<? extends Condition> filterConditions;
+	private List<? extends Condition> conditions;
 	
 	@XmlElement
 	private List<Edge> edge;
@@ -42,12 +42,12 @@ public class Vertex {
 		this.edge = edge;
 	}
 
-	public void setFilterConditions(List<? extends Condition> conditions) {
-		this.filterConditions = conditions;
+	public void setConditions(List<? extends Condition> conditions) {
+		this.conditions = conditions;
 	}
 
-	public List<? extends Condition> getFilterConditions() {
-		return filterConditions;
+	public List<? extends Condition> getConditions() {
+		return conditions;
 	}
 	
 }

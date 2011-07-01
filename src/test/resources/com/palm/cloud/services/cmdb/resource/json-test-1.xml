@@ -1,0 +1,21 @@
+<vertex type="Server">
+	<logical oper="and">
+		<conditional name="label" oper="like" value="host%"/>
+		<conditional name="region" oper="equal" value="SMF"/>
+	</logical>
+	<edge type="PartOf" direction="forward">
+		<vertex type="Function">
+			<edge type="PartOf" direction="reverse">
+				<vertex type="Server"/>
+			</edge>
+		</vertex>
+	</edge>
+	<edge type="MemberOf" direction="forward">
+		<vertex type="Function">
+			<conditional name="label" oper="equal" value="pws"/>
+			<edge type="MemberOf" direction="reverse">
+				<vertex type="Server"/>
+			</edge>
+		</vertex>
+	</edge>
+</vertex>

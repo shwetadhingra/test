@@ -90,10 +90,10 @@ public class CollectionServiceImpl implements ICollectionService {
 		List<Node> nodes = new ArrayList<Node>();
 		if (vertex != null) {
 			List<CIObject> roots = null;
-			if (vertex.getFilterConditions() != null) {
+			if (vertex.getConditions() != null) {
 				roots = cmdbDataService.getObjectsByConditions(vertex.getType(), 
 						offset, maxResults, 
-						vertex.getFilterConditions().toArray(new Condition[0]));
+						vertex.getConditions().toArray(new Condition[0]));
 			} else {
 				roots = cmdbDataService.getObjects(vertex.getType(), 
 						offset, maxResults);
@@ -122,22 +122,22 @@ public class CollectionServiceImpl implements ICollectionService {
 					edge.getDirection());
 			List<CIObject> objects = null;
 			if (isForward) {
-				if (edge.getVertex().getFilterConditions() != null) {
+				if (edge.getVertex().getConditions() != null) {
 					objects = cmdbDataService.getToObjectsByConditions(
 							node.getObject().getName(), edge.getType(), 
 							edge.getVertex().getType(), edge.getVertex()
-							.getFilterConditions().toArray(new Condition[0]));
+							.getConditions().toArray(new Condition[0]));
 				} else {
 					objects = cmdbDataService.getToObjectsByType(
 							node.getObject().getName(), edge.getType(), 
 							edge.getVertex().getType());
 				}
 			} else {
-				if (edge.getVertex().getFilterConditions() != null) {
+				if (edge.getVertex().getConditions() != null) {
 					objects = cmdbDataService.getFromObjectsByConditions(
 							node.getObject().getName(), edge.getType(), 
 							edge.getVertex().getType(), edge.getVertex()
-							.getFilterConditions().toArray(new Condition[0]));
+							.getConditions().toArray(new Condition[0]));
 				} else {
 					objects = cmdbDataService.getFromObjectsByType(
 							node.getObject().getName(), edge.getType(), 

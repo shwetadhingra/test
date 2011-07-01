@@ -16,6 +16,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.palm.cloud.services.cmdb.collection.xml.Vertex;
+import com.palm.cloud.services.cmdb.collection.xml.XMLParser;
 import com.palm.cloud.services.cmdb.domain.CIAttribute;
 import com.palm.cloud.services.cmdb.domain.CIObject;
 import com.palm.cloud.services.cmdb.domain.CIRelationship;
@@ -259,6 +261,31 @@ public class CollectionServiceTests {
 			for (Link link : node.getLinks()) {
 				print(link.getNode());
 			}
+		}
+	}
+	
+	@Test
+	public void testGetCollectionByXml() {
+		String definition = readFile(collection3 + ".xml");
+		List<Node> nodes = collectionService.getCollectionByXML(definition, 
+				0, 10);
+		Assert.assertTrue(nodes.size() > 0);
+		for (Node node : nodes) {
+			print(node);
+			System.out.println("----------------------------------");
+		}
+	}
+	
+	@Test
+	public void testGetCollectionByDefinition() throws Exception {
+		String definition = readFile(collection3 + ".xml");
+		Vertex vertex = XMLParser.unmarshall(Vertex.class, definition);
+		List<Node> nodes = collectionService.getCollectionByDefinition(vertex, 
+				0, 10);
+		Assert.assertTrue(nodes.size() > 0);
+		for (Node node : nodes) {
+			print(node);
+			System.out.println("----------------------------------");
 		}
 	}
 	
