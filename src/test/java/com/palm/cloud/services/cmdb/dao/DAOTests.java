@@ -656,6 +656,7 @@ public class DAOTests {
 		relationship2.addAttribute(ra4);
 		relationship2 = relationshipDAO.create(relationship2);
 		
+		System.out.println("************************************************");
 		List<ObjectDO> objects = objectDAO.findFromObjectsByClass(
 				relationship.getToObject().getName(), 
 				relationship.getKlass().getName(), 
@@ -664,7 +665,16 @@ public class DAOTests {
 		for (ObjectDO o : objects) {
 			print(o);
 		}
-		
+		objects = objectDAO.findFromObjectsByConditions(
+				relationship.getToObject().getName(), 
+				relationship.getKlass().getName(), 
+				relationship.getFromObject().getKlass().getName(),
+				new ValueCondition("version", "equal", "2.0"),
+				new ValueCondition("label", "equal", "label-value"));
+		Assert.assertTrue(objects.size() > 0);
+		for (ObjectDO o : objects) {
+			print(o);
+		}
 		objects = objectDAO.findToObjectsByClass(
 				relationship.getFromObject().getName(), 
 				relationship.getKlass().getName(), 
@@ -673,7 +683,16 @@ public class DAOTests {
 		for (ObjectDO o : objects) {
 			print(o);
 		}
-		
+		objects = objectDAO.findToObjectsByConditions(
+				relationship.getFromObject().getName(), 
+				relationship.getKlass().getName(), 
+				relationship.getToObject().getKlass().getName(), 
+				new ValueCondition("version", "equal", "1.0"),
+				new ValueCondition("label", "equal", "label-value"));
+		Assert.assertTrue(objects.size() > 0);
+		for (ObjectDO o : objects) {
+			print(o);
+		}
 		System.out.println("------------------------------------------------");
 		objects = objectDAO.findAllByConditions("function", 0, 100, 
 				new ValueCondition("version", "equal", "1.0"),

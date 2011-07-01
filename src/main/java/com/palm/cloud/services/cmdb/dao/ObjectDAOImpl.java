@@ -10,6 +10,7 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.From;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
@@ -30,6 +31,8 @@ import com.palm.cloud.services.cmdb.entity.ObjectAttributeDO;
 import com.palm.cloud.services.cmdb.entity.ObjectAttributeDO_;
 import com.palm.cloud.services.cmdb.entity.ObjectDO;
 import com.palm.cloud.services.cmdb.entity.ObjectDO_;
+import com.palm.cloud.services.cmdb.entity.RelationshipDO;
+import com.palm.cloud.services.cmdb.entity.RelationshipDO_;
 
 @Repository
 @Transactional
@@ -250,8 +253,80 @@ public class ObjectDAOImpl extends GenericDAOImpl<ObjectDO, Integer>
 				DEFAULT_NAMESPACE, offset, maxResults, conditions);
 	}
 	
+	@Transactional(readOnly = true, 
+			noRollbackFor = EmptyResultDataAccessException.class)
+	public List<ObjectDO> findFromObjectsByConditionsAndNamespace(String name,
+			String namespace, String relationClass, String className, 
+			Condition... conditions) {
+
+		CriteriaBuilder cb = this.getEntityManager().getCriteriaBuilder();
+		CriteriaQuery<ObjectDO> cq = cb.createQuery(ObjectDO.class);
+		cq.distinct(true);
+		Root<RelationshipDO> r = cq.from(RelationshipDO.class);
+		cq.select(r.get(RelationshipDO_.fromObject));
+		Join<RelationshipDO, MetaClassDO> rm = r.join(RelationshipDO_.klass);
+		Join<RelationshipDO, ObjectDO> rto = r.join(RelationshipDO_.toObject);
+		Join<RelationshipDO, ObjectDO> rfo = r.join(RelationshipDO_.fromObject);
+		Join<ObjectDO, MetaClassDO> rfom = rfo.join(ObjectDO_.klass);
+		List<Predicate> predicates = new ArrayList<Predicate>();
+		predicates.add(cb.equal(rto.get(ObjectDO_.name), name));
+		predicates.add(cb.equal(rto.get(ObjectDO_.namespace), namespace));
+		predicates.add(cb.equal(rm.get(MetaClassDO_.name), relationClass));
+		predicates.add(cb.equal(rfom.get(MetaClassDO_.name), className));
+		predicates.addAll(generatePredicates(cb, rfo, conditions));
+		cq.where(cb.and(predicates.toArray(new Predicate[predicates.size()])));
+		TypedQuery<ObjectDO> q = this.getEntityManager().createQuery(cq);
+		List<ObjectDO> objects = q.getResultList();
+		return objects;
+	}
+
+	@Transactional(readOnly = true, 
+			noRollbackFor = EmptyResultDataAccessException.class)
+	public List<ObjectDO> findFromObjectsByConditions(String name,
+			String relationClass, String className, Condition... conditions) {
+
+		return this.findFromObjectsByConditionsAndNamespace(name, 
+				DEFAULT_NAMESPACE, relationClass, className, conditions);
+	}
+
+	@Transactional(readOnly = true, 
+			noRollbackFor = EmptyResultDataAccessException.class)
+	public List<ObjectDO> findToObjectsByConditionsAndNamespace(String name,
+			String namespace, String relationClass, String className,
+			Condition... conditions) {
+
+		CriteriaBuilder cb = this.getEntityManager().getCriteriaBuilder();
+		CriteriaQuery<ObjectDO> cq = cb.createQuery(ObjectDO.class);
+		cq.distinct(true);
+		Root<RelationshipDO> r = cq.from(RelationshipDO.class);
+		cq.select(r.get(RelationshipDO_.toObject));
+		Join<RelationshipDO, MetaClassDO> rm = r.join(RelationshipDO_.klass);
+		Join<RelationshipDO, ObjectDO> rfo = r.join(RelationshipDO_.fromObject);
+		Join<RelationshipDO, ObjectDO> rto = r.join(RelationshipDO_.toObject);
+		Join<ObjectDO, MetaClassDO> rtom = rto.join(ObjectDO_.klass);
+		List<Predicate> predicates = new ArrayList<Predicate>();
+		predicates.add(cb.equal(rfo.get(ObjectDO_.name), name));
+		predicates.add(cb.equal(rfo.get(ObjectDO_.namespace), namespace));
+		predicates.add(cb.equal(rm.get(MetaClassDO_.name), relationClass));
+		predicates.add(cb.equal(rtom.get(MetaClassDO_.name), className));
+		predicates.addAll(generatePredicates(cb, rto, conditions));
+		cq.where(cb.and(predicates.toArray(new Predicate[predicates.size()])));
+		TypedQuery<ObjectDO> q = this.getEntityManager().createQuery(cq);
+		List<ObjectDO> objects = q.getResultList();
+		return objects;
+	}
+
+	@Transactional(readOnly = true, 
+			noRollbackFor = EmptyResultDataAccessException.class)
+	public List<ObjectDO> findToObjectsByConditions(String name,
+			String relationClass, String className, Condition... conditions) {
+
+		return this.findToObjectsByConditionsAndNamespace(name, 
+				DEFAULT_NAMESPACE, relationClass, className, conditions);
+	}
+	
 	private List<Predicate> generatePredicates(CriteriaBuilder cb, 
-			Root<ObjectDO> o, Condition... conditions) {
+			From<?, ObjectDO> o, Condition... conditions) {
 		
 		List<Predicate> predicates = new ArrayList<Predicate>();
 		if (conditions != null) {
@@ -273,7 +348,7 @@ public class ObjectDAOImpl extends GenericDAOImpl<ObjectDO, Integer>
 	}
 	
 	private Predicate generateValueConditionPredicate(CriteriaBuilder cb,
-			Root<ObjectDO> o, ValueCondition condition) {
+			From<?, ObjectDO> o, ValueCondition condition) {
 		
 		Predicate predicate = null;
 		try {
@@ -297,7 +372,7 @@ public class ObjectDAOImpl extends GenericDAOImpl<ObjectDO, Integer>
 	}
 
 	private Predicate generateLogicalConditionPredicate(CriteriaBuilder cb, 
-			Root<ObjectDO> o, LogicalCondition logical) {
+			From<?, ObjectDO> o, LogicalCondition logical) {
 		
 		Predicate predicate = null;
 		try {

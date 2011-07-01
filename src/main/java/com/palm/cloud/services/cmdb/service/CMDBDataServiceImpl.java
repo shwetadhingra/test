@@ -477,4 +477,40 @@ public class CMDBDataServiceImpl extends AbstractBaseServiceImpl
 		return toObjectDomains(entities);
 	}
 
+	public List<CIObject> getFromObjectsByConditions(String objectName,
+			String relationType, String type, Condition... conditions) {
+
+		List<ObjectDO> entities = objectDAO.findFromObjectsByConditions(
+				objectName, relationType, type, conditions);
+		return toObjectDomains(entities);
+	}
+
+	public List<CIObject> getFromObjectsByConditionsNS(String objectName,
+			String namespace, String relationType, String type,
+			Condition... conditions) {
+
+		List<ObjectDO> entities = objectDAO
+			.findFromObjectsByConditionsAndNamespace(objectName, namespace, 
+					relationType, type, conditions);
+		return toObjectDomains(entities);
+	}
+
+	public List<CIObject> getToObjectsByConditions(String objectName,
+			String relationType, String type, Condition... conditions) {
+		
+		List<ObjectDO> entities = objectDAO.findToObjectsByConditions(
+				objectName, relationType, type, conditions);
+		return toObjectDomains(entities);
+	}
+
+	public List<CIObject> getToObjectsByConditionsNS(String objectName,
+			String namespace, String relationType, String type,
+			Condition... conditions) {
+		
+		List<ObjectDO> entities = objectDAO
+			.findToObjectsByConditionsAndNamespace(objectName, namespace, 
+					relationType, type, conditions);
+		return toObjectDomains(entities);
+	}
+
 }

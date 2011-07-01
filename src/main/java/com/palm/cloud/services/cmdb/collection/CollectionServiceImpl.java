@@ -84,23 +84,39 @@ public class CollectionServiceImpl implements ICollectionService {
 	}
 	
 	private void buildLinks(Node node, Edge edge) {
-		boolean isForward = Direction.FORWARD.name().equalsIgnoreCase(
-				edge.getDirection());
-		List<CIObject> objects = null;
-		if (isForward) {
-			objects = cmdbDataService.getToObjectsByType(
-					node.getObject().getName(), edge.getType(), 
-					edge.getVertex().getType());
-		} else {
-			objects = cmdbDataService.getFromObjectsByType(
-					node.getObject().getName(), edge.getType(), 
-					edge.getVertex().getType());
-		}
-		if (objects != null) {
-			for (CIObject object : objects) {
-				Link link = new Link();
-				link.setNode(buildNode(edge.getVertex(), object));
-				node.addLink(link);
+		if (node != null && edge != null && edge.getVertex() != null) {
+			boolean isForward = Direction.FORWARD.name().equalsIgnoreCase(
+					edge.getDirection());
+			List<CIObject> objects = null;
+			if (isForward) {
+				if (edge.getVertex().getFilterConditions() != null) {
+					objects = cmdbDataService.getToObjectsByConditions(
+							node.getObject().getName(), edge.getType(), 
+							edge.getVertex().getType(), edge.getVertex()
+							.getFilterConditions().toArray(new Condition[0]));
+				} else {
+					objects = cmdbDataService.getToObjectsByType(
+							node.getObject().getName(), edge.getType(), 
+							edge.getVertex().getType());
+				}
+			} else {
+				if (edge.getVertex().getFilterConditions() != null) {
+					objects = cmdbDataService.getFromObjectsByConditions(
+							node.getObject().getName(), edge.getType(), 
+							edge.getVertex().getType(), edge.getVertex()
+							.getFilterConditions().toArray(new Condition[0]));
+				} else {
+					objects = cmdbDataService.getFromObjectsByType(
+							node.getObject().getName(), edge.getType(), 
+							edge.getVertex().getType());
+				}
+			}
+			if (objects != null) {
+				for (CIObject object : objects) {
+					Link link = new Link();
+					link.setNode(buildNode(edge.getVertex(), object));
+					node.addLink(link);
+				}
 			}
 		}
 	}

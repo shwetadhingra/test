@@ -243,4 +243,30 @@ public interface ICMDBDataService {
 			@WebParam(name="maxResults") int maxResults,
 			@WebParam(name="conditions") Condition... conditions);
 
+	List<CIObject> getFromObjectsByConditions(
+			@WebParam(name="objectName") String objectName, 
+			@WebParam(name="relationType") String relationType, 
+			@WebParam(name="type") String type,
+			@WebParam(name="conditions") Condition... conditions);
+	
+	List<CIObject> getFromObjectsByConditionsNS(
+			@WebParam(name="objectName") String objectName, 
+			@WebParam(name="namespace") String namespace, 
+			@WebParam(name="relationType") String relationType, 
+			@WebParam(name="type") String type,
+			@WebParam(name="conditions") Condition... conditions);
+	
+	List<CIObject> getToObjectsByConditions(
+			@WebParam(name="objectName") String objectName, 
+			@WebParam(name="relationType") String relationType, 
+			@WebParam(name="type") String type,
+			@WebParam(name="conditions") Condition... conditions);
+	
+	List<CIObject> getToObjectsByConditionsNS(
+			@WebParam(name="objectName") String objectName, 
+			@WebParam(name="namespace") String namespace, 
+			@WebParam(name="relationType") String relationType, 
+			@WebParam(name="type") String type,
+			@WebParam(name="conditions") Condition... conditions);
+	
 }

@@ -56,4 +56,18 @@ public interface IObjectDAO extends IGenericDAO<ObjectDO, Integer> {
 			String className, int offset, int maxResults,
 			Condition... conditions);	
 
+	List<ObjectDO> findFromObjectsByConditionsAndNamespace(String name,
+			String namespace, String relationClass, String className, 
+			Condition... conditions);
+
+	List<ObjectDO> findFromObjectsByConditions(String name,
+			String relationClass, String className,	Condition... conditions);
+
+	List<ObjectDO> findToObjectsByConditionsAndNamespace(String name,
+			String namespace, String relationClass, String className, 
+			Condition... conditions);
+
+	List<ObjectDO> findToObjectsByConditions(String name,
+			String relationClass, String className,	Condition... conditions);
+
 }

@@ -12,6 +12,7 @@
 	</edge>
 	<edge type="MemberOf" direction="forward">
 		<vertex type="Function">
+			<conditional name="label" oper="equal" value="pws"/>
 			<edge type="MemberOf" direction="reverse">
 				<vertex type="Server"/>
 			</edge>
