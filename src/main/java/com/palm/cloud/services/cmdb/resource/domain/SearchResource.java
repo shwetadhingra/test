@@ -63,7 +63,6 @@ public class SearchResource extends AbstractBaseResource {
 					conditions);
 			objects = cmdbDataService.getObjectsByConditions(
 					type, offset, maxResults, condition);
-			
 		} catch (Exception e) {
 			log.error("Exception while parsing conditions", e);
 		}

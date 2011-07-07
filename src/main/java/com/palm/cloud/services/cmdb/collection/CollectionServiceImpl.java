@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.jws.WebService;
-import javax.xml.bind.JAXBException;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,7 +66,7 @@ public class CollectionServiceImpl implements ICollectionService {
 		Vertex vertex = null;
 		try {
 			vertex = XMLParser.unmarshall(Vertex.class, definitionXML);
-		} catch (JAXBException e) {
+		} catch (Exception e) {
 			log.error("Error parsing collection definition xml", e);
 		}
 		return vertex;
@@ -80,7 +79,7 @@ public class CollectionServiceImpl implements ICollectionService {
 					DEFINITION_ATTRIBUTE);
 			String definitionXML = attribute.getValue();
 			vertex = XMLParser.unmarshall(Vertex.class, definitionXML);
-		} catch (JAXBException e) {
+		} catch (Exception e) {
 			log.error("Error parsing collection definition xml", e);
 		}
 		return vertex;
