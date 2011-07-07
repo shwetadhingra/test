@@ -40,9 +40,9 @@
 				<rich:column>
 					<f:facet name="header">Attribute Value</f:facet>
 					<h:outputText value="#{oa.value}" 
-						rendered="#{fn:length(oa.value) lt 20}"/>
+						rendered="#{fn:length(oa.value) lt 80}"/>
 					<h:inputTextarea value="#{oa.value}" cols="80" rows="20" 
-						rendered="#{fn:length(oa.value) ge 20}" readonly="true"/>
+						rendered="#{fn:length(oa.value) ge 80}" readonly="true"/>
 				</rich:column>
 			</rich:dataTable>
 		</rich:panel>
