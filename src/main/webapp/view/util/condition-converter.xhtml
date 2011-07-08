@@ -8,12 +8,6 @@
 	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
 	template="/view/template/main.xhtml">
 	<ui:define name="body">
-	<script type="text/javascript">
-		function clearForm() {
-			document.conditionConverterForm.xml.value = "";
-			document.conditionConverterForm.json.value = "";
-		}
-	</script>
 	<h:form id="conditionConverterForm">
 		<rich:panel>
 			<f:facet name="header">
@@ -21,23 +15,25 @@
 				</h:outputText>
 			</f:facet>
 			<h:panelGrid columns="2">
-                <h:outputText value="XML" />
+	            <h:outputText value="XML" />
 				<h:inputTextarea id="xml" cols="120" rows="20" 
 					value="#{conditionConverterBean.xml}"/>
-                <h:outputText value="JSON" />
+	            <h:outputText value="JSON" />
 				<h:inputTextarea id="json" cols="120" rows="10" 
 					value="#{conditionConverterBean.json}"/>
 			</h:panelGrid>
 			<h:panelGrid columns="3">
-				<h:commandButton id="toJSON" value="To JSON" 
-					action="#{conditionConverterBean.toJSON}"/>
-				<h:commandButton id="toXML" value="To XML" 
-					action="#{conditionConverterBean.toXML}"/>
-				<h:commandButton id="clear" value="Clear" 
-					action="#{conditionConverterBean.clear}"
-					onclick="clearForm();"/>
+				<a4j:commandButton value="To JSON" render="json"
+					action="#{conditionConverterBean.toJSON}" execute="@form">
+				</a4j:commandButton>
+				<a4j:commandButton value="To XML" render="xml"
+					action="#{conditionConverterBean.toXML}" execute="@form">
+				</a4j:commandButton>
+				<a4j:commandButton value="Clear" render="xml,json"
+					action="#{conditionConverterBean.clear}" execute="@form">
+				</a4j:commandButton>
 			</h:panelGrid>
 		</rich:panel>
-	</h:form>
+    </h:form>
 	</ui:define>
 </ui:composition>
