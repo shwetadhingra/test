@@ -332,11 +332,13 @@ public class ObjectDAOImpl extends GenericDAOImpl<ObjectDO, Integer>
 		if (conditions != null) {
 			for (Condition condition : conditions) {
 				if (condition instanceof ValueCondition 
+						&& condition.getOper() != null
 						&& condition.getOper().isConditional()) {
 					
 					predicates.add(generateValueConditionPredicate(
 							cb, o, (ValueCondition) condition));
 				} else if (condition instanceof LogicalCondition 
+						&& condition.getOper() != null
 						&& condition.getOper().isLogical()) {
 					
 					predicates.add(generateLogicalConditionPredicate(
@@ -376,7 +378,7 @@ public class ObjectDAOImpl extends GenericDAOImpl<ObjectDO, Integer>
 		
 		Predicate predicate = null;
 		try {
-			if (logical.getConditions() != null) {
+			if (logical.getConditions() != null && logical.getOper() != null) {
 				List<Predicate> predicates = generatePredicates(cb, o, 
 						logical.getConditions().toArray(new Condition[0]));
 				Method method = CriteriaBuilder.class.getMethod(
