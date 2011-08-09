@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 import com.palm.cloud.services.cmdb.domain.CIObject;
 
 public class Node implements Serializable {
@@ -37,7 +39,8 @@ public class Node implements Serializable {
 		this.links.add(link);
 	}
 
-	public List<Node> childNodes() {
+	@JsonIgnore
+	public List<Node> getNodes() {
 		List<Node> nodes = null;
 		if (this.links != null) {
 			nodes = new ArrayList<Node>();
