@@ -50,7 +50,10 @@ curl --user cmdb:microlab -X POST -H "Content-Type: application/json" -d "{\"nam
 curl --user cmdb:microlab -X POST -H "Content-Type: application/json" -d "{\"name\":\"Monitor\",\"attributes\":[{\"name\":\"version-url\"},{\"name\":\"health-check-url\"},{\"name\":\"min-percentage-up\"}]}" "http://10.125.0.216:8080/oocmdb/rs/meta/types"
 curl --user cmdb:microlab -X POST -H "Content-Type: application/json" -d "{\"name\":\"Service\",\"attributes\":[{\"name\":\"name\"},{\"name\":\"shortname\"},{\"name\":\"description\"}]}" "http://10.125.0.216:8080/oocmdb/rs/meta/types"
 curl --user cmdb:microlab -X POST -H "Content-Type: application/json" -d "{\"name\":\"PackageVersion\",\"attributes\":[{\"name\":\"name\"},{\"name\":\"version\"},{\"name\":\"revision\"}]}" "http://10.125.0.216:8080/oocmdb/rs/meta/types"
+curl --user cmdb:microlab -X POST -H "Content-Type: application/json" -d "{\"name\":\"DeployedTo\",\"relationshipType\":\"true\",\"attributes\":[{\"name\":\"label\"}]}" "http://10.125.0.216:8080/oocmdb/rs/meta/types"
+curl --user cmdb:microlab -X POST -H "Content-Type: application/json" -d "{\"name\":\"MemberOf\",\"relationshipType\":\"true\",\"attributes\":[{\"name\":\"label\"}]}" "http://10.125.0.216:8080/oocmdb/rs/meta/types"
 curl --user cmdb:microlab -X POST "http://10.125.0.216:8080/oocmdb/rs/meta/relationships/Monitor/ApplicableTo/TopPackage"
 curl --user cmdb:microlab -X POST "http://10.125.0.216:8080/oocmdb/rs/meta/relationships/PackageVersion/BelongsTo/TopPackage"
 curl --user cmdb:microlab -X POST "http://10.125.0.216:8080/oocmdb/rs/meta/relationships/TopPackage/PartOf/Service"
-
+curl --user cmdb:microlab -X POST "http://10.125.0.216:8080/oocmdb/rs/meta/relationships/PackageVersion/DeployedTo/Host"
+curl --user cmdb:microlab -X POST "http://10.125.0.216:8080/oocmdb/rs/meta/relationships/Host/MemberOf/Service"

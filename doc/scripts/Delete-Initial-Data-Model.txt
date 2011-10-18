@@ -46,6 +46,8 @@ curl --user cmdb:microlab -X DELETE "http://10.125.0.216:8080/oocmdb/rs/meta/typ
 curl --user cmdb:microlab -X DELETE "http://10.125.0.216:8080/oocmdb/rs/meta/types/ManagedVia"
 curl --user cmdb:microlab -X DELETE "http://10.125.0.216:8080/oocmdb/rs/meta/types/ApplicableTo"
 curl --user cmdb:microlab -X DELETE "http://10.125.0.216:8080/oocmdb/rs/meta/types/PartOf"
+curl --user cmdb:microlab -X DELETE "http://10.125.0.216:8080/oocmdb/rs/meta/types/DeployedTo"
+curl --user cmdb:microlab -X DELETE "http://10.125.0.216:8080/oocmdb/rs/meta/types/MemberOf"
 
 rem -- Removing Attributes --
 curl --user cmdb:microlab -X DELETE "http://10.125.0.216:8080/oocmdb/rs/meta/attributes/label"
