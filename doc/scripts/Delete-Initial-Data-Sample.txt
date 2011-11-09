@@ -123,9 +123,10 @@ curl --user cmdb:microlab -X DELETE "http://10.125.0.216:8080/oocmdb/rs/data/obj
 curl --user cmdb:microlab -X DELETE "http://10.125.0.216:8080/oocmdb/rs/data/object/location-host-template"
 curl --user cmdb:microlab -X DELETE "http://10.125.0.216:8080/oocmdb/rs/data/object/environment-host-template"
 curl --user cmdb:microlab -X DELETE "http://10.125.0.216:8080/oocmdb/rs/data/object/host-puppet-package-template"
+curl --user cmdb:microlab -X DELETE "http://10.125.0.216:8080/oocmdb/rs/data/object/extended-host-template"
+curl --user cmdb:microlab -X DELETE "http://10.125.0.216:8080/oocmdb/rs/data/object/vm-host-template"
 
 rem -- Deleting sbdev Provisioning objects --
-curl --user cmdb:microlab -X DELETE "http://10.125.0.216:8080/oocmdb/rs/data/object/PhysicalServer-MXQ0290901"
 curl --user cmdb:microlab -X DELETE "http://10.125.0.216:8080/oocmdb/rs/data/object/PhysicalServer-0123456789"
 curl --user cmdb:microlab -X DELETE "http://10.125.0.216:8080/oocmdb/rs/data/object/00-30-48-D5-A0-E4"
 curl --user cmdb:microlab -X DELETE "http://10.125.0.216:8080/oocmdb/rs/data/object/psd11xenhost"
@@ -155,3 +156,8 @@ curl --user cmdb:microlab -X DELETE "http://10.125.0.216:8080/oocmdb/rs/data/obj
 curl --user cmdb:microlab -X DELETE "http://10.125.0.216:8080/oocmdb/rs/data/object/psd11rdx004"
 curl --user cmdb:microlab -X DELETE "http://10.125.0.216:8080/oocmdb/rs/data/object/PackageMonitor-PWS_RDServerWebApp_Main"
 curl --user cmdb:microlab -X DELETE "http://10.125.0.216:8080/oocmdb/rs/data/object/PWS_RDServerWebApp_Main-1.4.66.0-123"
+
+curl --user cmdb:microlab -X DELETE "http://10.125.0.216:8080/oocmdb/rs/data/object/PhysicalServer-MXQ11000MQ"
+curl --user cmdb:microlab -X DELETE "http://10.125.0.216:8080/oocmdb/rs/data/object/98-4B-E1-67-18-74"
+curl --user cmdb:microlab -X DELETE "http://10.125.0.216:8080/oocmdb/rs/data/object/cqlab-test001"
+curl --user cmdb:microlab -X DELETE "http://10.125.0.216:8080/oocmdb/rs/data/object/cqlab-vm001"

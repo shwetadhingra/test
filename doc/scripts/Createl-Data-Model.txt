@@ -8,7 +8,7 @@ curl --user cmdb:microlab -X POST -H "Content-Type: application/json" -d "{\"nam
 curl --user cmdb:microlab -X POST -H "Content-Type: application/json" -d "{\"name\":\"Rack\",\"attributes\":[{\"name\":\"name\"},{\"name\":\"capacity_u\"},{\"name\":\"power_amps\"}]}" "http://10.125.0.216:8080/oocmdb/rs/meta/types"
 curl --user cmdb:microlab -X POST -H "Content-Type: application/json" -d "{\"name\":\"PhysicalServer\",\"attributes\":[{\"name\":\"name\"},{\"name\":\"cpucount\"},{\"name\":\"corecount\"},{\"name\":\"cpuspeed\"},{\"name\":\"memory\"},{\"name\":\"aggnwcap\"},{\"name\":\"size_u\"},{\"name\":\"bottom_u\"},{\"name\":\"peakamps\"},{\"name\":\"runamps\"},{\"name\":\"serialnumber\"},{\"name\":\"assettag\"},{\"name\":\"diskspace\"},{\"name\":\"kickstarttype\"},{\"name\":\"servertype\"}]}" "http://10.125.0.216:8080/oocmdb/rs/meta/types"
 curl --user cmdb:microlab -X POST -H "Content-Type: application/json" -d "{\"name\":\"Environment\",\"attributes\":[{\"name\":\"name\"},{\"name\":\"shortname\"},{\"name\":\"description\"},{\"name\":\"tag\"},{\"name\":\"dnstag\"},{\"name\":\"rootpw\"}]}" "http://10.125.0.216:8080/oocmdb/rs/meta/types"
-curl --user cmdb:microlab -X POST -H "Content-Type: application/json" -d "{\"name\":\"Host\",\"attributes\":[{\"name\":\"name\"},{\"name\":\"shortname\"},{\"name\":\"memory\"},{\"name\":\"cpucount\"},{\"name\":\"primaryip\"},{\"name\":\"fqdn\"},{\"name\":\"hostgroup\"},{\"name\":\"targetos\"}]}" "http://10.125.0.216:8080/oocmdb/rs/meta/types"
+curl --user cmdb:microlab -X POST -H "Content-Type: application/json" -d "{\"name\":\"Host\",\"attributes\":[{\"name\":\"name\"},{\"name\":\"shortname\"},{\"name\":\"memory\"},{\"name\":\"cpucount\"},{\"name\":\"primaryip\"},{\"name\":\"netmask\"},{\"name\":\"gateway\"},{\"name\":\"domain\"},{\"name\":\"fqdn\"},{\"name\":\"hostgroup\"},{\"name\":\"targetos\"},{\"name\":\"type\"}]}" "http://10.125.0.216:8080/oocmdb/rs/meta/types"
 curl --user cmdb:microlab -X POST -H "Content-Type: application/json" -d "{\"name\":\"Profile\",\"attributes\":[{\"name\":\"name\"},{\"name\":\"shortname\"},{\"name\":\"tag\"},{\"name\":\"type\"}]}" "http://10.125.0.216:8080/oocmdb/rs/meta/types"
 curl --user cmdb:microlab -X POST -H "Content-Type: application/json" -d "{\"name\":\"Package\",\"attributes\":[{\"name\":\"name\"},{\"name\":\"shortname\"},{\"name\":\"type\"}]}" "http://10.125.0.216:8080/oocmdb/rs/meta/types"
 curl --user cmdb:microlab -X POST -H "Content-Type: application/json" -d "{\"name\":\"Interface\",\"attributes\":[{\"name\":\"name\"},{\"name\":\"macaddress\"}]}" "http://10.125.0.216:8080/oocmdb/rs/meta/types"
@@ -27,6 +27,7 @@ curl --user cmdb:microlab -X POST -H "Content-Type: application/json" -d "{\"nam
 curl --user cmdb:microlab -X POST -H "Content-Type: application/json" -d "{\"name\":\"IsOf\",\"relationshipType\":\"true\",\"attributes\":[{\"name\":\"label\"}]}" "http://10.125.0.216:8080/oocmdb/rs/meta/types"
 curl --user cmdb:microlab -X POST -H "Content-Type: application/json" -d "{\"name\":\"ManagedVia\",\"relationshipType\":\"true\",\"attributes\":[{\"name\":\"label\"}]}" "http://10.125.0.216:8080/oocmdb/rs/meta/types"
 curl --user cmdb:microlab -X POST -H "Content-Type: application/json" -d "{\"name\":\"ApplicableTo\",\"relationshipType\":\"true\",\"attributes\":[{\"name\":\"label\"}]}" "http://10.125.0.216:8080/oocmdb/rs/meta/types"
+curl --user cmdb:microlab -X POST -H "Content-Type: application/json" -d "{\"name\":\"ResidesOn\",\"relationshipType\":\"true\",\"attributes\":[{\"name\":\"label\"}]}" "http://10.125.0.216:8080/oocmdb/rs/meta/types"
 
 rem -- Adding Class Relationships --
 curl --user cmdb:microlab -X POST "http://10.125.0.216:8080/oocmdb/rs/meta/relationships/Datacenter/LocatedIn/Location"
@@ -43,6 +44,7 @@ curl --user cmdb:microlab -X POST "http://10.125.0.216:8080/oocmdb/rs/meta/relat
 curl --user cmdb:microlab -X POST "http://10.125.0.216:8080/oocmdb/rs/meta/relationships/PhysicalServer/ManagedVia/LOM"
 curl --user cmdb:microlab -X POST "http://10.125.0.216:8080/oocmdb/rs/meta/relationships/PhysicalServer/IsOf/Model"
 curl --user cmdb:microlab -X POST "http://10.125.0.216:8080/oocmdb/rs/meta/relationships/Model/BelongsTo/Vendor"
+curl --user cmdb:microlab -X POST "http://10.125.0.216:8080/oocmdb/rs/meta/relationships/Host/ResidesOn/Host"
 
 rem -- SAFE --
 curl --user cmdb:microlab -X POST -H "Content-Type: application/json" -d "{\"name\":\"PartOf\",\"relationshipType\":\"true\",\"attributes\":[{\"name\":\"label\"}]}" "http://10.125.0.216:8080/oocmdb/rs/meta/types"

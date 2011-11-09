@@ -16,6 +16,9 @@ curl --user cmdb:microlab -X DELETE "http://10.125.0.216:8080/oocmdb/rs/meta/rel
 curl --user cmdb:microlab -X DELETE "http://10.125.0.216:8080/oocmdb/rs/meta/relationships/Monitor/ApplicableTo/TopPackage"
 curl --user cmdb:microlab -X DELETE "http://10.125.0.216:8080/oocmdb/rs/meta/relationships/PackageVersion/BelongsTo/TopPackage"
 curl --user cmdb:microlab -X DELETE "http://10.125.0.216:8080/oocmdb/rs/meta/relationships/TopPackage/PartOf/Service"
+curl --user cmdb:microlab -X DELETE "http://10.125.0.216:8080/oocmdb/rs/meta/relationships/PackageVersion/DeployedTo/Host"
+curl --user cmdb:microlab -X DELETE "http://10.125.0.216:8080/oocmdb/rs/meta/relationships/Host/MemberOf/Service"
+curl --user cmdb:microlab -X DELETE "http://10.125.0.216:8080/oocmdb/rs/meta/relationships/Host/ResidesOn/Host"
 
 rem -- Removing Classes --
 curl --user cmdb:microlab -X DELETE "http://10.125.0.216:8080/oocmdb/rs/meta/types/Location"
@@ -48,6 +51,7 @@ curl --user cmdb:microlab -X DELETE "http://10.125.0.216:8080/oocmdb/rs/meta/typ
 curl --user cmdb:microlab -X DELETE "http://10.125.0.216:8080/oocmdb/rs/meta/types/PartOf"
 curl --user cmdb:microlab -X DELETE "http://10.125.0.216:8080/oocmdb/rs/meta/types/DeployedTo"
 curl --user cmdb:microlab -X DELETE "http://10.125.0.216:8080/oocmdb/rs/meta/types/MemberOf"
+curl --user cmdb:microlab -X DELETE "http://10.125.0.216:8080/oocmdb/rs/meta/types/ResidesOn"
 
 rem -- Removing Attributes --
 curl --user cmdb:microlab -X DELETE "http://10.125.0.216:8080/oocmdb/rs/meta/attributes/label"
@@ -95,6 +99,9 @@ curl --user cmdb:microlab -X DELETE "http://10.125.0.216:8080/oocmdb/rs/meta/att
 curl --user cmdb:microlab -X DELETE "http://10.125.0.216:8080/oocmdb/rs/meta/attributes/min-percentage-up"
 curl --user cmdb:microlab -X DELETE "http://10.125.0.216:8080/oocmdb/rs/meta/attributes/version"
 curl --user cmdb:microlab -X DELETE "http://10.125.0.216:8080/oocmdb/rs/meta/attributes/revision"
+curl --user cmdb:microlab -X DELETE "http://10.125.0.216:8080/oocmdb/rs/meta/attributes/netmask"
+curl --user cmdb:microlab -X DELETE "http://10.125.0.216:8080/oocmdb/rs/meta/attributes/gateway"
+curl --user cmdb:microlab -X DELETE "http://10.125.0.216:8080/oocmdb/rs/meta/attributes/domain"
 
 rem -- Removing Statuses --
 curl --user cmdb:microlab -X DELETE "http://10.125.0.216:8080/oocmdb/rs/meta/statuses/live"
