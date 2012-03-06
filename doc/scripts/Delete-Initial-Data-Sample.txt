@@ -161,3 +161,14 @@ curl --user cmdb:microlab -X DELETE "http://10.125.0.216:8080/oocmdb/rs/data/obj
 curl --user cmdb:microlab -X DELETE "http://10.125.0.216:8080/oocmdb/rs/data/object/98-4B-E1-67-18-74"
 curl --user cmdb:microlab -X DELETE "http://10.125.0.216:8080/oocmdb/rs/data/object/cqlab-test001"
 curl --user cmdb:microlab -X DELETE "http://10.125.0.216:8080/oocmdb/rs/data/object/cqlab-vm001"
+
+curl --user cmdb:microlab -X DELETE "http://10.125.0.216:8080/oocmdb/rs/data/object/PhysicalServer-MXQ11000KD"
+curl --user cmdb:microlab -X DELETE "http://10.125.0.216:8080/oocmdb/rs/data/object/PhysicalServer-MXQ1090JZC"
+curl --user cmdb:microlab -X DELETE "http://10.125.0.216:8080/oocmdb/rs/data/object/PhysicalServer-MXQ11000LZ"
+curl --user cmdb:microlab -X DELETE "http://10.125.0.216:8080/oocmdb/rs/data/object/98-4B-E1-67-C7-98"
+curl --user cmdb:microlab -X DELETE "http://10.125.0.216:8080/oocmdb/rs/data/object/98-4B-E1-67-36-84"
+curl --user cmdb:microlab -X DELETE "http://10.125.0.216:8080/oocmdb/rs/data/object/98-4B-E1-67-18-44"
+curl --user cmdb:microlab -X DELETE "http://10.125.0.216:8080/oocmdb/rs/data/object/cqlab-spare001"
+curl --user cmdb:microlab -X DELETE "http://10.125.0.216:8080/oocmdb/rs/data/object/cqlab-spare002"
+curl --user cmdb:microlab -X DELETE "http://10.125.0.216:8080/oocmdb/rs/data/object/cqlab-spare003"
+
