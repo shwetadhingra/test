@@ -184,3 +184,6 @@ curl --user cmdb:microlab -X DELETE "http://10.125.0.216:8080/oocmdb/rs/data/obj
 curl --user cmdb:microlab -X DELETE "http://10.125.0.216:8080/oocmdb/rs/data/object/1C-C1-DE-6F-99-B8"
 curl --user cmdb:microlab -X DELETE "http://10.125.0.216:8080/oocmdb/rs/data/object/1C-C1-DE-71-B7-E4"
 curl --user cmdb:microlab -X DELETE "http://10.125.0.216:8080/oocmdb/rs/data/object/neo-spare001"
+curl --user cmdb:microlab -X DELETE "http://10.125.0.216:8080/oocmdb/rs/data/object/ILOMXQ0260D8H"
+curl --user cmdb:microlab -X DELETE "http://10.125.0.216:8080/oocmdb/rs/data/object/ILOMXQ0260D6V"
+curl --user cmdb:microlab -X DELETE "http://10.125.0.216:8080/oocmdb/rs/data/object/ILOMXQ0260D6X"
