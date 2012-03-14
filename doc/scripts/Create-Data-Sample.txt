@@ -434,3 +434,6 @@ curl --user cmdb:microlab -X POST -H "Content-Type: application/json" -d "{\"typ
 curl --user cmdb:microlab -X POST -H "Content-Type: application/json" -d "{\"type\":\"HostedOn\",\"status\":\"live\",\"toObject\":\"1C-C1-DE-71-B7-E4\",\"fromObject\":\"ILOMXQ0260D6X\"}" "http://10.125.0.216:8080/oocmdb/rs/data/relations"
 
 curl --user cmdb:microlab -X PUT http://10.125.0.216:8080/oocmdb/rs/data/object/neo-disc001/attributes/targetos?attributeValue=rhel5.4-linux
+
+curl --user cmdb:microlab -X PUT http://10.125.0.216:8080/oocmdb/rs/data/object/neo-disc001/attributes/fqdn?attributeValue=neo-disc001.neo.palmws.com
+curl --user cmdb:microlab -X PUT http://10.125.0.216:8080/oocmdb/rs/data/object/neo-spare001/attributes/fqdn?attributeValue=neo-spare001.neo.palmws.com
