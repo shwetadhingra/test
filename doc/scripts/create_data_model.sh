@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # -- Adding Statuses --
-#curl --user cmdb:microlab -X POST "http://localhost:8080/oocmdb/rs/meta/statuses/live"
+curl --user cmdb:microlab -X POST "http://localhost:8080/oocmdb/rs/meta/statuses/live"
 
 # -- Adding Classes --
 curl --user cmdb:microlab -X POST -H "Content-Type: application/json" -d "{\"name\":\"Location\",\"attributes\":[{\"name\":\"name\"},{\"name\":\"shortname\"},{\"name\":\"state\"},{\"name\":\"country\"},{\"name\":\"zip\"}]}" "http://localhost:8080/oocmdb/rs/meta/types"
@@ -61,3 +61,6 @@ curl --user cmdb:microlab -X POST "http://localhost:8080/oocmdb/rs/meta/relation
 curl --user cmdb:microlab -X POST "http://localhost:8080/oocmdb/rs/meta/relationships/TopPackage/PartOf/Service"
 curl --user cmdb:microlab -X POST "http://localhost:8080/oocmdb/rs/meta/relationships/PackageVersion/DeployedTo/Host"
 curl --user cmdb:microlab -X POST "http://localhost:8080/oocmdb/rs/meta/relationships/Host/MemberOf/Service"
+
+
+
