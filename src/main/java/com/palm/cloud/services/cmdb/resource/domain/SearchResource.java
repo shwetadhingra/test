@@ -52,7 +52,7 @@ public class SearchResource extends AbstractBaseResource {
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.TEXT_HTML)
 	public Viewable getObjectsByConditionsAsHtml(
-			@FormParam("type") String type,
+			@PathParam("type") String type,
 			@FormParam("offset") @DefaultValue("0") int offset,
 			@FormParam("maxResults") @DefaultValue("100") int maxResults,
 			@FormParam("conditions") String conditions) {
