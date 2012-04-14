@@ -14,7 +14,9 @@ import org.springframework.web.context.ContextLoaderListener;
 import com.palm.cloud.services.cmdb.condition.Condition;
 import com.palm.cloud.services.cmdb.condition.LogicalCondition;
 import com.palm.cloud.services.cmdb.condition.ValueCondition;
+import com.palm.cloud.services.cmdb.domain.CIAttribute;
 import com.palm.cloud.services.cmdb.domain.CIObject;
+import com.palm.cloud.services.cmdb.meta.MetaClass;
 import com.palm.cloud.services.cmdb.meta.MetaStatus;
 import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.client.WebResource;
@@ -103,4 +105,68 @@ public class ResourceTests extends JerseyTest {
     	Assert.assertNotNull(response);
     }
     
+    @Test
+    public void testObjectResource() {
+    	String statusesURI = "meta/statuses/";
+    	String typesURI = "meta/types/";
+    	String objectsURI = "data/objects";
+    	String objectURI = "data/object/";
+    	String name = "10.1.1.255";
+    	String namespace = "DEFAULT";
+    	String type = "server";
+    	String status = "live";
+    	
+    	//Add status
+    	r.path(statusesURI + status).post();
+    	
+    	//Add type
+    	MetaClass typeKlass = new MetaClass();
+    	typeKlass.setName(type);
+    	r.path(typesURI)
+			.accept(MediaType.APPLICATION_JSON)
+			.type(MediaType.APPLICATION_JSON)
+			.post(typeKlass);
+    	
+    	//Add object
+    	CIObject objectToAdd = new CIObject(name, namespace, type, status);
+    	
+    	//Post the object without expecting any response
+    	r.path(objectsURI)
+    		.accept(MediaType.APPLICATION_JSON)
+    		.type(MediaType.APPLICATION_JSON)
+    		.post(objectToAdd);
+    	
+    	//Retrieve the object
+    	CIObject objectAdded = r.path(objectURI + name)
+			.accept(MediaType.APPLICATION_JSON)
+			.type(MediaType.APPLICATION_JSON)
+			.get(CIObject.class);
+    	Assert.assertNotNull(objectAdded);
+    	print(objectAdded);
+    	
+    	//Delete the object
+    	r.path(objectURI + name).delete();
+    	
+    	//Delete the type
+    	r.path(typesURI + type).delete();
+    	
+    	//Delete the status
+    	r.path(statusesURI + status).delete();
+    }
+
+	private void print(CIObject object) {
+		System.out.printf("%s %s %s %s\n", object.getName(), 
+				object.getNamespace(), object.getStatus(), object.getType());
+		if (object.getAttributes() != null) {
+			for (CIAttribute attribute : object.getAttributes()) {
+				print(attribute);
+			}
+		}
+	}
+	
+	private void print(CIAttribute attribute) {
+		System.out.printf("\t%s:%s\n", attribute.getName(), 
+				attribute.getValue());
+	}
+	
 }
