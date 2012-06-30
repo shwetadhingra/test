@@ -6,7 +6,8 @@
  <context-param>
   <param-name>contextConfigLocation</param-name>
   <param-value>/WEB-INF/spring/applicationContext.xml
-			classpath:META-INF/cxf/cxf-webservices.xml</param-value>
+			classpath:META-INF/cxf/cxf-webservices.xml
+			classpath:net/bull/javamelody/monitoring-spring.xml</param-value>
  </context-param>
  <context-param>
   <param-name>javax.faces.FACELETS_VIEW_MAPPINGS</param-name>
@@ -119,9 +120,19 @@
 		<auth-method>BASIC</auth-method>
 		<realm-name>OOCMDB Realm</realm-name>
 	</login-config>
-	<!-- Security roles referenced by this web application -->
 	<security-role>
 		<role-name>application</role-name>
 	</security-role>
 -->
+	<filter>
+	        <filter-name>monitoring</filter-name>
+	        <filter-class>net.bull.javamelody.MonitoringFilter</filter-class>
+	</filter>
+	<filter-mapping>
+	        <filter-name>monitoring</filter-name>
+	        <url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<listener>
+	        <listener-class>net.bull.javamelody.SessionListener</listener-class>
+	</listener>
 </web-app>
