@@ -23,14 +23,14 @@ public class CMDBDataServiceImpl extends AbstractBaseServiceImpl
 		implements ICMDBDataService {
 
 	public void addObject(CIObject object) {
-		ObjectDO entity = toData(object);
+		ObjectDO entity = toData(object, false);
 		objectDAO.create(entity);
 	}
 
 	public void updateObject(CIObject object) {
 		ObjectDO entity = objectDAO.findByName(object.getName());
 		if (entity != null) {
-			entity = toData(object);
+			entity = toData(object, true);
 			entity = objectDAO.update(entity);
 		}
 	}

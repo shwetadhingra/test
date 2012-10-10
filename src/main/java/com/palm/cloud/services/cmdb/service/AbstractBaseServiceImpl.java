@@ -144,15 +144,15 @@ public abstract class AbstractBaseServiceImpl {
 		return (entity != null);
 	}
 	
-	protected ObjectDO toData(CIObject domain) {
+	protected ObjectDO toData(CIObject domain, boolean isUpdate) {
 		ObjectDO data = null;
 		if (domain.getNamespace() == null) {
 			domain.setNamespace(ObjectDAOImpl.DEFAULT_NAMESPACE);
 		}
-		try {
+		if (isUpdate) {
 			data = objectDAO.findByNameAndNamespace(domain.getName(), 
 					domain.getNamespace());
-		} catch (EmptyResultDataAccessException e) {
+		} else {
 			data = new ObjectDO();
 		}
 		data.setName(domain.getName());
@@ -164,14 +164,21 @@ public abstract class AbstractBaseServiceImpl {
 			for (CIAttribute attribute : domain.getAttributes()) {
 				if (klass.getAttribute(attribute.getName()) != null) {
 					ObjectAttributeDO oa = null;
-					try {
-						oa = objectAttributeDAO.findByName(domain.getName(), 
-								attribute.getName());
-						oa.setValue(attribute.getValue());
-					} catch (EmptyResultDataAccessException e) {
+					if (isUpdate) {
+						try {
+							oa = objectAttributeDAO.findByName(domain.getName(), 
+									attribute.getName());
+							oa.setValue(attribute.getValue());
+						} catch (EmptyResultDataAccessException e) {
+							oa = new ObjectAttributeDO();
+							oa.setAttribute(metaAttributeDAO.findByName(
+									attribute.getName()));
+							oa.setValue(attribute.getValue());
+						}
+					} else {
 						oa = new ObjectAttributeDO();
-						oa.setAttribute(metaAttributeDAO.findByName(attribute
-								.getName()));
+						oa.setAttribute(metaAttributeDAO.findByName(
+								attribute.getName()));
 						oa.setValue(attribute.getValue());
 					}
 					data.addAttribute(oa);
