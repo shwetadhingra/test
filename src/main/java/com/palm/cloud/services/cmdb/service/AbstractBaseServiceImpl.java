@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 
 import com.palm.cloud.services.cmdb.dao.IMetaAttributeDAO;
+import com.palm.cloud.services.cmdb.dao.IMetaClassAttributeDAO;
 import com.palm.cloud.services.cmdb.dao.IMetaClassDAO;
 import com.palm.cloud.services.cmdb.dao.IMetaClassRelationshipDAO;
 import com.palm.cloud.services.cmdb.dao.IMetaStatusDAO;
@@ -56,6 +57,9 @@ public abstract class AbstractBaseServiceImpl {
 	
 	@Autowired
 	protected IRelationshipAttributeDAO relationshipAttributeDAO;
+	
+	@Autowired
+	protected IMetaClassAttributeDAO metaClassAttributeDAO;
 	
 	protected MetaClassDO toData(MetaClass domain) {
 		MetaClassDO data = null;

@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.palm.cloud.services.cmdb.condition.LogicalCondition;
 import com.palm.cloud.services.cmdb.condition.ValueCondition;
 import com.palm.cloud.services.cmdb.entity.MetaAttributeDO;
+import com.palm.cloud.services.cmdb.entity.MetaClassAttributeDO;
 import com.palm.cloud.services.cmdb.entity.MetaClassDO;
 import com.palm.cloud.services.cmdb.entity.MetaClassRelationshipDO;
 import com.palm.cloud.services.cmdb.entity.MetaStatusDO;
@@ -52,6 +53,9 @@ public class DAOTests {
 	
 	@Autowired
 	IRelationshipAttributeDAO relationshipAttributeDAO;
+	
+	@Autowired
+	IMetaClassAttributeDAO metaClassAttributeDAO;
 	
 	@Test
 	public void testMetaAttributeDAO() throws Exception {
@@ -108,6 +112,39 @@ public class DAOTests {
 		this.metaClassDAO.delete(selected);
 		Assert.assertNull(this.metaClassDAO.findById(entity.getId()));
 		metaAttributeDAO.delete(attribute);
+	}
+	
+	@Test
+	public void testMetaClassAttributeDAO() throws Exception {
+		MetaAttributeDO attribute1 = new MetaAttributeDO();
+		attribute1.setName("label");
+		attribute1 = metaAttributeDAO.create(attribute1);
+		print(attribute1);
+		
+		MetaClassDO entity = new MetaClassDO();
+		entity.setName("function");
+		entity.setParent(null);;
+		entity.setRelationship(false);
+		entity.addAttribute(attribute1);
+		entity = this.metaClassDAO.create(entity);
+		print(entity);
+		MetaClassDO selected = this.metaClassDAO.findById(entity.getId());
+		print(selected);
+		Assert.assertEquals(entity.getId(), selected.getId());
+		MetaAttributeDO attribute2 = new MetaAttributeDO("level");
+		MetaClassAttributeDO metaClassAttribute = new MetaClassAttributeDO();
+		metaClassAttribute.setAttribute(attribute2);
+		metaClassAttribute.setType(selected);
+		this.metaClassAttributeDAO.create(metaClassAttribute);
+		selected = this.metaClassDAO.findById(entity.getId());
+		print(selected);
+		this.metaClassDAO.delete(selected);
+		Assert.assertNull(this.metaClassDAO.findById(entity.getId()));
+		metaAttributeDAO.delete(attribute1);
+		MetaAttributeDO selectedAttribute2 = metaAttributeDAO
+				.findByName("level");
+		print(selectedAttribute2);
+		metaAttributeDAO.delete(selectedAttribute2);
 	}
 
 	@Test

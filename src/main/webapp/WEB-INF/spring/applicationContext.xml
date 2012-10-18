@@ -99,6 +99,7 @@
 	<bean id="metaAttributeDAO" class="com.palm.cloud.services.cmdb.dao.MetaAttributeDAOImpl"/>
 	<bean id="metaClassRelationshipDAO" class="com.palm.cloud.services.cmdb.dao.MetaClassRelationshipDAOImpl"/>
 	<bean id="metaStatusDAO" class="com.palm.cloud.services.cmdb.dao.MetaStatusDAOImpl"/>
+	<bean id="metaClassAttributeDAO" class="com.palm.cloud.services.cmdb.dao.MetaClassAttributeDAOImpl"/>
 
 	<!-- Service -->
 	<bean id="cmdbMetaService" class="com.palm.cloud.services.cmdb.service.CMDBMetaServiceImpl"/>

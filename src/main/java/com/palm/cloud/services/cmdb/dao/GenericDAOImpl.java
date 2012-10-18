@@ -64,8 +64,8 @@ public class GenericDAOImpl<T, ID extends Serializable>
 
 	public void delete(T entity) {
 		this.getEntityManager().merge(entity);
-		this.getEntityManager().remove(entity);
 		this.getEntityManager().flush();
+		this.getEntityManager().remove(entity);
 	}
 
 	public void delete(ID id) {

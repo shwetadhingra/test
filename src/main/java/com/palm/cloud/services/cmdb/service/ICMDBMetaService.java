@@ -57,5 +57,11 @@ public interface ICMDBMetaService {
 			@WebParam(name="relationType") String relationType);
 
 	List<MetaClassRelationship> getAllTypeRelationships();
+	
+	void addTypeAttribute(@WebParam(name="type") String type, 
+			@WebParam(name="attribute") String attribute);
+
+	void deleteTypeAttribute(@WebParam(name="type") String type, 
+			@WebParam(name="attribute") String attribute);
 
 }

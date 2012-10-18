@@ -5,9 +5,11 @@ import java.util.List;
 
 import javax.jws.WebService;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.palm.cloud.services.cmdb.entity.MetaAttributeDO;
+import com.palm.cloud.services.cmdb.entity.MetaClassAttributeDO;
 import com.palm.cloud.services.cmdb.entity.MetaClassDO;
 import com.palm.cloud.services.cmdb.entity.MetaClassRelationshipDO;
 import com.palm.cloud.services.cmdb.entity.MetaStatusDO;
@@ -150,6 +152,28 @@ public class CMDBMetaServiceImpl extends AbstractBaseServiceImpl
 		List<MetaClassRelationshipDO> entities = metaClassRelationshipDAO
 			.findAll();
 		return toDomain(entities);
+	}
+
+	public void addTypeAttribute(String type, String attribute) {
+		
+		MetaClassDO typeDO = metaClassDAO.findByName(type);
+		MetaAttributeDO attributeDO = null;
+		try {
+			attributeDO = metaAttributeDAO.findByName(attribute);
+		} catch (EmptyResultDataAccessException e) {
+			attributeDO = new MetaAttributeDO(attribute);
+		}
+		MetaClassAttributeDO entity = new MetaClassAttributeDO();
+		entity.setType(typeDO);
+		entity.setAttribute(attributeDO);
+		metaClassAttributeDAO.create(entity);
+	}
+
+	public void deleteTypeAttribute(String type, String attribute) {
+
+		MetaClassAttributeDO entity = metaClassAttributeDAO
+				.findByTypeNameAndAttributeName(type, attribute);
+		metaClassAttributeDAO.delete(entity);
 	}
 
 }
