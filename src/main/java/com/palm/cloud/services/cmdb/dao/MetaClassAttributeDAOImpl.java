@@ -22,7 +22,13 @@ public class MetaClassAttributeDAOImpl
 		super(em);
 	}
 
+	public MetaClassAttributeDO create(MetaClassAttributeDO entity) {
+		entity.getType().getClassAttributes().add(entity);
+		return super.create(entity);
+	}
+	
 	public void delete(MetaClassAttributeDO entity) {
+		entity.getType().getClassAttributes().remove(entity);
 		super.delete(entity);
 	}
 

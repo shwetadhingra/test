@@ -12,14 +12,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OrderBy;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 
 @Entity
 @Table(name = "ci_meta_classes")
@@ -52,16 +49,9 @@ public class MetaClassDO extends BaseDO implements Serializable {
 	@Column(name = "is_relationship", nullable = false)
 	private boolean isRelationship;
 	
-	@ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, 
-			CascadeType.MERGE})
-	@JoinTable(name = "ci_meta_class_attributes", 
-			joinColumns = {@JoinColumn(name = "class_id")}, 
-			inverseJoinColumns = {@JoinColumn(name = "attribute_id", 
-					unique = false)},
-			uniqueConstraints = @UniqueConstraint(columnNames = {"class_id", 
-					"attribute_id"}))
-	@OrderBy(value = "name")
-	private List<MetaAttributeDO> attributes;
+    @OneToMany(mappedBy = "type", cascade = CascadeType.ALL, 
+    		fetch = FetchType.EAGER)
+	private List<MetaClassAttributeDO> classAttributes;
 	
 	public Integer getId() {
 		return id;
@@ -96,18 +86,28 @@ public class MetaClassDO extends BaseDO implements Serializable {
 	}
 
 	public List<MetaAttributeDO> getAttributes() {
+		List<MetaAttributeDO> attributes = null;
+		if (classAttributes != null) {
+			if (attributes == null) {
+				attributes = new ArrayList<MetaAttributeDO>();
+			}
+			for (MetaClassAttributeDO classAttribute : classAttributes) {
+				attributes.add(classAttribute.getAttribute());
+			}
+		}
 		return attributes;
 	}
 
 	public void setAttributes(List<MetaAttributeDO> attributes) {
-		this.attributes = attributes;
+		if (attributes != null) {
+			for (MetaAttributeDO attribute : attributes) {
+				addAttribute(attribute);
+			}
+		}
 	}
 
 	public void addAttribute(MetaAttributeDO attribute) {
-		if (attributes == null) {
-			attributes = new ArrayList<MetaAttributeDO>();
-		}
-		attributes.add(attribute);
+		addClassAttribute(new MetaClassAttributeDO(this, attribute));
 	}
 
 	public MetaAttributeDO getAttribute(String name) {
@@ -123,4 +123,19 @@ public class MetaClassDO extends BaseDO implements Serializable {
 		return attribute;
 	}
 	
+	public List<MetaClassAttributeDO> getClassAttributes() {
+		return classAttributes;
+	}
+
+	public void setClassAttributes(List<MetaClassAttributeDO> classAttributes) {
+		this.classAttributes = classAttributes;
+	}
+
+	public void addClassAttribute(MetaClassAttributeDO classAttribute) {
+		if (classAttributes == null) {
+			classAttributes = new ArrayList<MetaClassAttributeDO>();
+		}
+		classAttributes.add(classAttribute);
+	}
+
 }

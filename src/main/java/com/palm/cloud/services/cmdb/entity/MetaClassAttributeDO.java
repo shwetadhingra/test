@@ -21,12 +21,17 @@ import javax.persistence.UniqueConstraint;
 @NamedQueries({
 	@NamedQuery(name = "MetaClassAttributeDO.findByClassNameAndAttributeName", query = "SELECT mca from MetaClassAttributeDO mca where mca.type.name = :typeName and mca.attribute.name = :attributeName")
 })			
-public class MetaClassAttributeDO implements Serializable {
+public class MetaClassAttributeDO extends BaseDO implements Serializable {
 
 	private static final long serialVersionUID = 2601883591558614209L;
 
 	public MetaClassAttributeDO() {
 		
+	}
+	
+	public MetaClassAttributeDO(MetaClassDO type, MetaAttributeDO attribute) {
+		this.type = type;
+		this.attribute = attribute;
 	}
 	
 	@Id
@@ -35,7 +40,7 @@ public class MetaClassAttributeDO implements Serializable {
 	private Integer id;
 	
 	@ManyToOne(optional = false,
-			cascade = {CascadeType.REFRESH})
+			cascade = {CascadeType.MERGE, CascadeType.REFRESH})
 	@JoinColumn(name = "class_id", referencedColumnName = "class_id", 
 			nullable = false)
 	private MetaClassDO type;
