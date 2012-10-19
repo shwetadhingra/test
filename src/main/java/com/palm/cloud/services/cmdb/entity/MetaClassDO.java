@@ -88,9 +88,7 @@ public class MetaClassDO extends BaseDO implements Serializable {
 	public List<MetaAttributeDO> getAttributes() {
 		List<MetaAttributeDO> attributes = null;
 		if (classAttributes != null) {
-			if (attributes == null) {
-				attributes = new ArrayList<MetaAttributeDO>();
-			}
+			attributes = new ArrayList<MetaAttributeDO>();
 			for (MetaClassAttributeDO classAttribute : classAttributes) {
 				attributes.add(classAttribute.getAttribute());
 			}
