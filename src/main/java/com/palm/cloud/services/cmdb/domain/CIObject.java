@@ -76,4 +76,19 @@ public class CIObject implements Serializable {
 		this.attributes.add(attribute);
 	}
 	
+	public CIAttribute getAttribute(String attributeName) {
+		CIAttribute attribute = null;
+		if (this.attributes != null) {
+			for (CIAttribute cia : this.attributes) {
+				if (cia.getName() != null 
+						&& cia.getName().equals(attributeName)) {
+					
+					attribute = cia;
+					break;
+				}
+			}
+		}
+		return attribute;
+	}
+
 }

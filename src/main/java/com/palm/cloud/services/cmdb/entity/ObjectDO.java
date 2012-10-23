@@ -64,7 +64,7 @@ public class ObjectDO extends BaseDO implements Serializable {
 	private MetaStatusDO status;
 	
     @OneToMany(mappedBy = "object", cascade = CascadeType.ALL, 
-    		fetch = FetchType.LAZY)
+    		fetch = FetchType.LAZY, orphanRemoval = true)
     private List<ObjectAttributeDO> attributes;
 	
 	@OneToMany(mappedBy = "fromObject", 
@@ -167,6 +167,19 @@ public class ObjectDO extends BaseDO implements Serializable {
 			toRelationships = new ArrayList<RelationshipDO>();
 		}
 		toRelationships.add(relationship);
+	}
+	
+	public ObjectAttributeDO getAttribute(String attributeName) {
+		ObjectAttributeDO attribute = null;
+		if (this.getAttributes() != null) {
+			for (ObjectAttributeDO oa : this.getAttributes()) {
+				if (oa.getName().equals(attributeName)) {
+					attribute = oa;
+					break;
+				}
+			}
+		}
+		return attribute;
 	}
 	
 }

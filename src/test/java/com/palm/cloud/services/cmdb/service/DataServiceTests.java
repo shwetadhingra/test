@@ -1,6 +1,5 @@
 package com.palm.cloud.services.cmdb.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.After;
@@ -112,13 +111,29 @@ public class DataServiceTests {
 		CIObject selected = cmdbDataService.getObject(object.getName());
 		Assert.assertNotNull(selected);
 		print(selected);
-		selected.setStatus(status2);
-		selected.setAttributes(new ArrayList<CIAttribute>());
+		selected = new CIObject("10.1.1.11", null, fromType, status2);
+		cmdbDataService.updateObject(selected);
+		CIObject updated = cmdbDataService.getObject(selected.getName());
+		Assert.assertNotNull(updated);
+		print(updated);
+		selected = new CIObject("10.1.1.11", null, fromType, status2);
+		selected.addAttribute(new CIAttribute(attribute1, "ourhost.palm.com"));
+		cmdbDataService.updateObject(selected);
+		updated = cmdbDataService.getObject(selected.getName());
+		Assert.assertNotNull(updated);
+		print(updated);
+		selected = new CIObject("10.1.1.11", null, fromType, status2);
 		selected.addAttribute(new CIAttribute(attribute1, "newhost.palm.com"));
 		selected.addAttribute(new CIAttribute(attribute3, "SJC"));
 		selected.addAttribute(new CIAttribute("junk", "junk"));
 		cmdbDataService.updateObject(selected);
-		CIObject updated = cmdbDataService.getObject(selected.getName());
+		updated = cmdbDataService.getObject(selected.getName());
+		Assert.assertNotNull(updated);
+		print(updated);
+		selected = new CIObject("10.1.1.11", null, fromType, status2);
+		selected.addAttribute(new CIAttribute(attribute1, "newhost.palm.com"));
+		cmdbDataService.updateObject(selected);
+		updated = cmdbDataService.getObject(selected.getName());
 		Assert.assertNotNull(updated);
 		print(updated);
 		List<CIObject> objects = cmdbDataService.getObjects(fromType, 0, 10);

@@ -26,9 +26,15 @@ public class ObjectAttributeDAOImpl
 	}
 
 	@Override
+	public ObjectAttributeDO create(ObjectAttributeDO entity) {
+		entity.getObject().addAttribute(entity);
+		return super.create(entity);
+	}
+
+	@Override
 	public void delete(ObjectAttributeDO entity) {
 		entity.getObject().getAttributes().remove(entity);
-		super.delete(entity);
+		this.getEntityManager().flush();
 	}
 
 	@Transactional(readOnly = true, 

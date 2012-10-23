@@ -26,6 +26,13 @@ public class RelationshipDAOImpl
 	}
 
 	@Override
+	public RelationshipDO create(RelationshipDO entity) {
+		entity.getFromObject().addFromRelationship(entity);
+		entity.getToObject().addToRelationship(entity);
+		return super.create(entity);
+	}
+
+	@Override
 	public void delete(RelationshipDO entity) {
 		entity.getFromObject().getFromRelationships().remove(entity);
 		entity.getToObject().getToRelationships().remove(entity);

@@ -164,16 +164,18 @@ public abstract class AbstractBaseServiceImpl {
 		MetaClassDO klass = metaClassDAO.findByName(domain.getType());
 		data.setKlass(klass);
 		data.setStatus(metaStatusDAO.findByName(domain.getStatus()));
-		if (domain.getAttributes() != null) {
+		if (domain.getAttributes() != null 
+				&& domain.getAttributes().size() > 0) {
+			
 			for (CIAttribute attribute : domain.getAttributes()) {
 				if (klass.getAttribute(attribute.getName()) != null) {
 					ObjectAttributeDO oa = null;
 					if (isUpdate) {
-						try {
-							oa = objectAttributeDAO.findByName(domain.getName(), 
-									attribute.getName());
+						oa = data.getAttribute(attribute.getName());
+						if (oa != null) {
+							data.getAttributes().remove(oa);
 							oa.setValue(attribute.getValue());
-						} catch (EmptyResultDataAccessException e) {
+						} else {
 							oa = new ObjectAttributeDO();
 							oa.setAttribute(metaAttributeDAO.findByName(
 									attribute.getName()));
@@ -187,6 +189,17 @@ public abstract class AbstractBaseServiceImpl {
 					}
 					data.addAttribute(oa);
 				}
+			}
+			if (isUpdate && data.getAttributes() != null) {
+				for (ObjectAttributeDO oa : data.getAttributes()) {
+					if (domain.getAttribute(oa.getName()) == null) {
+						data.getAttributes().remove(oa);
+					}
+				}
+			}
+		} else {
+			if (data.getAttributes() != null) {
+				data.getAttributes().clear();
 			}
 		}
 		return data;

@@ -16,6 +16,7 @@ import com.palm.cloud.services.cmdb.condition.LogicalCondition;
 import com.palm.cloud.services.cmdb.condition.ValueCondition;
 import com.palm.cloud.services.cmdb.domain.CIAttribute;
 import com.palm.cloud.services.cmdb.domain.CIObject;
+import com.palm.cloud.services.cmdb.meta.MetaAttribute;
 import com.palm.cloud.services.cmdb.meta.MetaClass;
 import com.palm.cloud.services.cmdb.meta.MetaStatus;
 import com.sun.jersey.api.client.UniformInterfaceException;
@@ -143,6 +144,93 @@ public class ResourceTests extends JerseyTest {
 			.get(CIObject.class);
     	Assert.assertNotNull(objectAdded);
     	print(objectAdded);
+    	
+    	//Delete the object
+    	r.path(objectURI + name).delete();
+    	
+    	//Delete the type
+    	r.path(typesURI + type).delete();
+    	
+    	//Delete the status
+    	r.path(statusesURI + status).delete();
+    }
+
+    @Test
+    public void testObjectUpdateResource() {
+    	String statusesURI = "meta/statuses/";
+    	String typesURI = "meta/types/";
+    	String objectsURI = "data/objects";
+    	String objectURI = "data/object/";
+    	String name = "Hercules";
+    	String namespace = "DEFAULT";
+    	String type = "Bicycle";
+    	String attribute1 = "brand";
+    	String attribute2 = "size";
+    	String status = "live";
+    	
+    	//Add status
+    	r.path(statusesURI + status).post();
+    	
+    	//Add type
+    	MetaClass typeKlass = new MetaClass();
+    	typeKlass.setName(type);
+    	typeKlass.addAttribute(new MetaAttribute(attribute1));
+    	typeKlass.addAttribute(new MetaAttribute(attribute2));
+    	r.path(typesURI)
+			.accept(MediaType.APPLICATION_JSON)
+			.type(MediaType.APPLICATION_JSON)
+			.post(typeKlass);
+    	
+    	//Add object
+    	CIObject objectToAdd = new CIObject(name, namespace, type, status);
+    	objectToAdd.addAttribute(new CIAttribute(attribute1, name));
+    	
+    	//Post the object without expecting any response
+    	r.path(objectsURI)
+    		.accept(MediaType.APPLICATION_JSON)
+    		.type(MediaType.APPLICATION_JSON)
+    		.post(objectToAdd);
+    	
+    	//Retrieve the object
+    	CIObject objectAdded = r.path(objectURI + name)
+			.accept(MediaType.APPLICATION_JSON)
+			.type(MediaType.APPLICATION_JSON)
+			.get(CIObject.class);
+    	Assert.assertNotNull(objectAdded);
+    	print(objectAdded);
+    	
+    	//Update the same object by adding a new attribute
+    	CIObject objectToUpdate = new CIObject(name, namespace, type, status);
+    	objectToUpdate.addAttribute(new CIAttribute(attribute1, name));
+    	objectToUpdate.addAttribute(new CIAttribute(attribute2, "22"));
+    	r.path(objectsURI)
+			.accept(MediaType.APPLICATION_JSON)
+			.type(MediaType.APPLICATION_JSON)
+			.put(objectToUpdate);
+    	
+    	//Retrieve the object
+    	CIObject objectUpdated = r.path(objectURI + name)
+			.accept(MediaType.APPLICATION_JSON)
+			.type(MediaType.APPLICATION_JSON)
+			.get(CIObject.class);
+    	Assert.assertNotNull(objectUpdated);
+    	print(objectUpdated);
+    	
+    	//Update the object by updating an attribute & removing an attribute
+    	objectToUpdate = new CIObject(name, namespace, type, status);
+    	objectToUpdate.addAttribute(new CIAttribute(attribute1, "Trek"));
+    	r.path(objectsURI)
+			.accept(MediaType.APPLICATION_JSON)
+			.type(MediaType.APPLICATION_JSON)
+			.put(objectToUpdate);
+    	
+    	//Retrieve the object
+    	objectUpdated = r.path(objectURI + name)
+			.accept(MediaType.APPLICATION_JSON)
+			.type(MediaType.APPLICATION_JSON)
+			.get(CIObject.class);
+    	Assert.assertNotNull(objectUpdated);
+    	print(objectUpdated);
     	
     	//Delete the object
     	r.path(objectURI + name).delete();
