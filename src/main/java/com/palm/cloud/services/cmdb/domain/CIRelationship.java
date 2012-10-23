@@ -99,4 +99,19 @@ public class CIRelationship implements Serializable {
 		this.attributes.add(attribute);
 	}
 
+	public CIRelationshipAttribute getAttribute(String attributeName) {
+		CIRelationshipAttribute attribute = null;
+		if (this.attributes != null) {
+			for (CIRelationshipAttribute cira : this.attributes) {
+				if (cira.getName() != null 
+						&& cira.getName().equals(attributeName)) {
+					
+					attribute = cira;
+					break;
+				}
+			}
+		}
+		return attribute;
+	}
+
 }

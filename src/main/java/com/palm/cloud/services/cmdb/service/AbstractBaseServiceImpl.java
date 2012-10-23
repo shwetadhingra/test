@@ -95,14 +95,14 @@ public abstract class AbstractBaseServiceImpl {
 		return data;
 	}
 	
-	protected RelationshipDO toData(CIRelationship domain) {
+	protected RelationshipDO toData(CIRelationship domain, boolean isUpdate) {
 		RelationshipDO data = null;
 		if (domain.getNamespace() == null) {
 			domain.setNamespace(RelationshipDAOImpl.DEFAULT_NAMESPACE);
 		}
-		try {
+		if (isUpdate) {
 			data = relationshipDAO.findByName(domain.getName());
-		} catch (EmptyResultDataAccessException e) {
+		} else {
 			data = new RelationshipDO();
 		}
 		data.setName(domain.getName());
@@ -114,15 +114,24 @@ public abstract class AbstractBaseServiceImpl {
 				domain.getFromObject(), domain.getNamespace()));
 		data.setToObject(objectDAO.findByNameAndNamespace(domain.getToObject(), 
 				domain.getNamespace()));
-		if (domain.getAttributes() != null) {
+		if (domain.getAttributes() != null 
+				&& domain.getAttributes().size() > 0) {
+			
 			for (CIRelationshipAttribute attribute : domain.getAttributes()) {
 				if (klass.getAttribute(attribute.getName()) != null) {
 					RelationshipAttributeDO ra = null;
-					try {
-						ra = relationshipAttributeDAO.findByName(
-								domain.getName(), attribute.getName());
-						ra.setValue(attribute.getValue());
-					} catch (EmptyResultDataAccessException e) {
+					if (isUpdate) {
+						ra = data.getAttribute(attribute.getName());
+						if (ra != null) {
+							data.getAttributes().remove(ra);
+							ra.setValue(attribute.getValue());
+						} else {
+							ra = new RelationshipAttributeDO();
+							ra.setAttribute(metaAttributeDAO.findByName(
+									attribute.getName()));
+							ra.setValue(attribute.getValue());
+						}
+					} else {
 						ra = new RelationshipAttributeDO();
 						ra.setAttribute(metaAttributeDAO.findByName(attribute
 								.getName()));
@@ -130,6 +139,17 @@ public abstract class AbstractBaseServiceImpl {
 					}
 					data.addAttribute(ra);
 				}
+			}
+			if (isUpdate && data.getAttributes() != null) {
+				for (RelationshipAttributeDO ra : data.getAttributes()) {
+					if (domain.getAttribute(ra.getName()) == null) {
+						data.getAttributes().remove(ra);
+					}
+				}
+			}
+		} else {
+			if (data.getAttributes() != null) {
+				data.getAttributes().clear();
 			}
 		}
 		if (isValidRelationship(data.getFromType(), data.getType(), 

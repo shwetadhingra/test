@@ -70,7 +70,7 @@ public class RelationshipDO extends BaseDO implements Serializable {
 	private ObjectDO toObject;
 	
 	@OneToMany(mappedBy = "relationship", cascade = CascadeType.ALL, 
-			fetch = FetchType.LAZY)
+			fetch = FetchType.LAZY, orphanRemoval = true)
 	private List<RelationshipAttributeDO> attributes;
 	
 	public Integer getId() {
@@ -157,4 +157,17 @@ public class RelationshipDO extends BaseDO implements Serializable {
 		attributes.add(attribute);
 	}
 
+	public RelationshipAttributeDO getAttribute(String attributeName) {
+		RelationshipAttributeDO attribute = null;
+		if (this.getAttributes() != null) {
+			for (RelationshipAttributeDO rao : this.getAttributes()) {
+				if (rao.getName().equals(attributeName)) {
+					attribute = rao;
+					break;
+				}
+			}
+		}
+		return attribute;
+	}
+	
 }

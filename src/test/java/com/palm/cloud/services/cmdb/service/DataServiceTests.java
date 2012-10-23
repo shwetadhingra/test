@@ -392,6 +392,61 @@ public class DataServiceTests {
 				toObject2.getNamespace());
 	}
 	
+	@Test
+	public void testUpdateCIRelationAndAttribute() {
+		CIObject fromObject1 = new CIObject("10.1.1.11", null, fromType, 
+				status1);
+		cmdbDataService.addObject(fromObject1);
+		CIObject toObject1 = new CIObject("pws", null, toType, status1);
+		cmdbDataService.addObject(toObject1);
+		CIRelationship relation1 = new CIRelationship(null, 
+				fromObject1.getName(), toObject1.getName(), relationType1, 
+				status1);
+		relation1.addAttribute(new CIRelationshipAttribute(attribute1, 
+				"relation-1"));
+		cmdbDataService.addRelation(relation1);
+		CIRelationship selected1 = cmdbDataService.getRelation(
+				getDerivedName(relation1));
+		Assert.assertNotNull(selected1);
+		Assert.assertEquals(1, selected1.getAttributes().size());
+		print(selected1);
+		CIRelationship relationToUpdate = new CIRelationship(null, 
+				fromObject1.getName(), toObject1.getName(), relationType1, 
+				status1);
+		relationToUpdate.addAttribute(new CIRelationshipAttribute(attribute1, 
+				"relation-2"));
+		relationToUpdate.addAttribute(new CIRelationshipAttribute(attribute2, 
+				"1.0"));
+		cmdbDataService.updateRelation(relationToUpdate);
+		selected1 = cmdbDataService.getRelation(getDerivedName(relation1));
+		Assert.assertNotNull(selected1);
+		Assert.assertEquals(2, selected1.getAttributes().size());
+		print(selected1);
+		relationToUpdate = new CIRelationship(null, 
+				fromObject1.getName(), toObject1.getName(), relationType1, 
+				status1);
+		relationToUpdate.addAttribute(new CIRelationshipAttribute(attribute2, 
+				"2.0"));
+		relationToUpdate.addAttribute(new CIRelationshipAttribute("junk", 
+				"junk"));
+		cmdbDataService.updateRelation(relationToUpdate);
+		selected1 = cmdbDataService.getRelation(getDerivedName(relation1));
+		Assert.assertNotNull(selected1);
+		Assert.assertEquals(1, selected1.getAttributes().size());
+		print(selected1);
+		relationToUpdate = new CIRelationship(null, 
+				fromObject1.getName(), toObject1.getName(), relationType1, 
+				status1);
+		cmdbDataService.updateRelation(relationToUpdate);
+		selected1 = cmdbDataService.getRelation(getDerivedName(relation1));
+		Assert.assertNotNull(selected1);
+		Assert.assertNull(selected1.getAttributes());
+		print(selected1);
+		cmdbDataService.deleteRelation(getDerivedName(relation1));
+		cmdbDataService.deleteObject(fromObject1.getName());
+		cmdbDataService.deleteObject(toObject1.getName());
+	}
+	
 	private String getDerivedName(CIRelationship relation) {
 		StringBuilder derivedName = new StringBuilder();
 		derivedName.append(relation.getFromObject())

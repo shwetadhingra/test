@@ -26,9 +26,15 @@ public class RelationshipAttributeDAOImpl
 	}
 
 	@Override
+	public RelationshipAttributeDO create(RelationshipAttributeDO entity) {
+		entity.getRelationship().addAttribute(entity);
+		return super.create(entity);
+	}
+
+	@Override
 	public void delete(RelationshipAttributeDO entity) {
 		entity.getRelationship().getAttributes().remove(entity);
-		super.delete(entity);
+		this.getEntityManager().flush();
 	}
 
 	@Transactional(readOnly = true, 

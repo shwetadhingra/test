@@ -78,6 +78,8 @@ public interface ICMDBDataService {
 
 	void addRelation(@WebParam(name="relation") CIRelationship relation);
 	
+	void updateRelation(@WebParam(name="relation") CIRelationship relation);
+	
 	void deleteRelation(@WebParam(name="name") String name);
 
 	void deleteRelationNS(@WebParam(name="name") String name, 

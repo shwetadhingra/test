@@ -168,8 +168,23 @@ public class CMDBDataServiceImpl extends AbstractBaseServiceImpl
 			.append("~")
 			.append(relation.getToObject());
 		relation.setName(derivedName.toString());
-		RelationshipDO entity = toData(relation);
+		RelationshipDO entity = toData(relation, false);
 		relationshipDAO.create(entity);
+	}
+
+	public void updateRelation(CIRelationship relation) {
+		StringBuilder derivedName = new StringBuilder();
+		derivedName.append(relation.getFromObject())
+			.append("~")
+			.append(relation.getType())
+			.append("~")
+			.append(relation.getToObject());
+		relation.setName(derivedName.toString());
+		RelationshipDO entity = relationshipDAO.findByName(relation.getName());
+		if (entity != null) {
+			entity = toData(relation, true);
+			entity = relationshipDAO.update(entity);
+		}
 	}
 
 	public void deleteRelation(String name) {
