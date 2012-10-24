@@ -16,6 +16,8 @@ import com.palm.cloud.services.cmdb.condition.LogicalCondition;
 import com.palm.cloud.services.cmdb.condition.ValueCondition;
 import com.palm.cloud.services.cmdb.domain.CIAttribute;
 import com.palm.cloud.services.cmdb.domain.CIObject;
+import com.palm.cloud.services.cmdb.domain.CIRelationship;
+import com.palm.cloud.services.cmdb.domain.CIRelationshipAttribute;
 import com.palm.cloud.services.cmdb.meta.MetaAttribute;
 import com.palm.cloud.services.cmdb.meta.MetaClass;
 import com.palm.cloud.services.cmdb.meta.MetaStatus;
@@ -156,7 +158,7 @@ public class ResourceTests extends JerseyTest {
     }
 
     @Test
-    public void testObjectUpdateResource() {
+    public void testUpdateObjectResource() {
     	String statusesURI = "meta/statuses/";
     	String typesURI = "meta/types/";
     	String objectsURI = "data/objects";
@@ -242,6 +244,193 @@ public class ResourceTests extends JerseyTest {
     	r.path(statusesURI + status).delete();
     }
 
+    @Test
+    public void testUpdateRelationResource() {
+    	String statusesURI = "meta/statuses/";
+    	String typesURI = "meta/types/";
+    	String objectsURI = "data/objects";
+    	String objectURI = "data/object/";
+    	String metaRelationshipsURI = "/meta/relationships/";
+    	String relationsURI = "data/relations";
+    	String relationURI = "data/relation/";
+    	String namespace = "DEFAULT";
+    	String fromObject = "Hercules";
+    	String fromType = "Bicycle";
+    	String toObject = "ECR";
+    	String toType = "Road";
+    	String attribute1 = "brand";
+    	String attribute2 = "size";
+    	String relType = "runsOn";
+    	String relAttribute1 = "speed";
+    	String relAttribute2 = "direction";
+    	String status = "live";
+    	
+    	//Add status
+    	r.path(statusesURI + status).post();
+    	
+    	//Add from type
+    	MetaClass fromTypeKlass = new MetaClass();
+    	fromTypeKlass.setName(fromType);
+    	fromTypeKlass.addAttribute(new MetaAttribute(attribute1));
+    	fromTypeKlass.addAttribute(new MetaAttribute(attribute2));
+    	r.path(typesURI)
+			.accept(MediaType.APPLICATION_JSON)
+			.type(MediaType.APPLICATION_JSON)
+			.post(fromTypeKlass);
+    	
+    	//Add to type
+    	MetaClass toTypeKlass = new MetaClass();
+    	toTypeKlass.setName(toType);
+    	r.path(typesURI)
+			.accept(MediaType.APPLICATION_JSON)
+			.type(MediaType.APPLICATION_JSON)
+			.post(toTypeKlass);
+    	
+    	//Add relationship type
+    	MetaClass relTypeKlass = new MetaClass();
+    	relTypeKlass.setName(relType);
+    	relTypeKlass.setRelationshipType(true);
+    	relTypeKlass.addAttribute(new MetaAttribute(relAttribute1));
+    	relTypeKlass.addAttribute(new MetaAttribute(relAttribute2));
+    	r.path(typesURI)
+			.accept(MediaType.APPLICATION_JSON)
+			.type(MediaType.APPLICATION_JSON)
+			.post(relTypeKlass);
+    	
+    	//Define meta class relationships
+    	r.path(metaRelationshipsURI + fromType + "/" + relType + "/" + toType)
+			.accept(MediaType.APPLICATION_JSON)
+			.type(MediaType.APPLICATION_JSON)
+			.post();
+    	
+    	//Add from object
+    	CIObject fromObject1 = new CIObject(fromObject, namespace, fromType, 
+    			status);
+    	fromObject1.addAttribute(new CIAttribute(attribute1, "Hercules"));
+    	fromObject1.addAttribute(new CIAttribute(attribute2, "22"));
+    	
+    	//Post the object without expecting any response
+    	r.path(objectsURI)
+    		.accept(MediaType.APPLICATION_JSON)
+    		.type(MediaType.APPLICATION_JSON)
+    		.post(fromObject1);
+    	
+    	//Add to object
+    	CIObject toObject1 = new CIObject(toObject, namespace, toType, status);
+    	
+    	//Post the object without expecting any response
+    	r.path(objectsURI)
+    		.accept(MediaType.APPLICATION_JSON)
+    		.type(MediaType.APPLICATION_JSON)
+    		.post(toObject1);
+    	
+    	//Add relationship object
+    	CIRelationship relObject1 = new CIRelationship(namespace, fromObject, 
+    			toObject, relType, status);
+    	relObject1.addAttribute(new CIRelationshipAttribute(relAttribute1, 
+    			"10"));
+    	
+    	//POST the relationship without expecting any response
+    	r.path(relationsURI)
+    		.accept(MediaType.APPLICATION_JSON)
+    		.type(MediaType.APPLICATION_JSON)
+    		.post(relObject1);
+    	
+    	//Get the relationship
+    	CIRelationship selected = r.path(
+    			relationURI + fromObject + "~" + relType + "~" + toObject)
+    		.accept(MediaType.APPLICATION_JSON)
+    		.type(MediaType.APPLICATION_JSON)
+    		.get(CIRelationship.class);
+    	Assert.assertNotNull(selected);
+    	Assert.assertEquals(1, selected.getAttributes().size());
+    	print(selected);
+    	
+    	//Update relationship object
+    	CIRelationship relObjectToUpdate = new CIRelationship(namespace, 
+    			fromObject, toObject, relType, status);
+    	relObjectToUpdate.addAttribute(new CIRelationshipAttribute(
+    			relAttribute1, "20"));
+    	relObjectToUpdate.addAttribute(new CIRelationshipAttribute(
+    			relAttribute2, "East"));
+    	
+    	//PUT the relationship without expecting any response
+    	r.path(relationsURI)
+    		.accept(MediaType.APPLICATION_JSON)
+    		.type(MediaType.APPLICATION_JSON)
+    		.put(relObjectToUpdate);
+    	
+    	//Get the relationship
+    	selected = r.path(
+    			relationURI + fromObject + "~" + relType + "~" + toObject)
+    		.accept(MediaType.APPLICATION_JSON)
+    		.type(MediaType.APPLICATION_JSON)
+    		.get(CIRelationship.class);
+    	Assert.assertNotNull(selected);
+    	Assert.assertEquals(2, selected.getAttributes().size());
+    	print(selected);
+    	
+    	//Update relationship object
+    	relObjectToUpdate = new CIRelationship(namespace, 
+    			fromObject, toObject, relType, status);
+    	relObjectToUpdate.addAttribute(new CIRelationshipAttribute(
+    			relAttribute2, "West"));
+    	
+    	//PUT the relationship without expecting any response
+    	r.path(relationsURI)
+    		.accept(MediaType.APPLICATION_JSON)
+    		.type(MediaType.APPLICATION_JSON)
+    		.put(relObjectToUpdate);
+    	
+    	//Get the relationship
+    	selected = r.path(
+    			relationURI + fromObject + "~" + relType + "~" + toObject)
+    		.accept(MediaType.APPLICATION_JSON)
+    		.type(MediaType.APPLICATION_JSON)
+    		.get(CIRelationship.class);
+    	Assert.assertNotNull(selected);
+    	Assert.assertEquals(1, selected.getAttributes().size());
+    	print(selected);
+    	
+    	//Update relationship object
+    	relObjectToUpdate = new CIRelationship(namespace, 
+    			fromObject, toObject, relType, status);
+
+    	//PUT the relationship without expecting any response
+    	r.path(relationsURI)
+    		.accept(MediaType.APPLICATION_JSON)
+    		.type(MediaType.APPLICATION_JSON)
+    		.put(relObjectToUpdate);
+    	
+    	//Get the relationship
+    	selected = r.path(
+    			relationURI + fromObject + "~" + relType + "~" + toObject)
+    		.accept(MediaType.APPLICATION_JSON)
+    		.type(MediaType.APPLICATION_JSON)
+    		.get(CIRelationship.class);
+    	Assert.assertNotNull(selected);
+    	Assert.assertNull(selected.getAttributes());
+    	print(selected);
+    	
+    	//Delete the objects
+    	r.path(objectURI + fromObject).delete();
+    	r.path(objectURI + toObject).delete();
+    	
+    	//Delete meta class relationships
+    	r.path(metaRelationshipsURI + fromType + "/" + relType + "/" + toType)
+			.accept(MediaType.APPLICATION_JSON)
+			.type(MediaType.APPLICATION_JSON)
+			.delete();
+    	
+    	//Delete the types
+    	r.path(typesURI + fromType).delete();
+    	r.path(typesURI + toType).delete();
+    	r.path(typesURI + relType).delete();
+    	
+    	//Delete the status
+    	r.path(statusesURI + status).delete();
+    }
+
 	private void print(CIObject object) {
 		System.out.printf("%s %s %s %s\n", object.getName(), 
 				object.getNamespace(), object.getStatus(), object.getType());
@@ -253,6 +442,22 @@ public class ResourceTests extends JerseyTest {
 	}
 	
 	private void print(CIAttribute attribute) {
+		System.out.printf("\t%s:%s\n", attribute.getName(), 
+				attribute.getValue());
+	}
+	
+	private void print(CIRelationship relation) {
+		System.out.printf("%s %s %s %s\n", relation.getName(), 
+				relation.getNamespace(), relation.getStatus(), 
+				relation.getType());
+		if (relation.getAttributes() != null) {
+			for (CIRelationshipAttribute attribute : relation.getAttributes()) {
+				print(attribute);
+			}
+		}
+	}
+	
+	private void print(CIRelationshipAttribute attribute) {
 		System.out.printf("\t%s:%s\n", attribute.getName(), 
 				attribute.getValue());
 	}
