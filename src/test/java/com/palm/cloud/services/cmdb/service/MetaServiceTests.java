@@ -123,6 +123,9 @@ public class MetaServiceTests {
 		for (MetaClassRelationship r : relationships) {
 			print(r);
 		}
+		MetaClassRelationship relationship = cmdbMetaService
+				.getTypeRelationship(fromType, relationType, toType);
+		Assert.assertNotNull(relationship);
 		cmdbMetaService.deleteTypeRelationship(fromType, relationType, toType);
 		cmdbMetaService.deleteType(fromType);
 		cmdbMetaService.deleteType(toType);

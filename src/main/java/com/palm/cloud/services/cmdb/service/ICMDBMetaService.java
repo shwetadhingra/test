@@ -47,6 +47,11 @@ public interface ICMDBMetaService {
 			@WebParam(name="relationType") String relationType, 
 			@WebParam(name="toType") String toType);
 
+	MetaClassRelationship getTypeRelationship(
+			@WebParam(name="fromType") String fromType, 
+			@WebParam(name="relationType") String relationType, 
+			@WebParam(name="toType") String toType);
+
 	List<MetaClassRelationship> getTypeRelationshipsByFromType(
 			@WebParam(name="fromType") String fromType);
 

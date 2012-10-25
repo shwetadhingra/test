@@ -52,6 +52,15 @@ public class MetaClassDO extends BaseDO implements Serializable {
     @OneToMany(mappedBy = "type", cascade = CascadeType.ALL, 
     		fetch = FetchType.EAGER)
 	private List<MetaClassAttributeDO> classAttributes;
+    
+    @OneToMany(mappedBy = "fromKlass", cascade = CascadeType.REMOVE)
+    private List<MetaClassRelationshipDO> fromTypes;
+	
+	@OneToMany(mappedBy = "toKlass", cascade = CascadeType.REMOVE)
+    private List<MetaClassRelationshipDO> toTypes;
+	
+    @OneToMany(mappedBy = "relationshipKlass", cascade = CascadeType.REMOVE)
+    private List<MetaClassRelationshipDO> relTypes;
 	
 	public Integer getId() {
 		return id;
@@ -134,6 +143,54 @@ public class MetaClassDO extends BaseDO implements Serializable {
 			classAttributes = new ArrayList<MetaClassAttributeDO>();
 		}
 		classAttributes.add(classAttribute);
+	}
+
+    public List<MetaClassRelationshipDO> getFromTypes() {
+		return fromTypes;
+	}
+
+	public void setFromTypes(List<MetaClassRelationshipDO> fromTypes) {
+		this.fromTypes = fromTypes;
+	}
+
+	public void addFromType(MetaClassRelationshipDO fromType) {
+		fromType.setFromKlass(this);
+		if (fromTypes == null) {
+			fromTypes = new ArrayList<MetaClassRelationshipDO>();
+		}
+		fromTypes.add(fromType);
+	}
+
+	public List<MetaClassRelationshipDO> getToTypes() {
+		return toTypes;
+	}
+
+	public void setToTypes(List<MetaClassRelationshipDO> toTypes) {
+		this.toTypes = toTypes;
+	}
+
+	public void addToType(MetaClassRelationshipDO toType) {
+		toType.setToKlass(this);
+		if (toTypes == null) {
+			toTypes = new ArrayList<MetaClassRelationshipDO>();
+		}
+		toTypes.add(toType);
+	}
+
+	public List<MetaClassRelationshipDO> getRelTypes() {
+		return relTypes;
+	}
+
+	public void setRelTypes(List<MetaClassRelationshipDO> relTypes) {
+		this.relTypes = relTypes;
+	}
+
+	public void addRelType(MetaClassRelationshipDO relType) {
+		relType.setRelationshipKlass(this);
+		if (relTypes == null) {
+			relTypes = new ArrayList<MetaClassRelationshipDO>();
+		}
+		relTypes.add(relType);
 	}
 
 }

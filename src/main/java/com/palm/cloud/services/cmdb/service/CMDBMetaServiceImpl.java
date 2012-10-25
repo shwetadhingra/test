@@ -124,6 +124,14 @@ public class CMDBMetaServiceImpl extends AbstractBaseServiceImpl
 		metaClassRelationshipDAO.delete(entity);
 	}
 
+	public MetaClassRelationship getTypeRelationship(String fromType, 
+			String relationType, String toType) {
+
+		MetaClassRelationshipDO entity = metaClassRelationshipDAO.findByTypes(
+				fromType, relationType, toType);
+		return toDomain(entity);
+	}
+
 	public List<MetaClassRelationship> getTypeRelationshipsByFromType(
 			String fromType) {
 		

@@ -210,11 +210,26 @@ public class DAOTests {
 			print(relationship);
 		}
 		metaClassRelationshipDAO.delete(classRelationship);
-		Assert.assertNull(metaClassDAO.findById(classRelationship.getId()));
+		Assert.assertNull(metaClassRelationshipDAO.findById(classRelationship
+				.getId()));
+		classRelationship = new MetaClassRelationshipDO();
+		classRelationship.setFromKlass(fromClass);
+		classRelationship.setRelationshipKlass(relationshipClass);
+		classRelationship.setToKlass(toClass);
+		classRelationship = metaClassRelationshipDAO.create(classRelationship);
+		print(classRelationship);
+		selected = metaClassRelationshipDAO.findById(classRelationship.getId());
+		print(selected);
 		metaClassDAO.delete(fromClass);
+		Assert.assertNull(metaClassRelationshipDAO.findById(classRelationship
+				.getId()));
+		Assert.assertNull(metaClassDAO.findById(fromClass.getId()));
 		metaClassDAO.delete(toClass);
+		Assert.assertNull(metaClassDAO.findById(toClass.getId()));
 		metaClassDAO.delete(relationshipClass);
+		Assert.assertNull(metaClassDAO.findById(relationshipClass.getId()));
 		metaAttributeDAO.delete(attribute);
+		Assert.assertNull(metaAttributeDAO.findById(attribute.getId()));
 	}
 
 	@Test

@@ -247,16 +247,19 @@ public abstract class AbstractBaseServiceImpl {
 		if (entities != null) {
 			relationships = new ArrayList<MetaClassRelationship>();
 			for (MetaClassRelationshipDO entity : entities) {
-				MetaClassRelationship relationship 
-					= new MetaClassRelationship();
-				relationship.setFromType(toDomain(entity.getFromKlass()));
-				relationship.setRelationshipType(
-						toDomain(entity.getRelationshipKlass()));
-				relationship.setToType(toDomain(entity.getToKlass()));
-				relationships.add(relationship);
+				relationships.add(toDomain(entity));
 			}
 		}
 		return relationships;
+	}
+	
+	protected MetaClassRelationship toDomain(MetaClassRelationshipDO entity) {
+		MetaClassRelationship relationship = new MetaClassRelationship();
+		relationship.setFromType(toDomain(entity.getFromKlass()));
+		relationship.setRelationshipType(
+				toDomain(entity.getRelationshipKlass()));
+		relationship.setToType(toDomain(entity.getToKlass()));
+		return relationship;
 	}
 
 	protected CIObject toDomain(ObjectDO data) {

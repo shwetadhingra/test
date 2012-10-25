@@ -25,6 +25,14 @@ public class MetaClassRelationshipDAOImpl
 		super(em);
 	}
 
+	@Override
+	public void delete(MetaClassRelationshipDO entity) {
+		entity.getFromKlass().getFromTypes().remove(entity);
+		entity.getToKlass().getToTypes().remove(entity);
+		entity.getRelationshipKlass().getRelTypes().remove(entity);
+		super.delete(entity);
+	}
+	
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true, 
 			noRollbackFor = EmptyResultDataAccessException.class)
