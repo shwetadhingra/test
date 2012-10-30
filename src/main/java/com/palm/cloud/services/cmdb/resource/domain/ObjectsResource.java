@@ -60,4 +60,29 @@ public class ObjectsResource extends AbstractBaseResource {
 		cmdbDataService.updateObject(object);
 	}
 	
+	@Path("type/{type}/{objectNameLike}")
+	@GET
+	public List<CIObject> getObjectsByName(
+			@PathParam("objectNameLike") String objectNameLike,
+			@PathParam("type") String type,
+			@QueryParam("offset") @DefaultValue("0") int offset,
+			@QueryParam("maxResults") @DefaultValue("100") int maxResults) {
+		
+		return cmdbDataService.getObjectsByName(objectNameLike, type, 
+				offset, maxResults);
+	}
+	
+	@Path("type/{type}/{objectNameLike}")
+	@Produces(MediaType.TEXT_HTML)
+	@GET
+	public Viewable getObjectsByNameAsHtml(
+			@PathParam("objectNameLike") String objectNameLike,
+			@PathParam("type") String type,
+			@QueryParam("offset") @DefaultValue("0") int offset,
+			@QueryParam("maxResults") @DefaultValue("100") int maxResults) {
+		
+		return new Viewable("/view/object/objects.jsp", this.getObjectsByName(
+				objectNameLike, type, offset, maxResults));
+	}
+	
 }

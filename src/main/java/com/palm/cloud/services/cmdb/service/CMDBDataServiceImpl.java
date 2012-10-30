@@ -528,4 +528,20 @@ public class CMDBDataServiceImpl extends AbstractBaseServiceImpl
 		return toObjectDomains(entities);
 	}
 
+	public List<CIObject> getObjectsByName(String objectNameLike, String type,
+			int offset, int maxResults) {
+		
+		List<ObjectDO> entities = objectDAO.findAllByNameAndClass(
+				objectNameLike, type, offset, maxResults);
+		return toObjectDomains(entities);
+	}
+
+	public List<CIObject> getObjectsByNameNS(String objectNameLike,
+			String namespace, String type, int offset, int maxResults) {
+
+		List<ObjectDO> entities = objectDAO.findAllByNameClassAndNamespace(
+				objectNameLike, type, namespace, offset, maxResults);
+		return toObjectDomains(entities);
+	}
+
 }

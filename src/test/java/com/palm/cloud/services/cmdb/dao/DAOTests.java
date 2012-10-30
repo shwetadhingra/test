@@ -371,6 +371,13 @@ public class DAOTests {
 			print(o);
 		}
 		
+		objects = objectDAO.findAllByNameAndClass("10", "function", 0, 10);
+		Assert.assertNotNull(objects);
+		Assert.assertEquals(1, objects.size());
+		for (ObjectDO o : objects) {
+			print(o);
+		}
+		
 		objectDAO.delete(object);
 		Assert.assertNull(objectDAO.findById(object.getId()));
 		

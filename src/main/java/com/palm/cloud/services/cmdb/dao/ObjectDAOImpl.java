@@ -393,4 +393,35 @@ public class ObjectDAOImpl extends GenericDAOImpl<ObjectDO, Integer>
 		return predicate;
 	}
 
+	@Transactional(readOnly = true, 
+			noRollbackFor = EmptyResultDataAccessException.class)
+	public List<ObjectDO> findAllByNameClassAndNamespace(String nameLike,
+			String className, String namespace, int offset, int maxResults) {
+
+		CriteriaBuilder cb = this.getEntityManager().getCriteriaBuilder();
+		CriteriaQuery<ObjectDO> cq = cb.createQuery(ObjectDO.class);
+		cq.distinct(true);
+		Root<ObjectDO> o = cq.from(ObjectDO.class);
+		Join<ObjectDO, MetaClassDO> om = o.join(ObjectDO_.klass);
+		List<Predicate> predicates = new ArrayList<Predicate>();
+		predicates.add(cb.equal(o.get(ObjectDO_.namespace), namespace));
+		predicates.add(cb.equal(om.get(MetaClassDO_.name), className));
+		predicates.add(cb.like(o.get(ObjectDO_.name), "%" + nameLike + "%"));
+		cq.where(cb.and(predicates.toArray(new Predicate[predicates.size()])));
+		TypedQuery<ObjectDO> q = this.getEntityManager().createQuery(cq);
+		q.setFirstResult(offset);
+		q.setMaxResults(maxResults);
+		List<ObjectDO> objects = q.getResultList();
+		return objects;
+	}
+
+	@Transactional(readOnly = true, 
+			noRollbackFor = EmptyResultDataAccessException.class)
+	public List<ObjectDO> findAllByNameAndClass(String nameLike,
+			String className, int offset, int maxResults) {
+		
+		return this.findAllByNameClassAndNamespace(nameLike, className, 
+				DEFAULT_NAMESPACE, offset, maxResults);
+	}
+
 }
