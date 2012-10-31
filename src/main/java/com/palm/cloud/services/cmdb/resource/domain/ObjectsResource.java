@@ -62,27 +62,51 @@ public class ObjectsResource extends AbstractBaseResource {
 	
 	@Path("type/{type}/{objectNameLike}")
 	@GET
-	public List<CIObject> getObjectsByName(
+	public List<CIObject> getObjectsByNameAndType(
 			@PathParam("objectNameLike") String objectNameLike,
 			@PathParam("type") String type,
 			@QueryParam("offset") @DefaultValue("0") int offset,
 			@QueryParam("maxResults") @DefaultValue("100") int maxResults) {
 		
-		return cmdbDataService.getObjectsByName(objectNameLike, type, 
+		return cmdbDataService.getObjectsByNameAndType(objectNameLike, type, 
 				offset, maxResults);
 	}
 	
 	@Path("type/{type}/{objectNameLike}")
 	@Produces(MediaType.TEXT_HTML)
 	@GET
-	public Viewable getObjectsByNameAsHtml(
+	public Viewable getObjectsByNameAndTypeAsHtml(
 			@PathParam("objectNameLike") String objectNameLike,
 			@PathParam("type") String type,
 			@QueryParam("offset") @DefaultValue("0") int offset,
 			@QueryParam("maxResults") @DefaultValue("100") int maxResults) {
 		
-		return new Viewable("/view/object/objects.jsp", this.getObjectsByName(
-				objectNameLike, type, offset, maxResults));
+		return new Viewable("/view/object/objects.jsp", 
+				this.getObjectsByNameAndType(
+						objectNameLike, type, offset, maxResults));
+	}
+	
+	@Path("name/{objectNameLike}")
+	@GET
+	public List<CIObject> getObjectsByName(
+			@PathParam("objectNameLike") String objectNameLike,
+			@QueryParam("offset") @DefaultValue("0") int offset,
+			@QueryParam("maxResults") @DefaultValue("100") int maxResults) {
+		
+		return cmdbDataService.getObjectsByName(
+				objectNameLike, offset, maxResults);
+	}
+	
+	@Path("name/{objectNameLike}")
+	@Produces(MediaType.TEXT_HTML)
+	@GET
+	public Viewable getObjectsByNameAsHtml(
+			@PathParam("objectNameLike") String objectNameLike,
+			@QueryParam("offset") @DefaultValue("0") int offset,
+			@QueryParam("maxResults") @DefaultValue("100") int maxResults) {
+		
+		return new Viewable("/view/object/objects.jsp", 
+				this.getObjectsByName(objectNameLike, offset, maxResults));
 	}
 	
 }

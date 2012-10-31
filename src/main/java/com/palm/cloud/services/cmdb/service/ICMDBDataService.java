@@ -271,16 +271,27 @@ public interface ICMDBDataService {
 			@WebParam(name="type") String type,
 			@WebParam(name="conditions") Condition... conditions);
 	
-	List<CIObject> getObjectsByName(
+	List<CIObject> getObjectsByNameAndType(
 			@WebParam(name="objectName") String objectNameLike,
 			@WebParam(name="type") String type,
+			@WebParam(name="offset") int offset, 
+			@WebParam(name="maxResults") int maxResults);
+
+	List<CIObject> getObjectsByNameAndTypeNS(
+			@WebParam(name="objectName") String objectNameLike,
+			@WebParam(name="namespace") String namespace, 
+			@WebParam(name="type") String type,
+			@WebParam(name="offset") int offset, 
+			@WebParam(name="maxResults") int maxResults);
+
+	List<CIObject> getObjectsByName(
+			@WebParam(name="objectName") String objectNameLike,
 			@WebParam(name="offset") int offset, 
 			@WebParam(name="maxResults") int maxResults);
 
 	List<CIObject> getObjectsByNameNS(
 			@WebParam(name="objectName") String objectNameLike,
 			@WebParam(name="namespace") String namespace, 
-			@WebParam(name="type") String type,
 			@WebParam(name="offset") int offset, 
 			@WebParam(name="maxResults") int maxResults);
 

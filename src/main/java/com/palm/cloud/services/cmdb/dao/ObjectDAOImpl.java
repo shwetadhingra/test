@@ -424,4 +424,33 @@ public class ObjectDAOImpl extends GenericDAOImpl<ObjectDO, Integer>
 				DEFAULT_NAMESPACE, offset, maxResults);
 	}
 
+	@Transactional(readOnly = true, 
+			noRollbackFor = EmptyResultDataAccessException.class)
+	public List<ObjectDO> findAllByNameAndNamespace(String nameLike, 
+			String namespace, int offset, int maxResults) {
+
+		CriteriaBuilder cb = this.getEntityManager().getCriteriaBuilder();
+		CriteriaQuery<ObjectDO> cq = cb.createQuery(ObjectDO.class);
+		cq.distinct(true);
+		Root<ObjectDO> o = cq.from(ObjectDO.class);
+		List<Predicate> predicates = new ArrayList<Predicate>();
+		predicates.add(cb.equal(o.get(ObjectDO_.namespace), namespace));
+		predicates.add(cb.like(o.get(ObjectDO_.name), "%" + nameLike + "%"));
+		cq.where(cb.and(predicates.toArray(new Predicate[predicates.size()])));
+		TypedQuery<ObjectDO> q = this.getEntityManager().createQuery(cq);
+		q.setFirstResult(offset);
+		q.setMaxResults(maxResults);
+		List<ObjectDO> objects = q.getResultList();
+		return objects;
+	}
+
+	@Transactional(readOnly = true, 
+			noRollbackFor = EmptyResultDataAccessException.class)
+	public List<ObjectDO> findAllByName(String nameLike, 
+			int offset, int maxResults) {
+		
+		return this.findAllByNameAndNamespace(
+				nameLike, DEFAULT_NAMESPACE, offset, maxResults);
+	}
+
 }
