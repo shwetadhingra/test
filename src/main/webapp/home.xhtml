@@ -1,0 +1,22 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+
+	<h:outputStylesheet library="css" name="jquery-ui.css"/>
+	<h:outputScript library="js" name="jquery-1.8.2.js" />
+	<h:outputScript library="js" name="jquery-ui.js" />
+	<h:outputScript library="js" name="home.js" />
+
+	<div class="ui-widget">
+		<p>Welcome To Object-Oriented CMDB</p>
+	    <label for="tags">Object </label>
+	    <input id="tags" />
+	    <input type="button" id="go" value="Go" />
+	</div>
+
+</ui:composition>
