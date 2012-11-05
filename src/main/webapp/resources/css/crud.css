@@ -1,0 +1,54 @@
+@CHARSET "ISO-8859-1";
+
+.attribute {
+	background-color: #E0E0E0;
+	padding: 5px;
+}
+
+.sideBar {
+	background-color: gray;
+	color: #F0F0F0;
+	padding: 5px;
+	width: 140px;
+}
+
+p {
+	color: red;
+	margin: 2em;
+	font-size: 12px;
+	background-color: white
+}
+
+.cross {
+	width: 50px;
+}
+
+#objectInput {
+background: none;
+color: #999999;
+outline: gray;
+font-style: italic;
+}
+
+#tabs {
+	background: #E0E0E0;
+}
+
+#fragment-1, #fragment-2, #fragment-3, #fragment-4, #fragment-5, #fragment-6, #fragment-7, #fragment-8 {
+	background: white;
+	height: 90%;
+}
+
+.attr {
+	color: red;
+	margin: 2em;
+	font-size: 12px;
+	background-color: white;
+	font-weight: bold;
+}
+
+.ui-tabs .ui-widget-content {
+	font-size: 13px;
+	overflow-y: scroll;
+}
+

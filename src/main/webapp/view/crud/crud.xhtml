@@ -1,0 +1,374 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+	<ui:composition template="/view/template/main.xhtml">
+		<ui:define name="body">
+
+			<h:outputStylesheet library="css" name="jquery-ui.css"/>
+			<h:outputStylesheet library="css" name="crud.css"/>
+			<h:outputScript library="js" name="jquery-1.8.2.js" />
+			<h:outputScript library="js" name="jquery-ui.js" />
+			<h:outputScript library="js" name="bucket.js" />
+			<h:outputScript library="js" name="crud.js" />
+
+		<div id="tabs" style="height: 99%;">
+			<ul>
+				<li><a href="#fragment-1" onclick="metaFunction();"><span>
+							Add Meta Type</span></a></li>
+				<li><a href="#fragment-2" onclick="metaFunction();"><span>
+							Add Meta Type Relationship</span></a></li>
+				<li><a href="#fragment-3" onclick="metaFunction();"><span>
+							Update/Delete Meta Type</span></a></li>
+				<li><a href="#fragment-4" onclick="metaFunction();"><span>
+							Delete Meta Relationship Type</span></a></li>
+				<li><a href="#fragment-5" onclick="dataFunction();"><span>
+							Add Object</span></a></li>
+				<li><a href="#fragment-6" onclick="dataFunction();"><span>
+							Update/Delete Object</span></a></li>
+				<li><a href="#fragment-7" onclick="dataFunction();"><span>
+							Add Relationship</span></a></li>
+				<li><a href="#fragment-8" onclick="dataFunction();"><span>
+							Update/Delete Relationship</span></a></li>
+			</ul>
+			<div id="fragment-1">
+				<h3>Add Meta Type</h3>
+				<table style="padding: 10px;" id="typeTable">
+					<tr>
+						<td class="sideBar">Name</td>
+						<td><input type="text" id="typeInput" /></td>
+						<td><span id="typeInput_span" class="attr"></span></td>
+					</tr>
+					<tr>
+						<td><br /></td>
+					</tr>
+					<tr>
+						<td class="sideBar">Relationship</td>
+						<td><select id="relationSelect">
+								<option>False</option>
+								<option>True</option>
+						</select></td>
+					</tr>
+				</table>
+				<table style="padding: 10px;" id="typeAttrTable">
+					<tr>
+						<td class="sideBar">Add Attributes</td>
+						<td><input type="text" id="firstAttr" /></td>
+						<td><input id="addMore" type="button" onclick=""
+							value="Add More" /></td>
+						<td><span id="attr_span" class="attr"></span></td>
+					</tr>
+				</table>
+				<table style="padding: 10px;">
+					<tr>
+						<td><br /></td>
+					</tr>
+					<tr>
+						<td><input type="button" id="addType" value="Add"
+							onclick="" /></td>
+						<td><input type="button" id="reset" value="Reset" onclick="" /></td>
+					</tr>
+				</table>
+				<p id="addtp"></p>
+			</div>
+			<div id="fragment-2">
+				<h3>Add Meta Type Relationship</h3>
+				<table style="padding: 10px;" id="relationTable">
+					<tr>
+						<td class="sideBar">From Type</td>
+						<td><select id="fromSelect">
+								<option>Select Type</option>
+						</select></td>
+					</tr>
+					<tr>
+						<td><br /></td>
+					</tr>
+					<tr>
+						<td class="sideBar">Relationship Type</td>
+						<td><select id="relationshipSelect">
+								<option>Select Type</option>
+						</select></td>
+					</tr>
+					<tr>
+						<td><br /></td>
+					</tr>
+					<tr>
+						<td class="sideBar">To Type</td>
+						<td><select id="toSelect">
+								<option>Select Type</option>
+						</select></td>
+					</tr>
+				</table>
+				<table style="padding: 10px;">
+					<tr>
+						<td><input type="button" id="addRType" value="Add" onclick="" /></td>
+						<td><input type="button" id="refreshRType" value="Refresh"
+							onclick="" /></td>
+					</tr>
+				</table>
+				<p id="addrp"></p>
+			</div>
+			<div id="fragment-3">	
+				<h3>Update/Delete Meta Type</h3>
+				<h5>Select Type - Press 'X' to Delete Attributes - Press 'Add More' and 'Update' to Add Attributes</h5>
+				<table style="padding: 10px;" id="updateTypeTable">
+					<tr>
+						<td class="sideBar">Select Type</td>
+						<td><select id="updateTypeSelect" style="width: 200px;">
+								<option>Select Type</option>
+						</select></td>
+					</tr>
+					<tr>
+						<td><br /></td>
+					</tr>
+					
+				</table>
+				<table style="padding: 10px;">
+					<tr>
+						<td><input type="button" id="updateType" onclick=""
+							value="Update" /></td>
+						<td><input type="button" id="deleteType" onclick=""
+							value="Delete" /></td>
+						<td><input type="button" id="updateRefresh" onclick=""
+							value="Refresh" /></td>
+					</tr>
+				</table>
+				<p id="updeltp"></p>
+			</div>
+			<div id="fragment-4">	
+				<h3>Delete Meta Relationship Type</h3>
+				<table style="padding: 10px;" id="updateRelationTable">
+					<tr>
+						<td class="sideBar">Select Relationship Type</td>
+						<td><select id="updateRelationSelect">
+								<option>Select Relationship Type</option>
+						</select></td>
+					</tr>
+				</table>
+				<table style="padding: 10px;">
+					<tr>
+						<td><input type="button" id="deleteRelation" onclick=""
+							value="Delete" /></td>
+						<td><input type="button" id="updateRelationRefresh" onclick=""
+							value="Refresh" /></td>
+					</tr>
+				</table>
+				<p id="updelrp"></p>
+			</div>
+			<div id="fragment-5">
+				<h3>Add Object</h3>
+				<table style="padding: 10px;" id="objectTable">
+					<tr>
+						<td class="sideBar">Select Type</td>
+						<td><select id="objectSelect" style="width: 200px;">
+								<option>Select Type</option>
+						</select></td>
+						<td><input type="text" name="objectInput" id="objectInput"
+							value="Search Type" /></td>
+					</tr>
+					<tr>
+						<td><br /></td>
+					</tr>
+					<tr>
+						<td class="sideBar">Name</td>
+						<td><input type="text" id="name" /></td>
+						<td><span id="object_span" class="attr"></span></td>
+					</tr>
+					<tr>
+						<td><br /></td>
+					</tr>
+					<tr>
+						<td class="sideBar">NameSpace</td>
+						<td><input type="text" id="namespace" value="DEFAULT" disabled="disabled"/></td>
+					</tr>
+					<tr>
+						<td><br /></td>
+					</tr>
+					<tr>
+						<td class="sideBar">Status</td>
+						<td><input type="text" id="status" value="live" disabled="disabled"/></td>
+					</tr>
+					<tr>
+						<td><br /></td>
+					</tr>
+				</table>
+				<table style="padding: 10px;">
+					<tr>
+						<td><input type="button" id="addObject" value="Add Object"
+							onclick="" /></td>
+						<td><input type="button" id="resetObject" value="Reset"
+							onclick="" /></td>
+					</tr>
+				</table>
+				<p id="addop"></p>
+			</div>
+			<div id="fragment-6">	
+				<h3>Update/Delete Object</h3>
+				<table style="padding: 10px;" id="updateObjectTable">
+					<tr>
+						<td class="sideBar">Select Type</td>
+						<td><select id="updateObjectSelect" style="width: 140px;">
+								<option>Select Type</option>
+						</select></td>
+					</tr>
+					<tr>
+						<td><br /></td>
+					</tr>
+					<tr>
+						<td class="sideBar">Enter Object</td>
+						<td><input type="text" id="updateObjectInput" /></td>
+						<td><input type="button" id="fetchObject"
+							value="Fetch Object" onclick="" /></td>
+					</tr>
+					<tr>
+						<td><br /></td>
+					</tr>
+					<tr>
+						<td class="sideBar">Meta Type</td>
+						<td><input type="text" id="updateObjectMetaLabel" disabled="disabled"/></td>
+					</tr>
+					<tr>
+						<td><br /></td>
+					</tr>
+					<tr>
+						<td class="sideBar">NameSpace</td>
+						<td><input type="text" id="updateNamespace" value="DEFAULT" disabled="disabled"/></td>
+					</tr>
+					<tr>
+						<td><br /></td>
+					</tr>
+					<tr>
+						<td class="sideBar">Status</td>
+						<td><input type="text" id="updateStatus" value="live" disabled="disabled"/></td>
+					</tr>
+					<tr>
+						<td><br /></td>
+					</tr>
+				</table>
+				<table style="padding: 10px;">
+					<tr>
+						<td><input type="button" id="updateObject" onclick=""
+							value="Update" /></td>
+						<td><input type="button" id="deleteObject" onclick=""
+							value="Delete" /></td>
+						<td><input type="button" id="refreshUpdateObject" onclick=""
+							value="Refresh" /></td>
+					</tr>
+				</table>
+				<p id="updelop"></p>
+			</div>
+			<div id="fragment-7">	
+				<h3>Add Relationship</h3>
+				<table style="padding: 10px;" id="relateObjectTable">
+					<tr>
+						<td class="sideBar">From Object</td>
+						<td><select id="fromRSelect" style="width: 140px;">
+								<option>Select Type</option>
+						</select></td>
+						<td><input type="text" id="relateOFromInput" /></td>
+					</tr>
+					<tr>
+						<td><br /></td>
+					</tr>
+					<tr>
+						<td class="sideBar">To Object</td>
+						<td><select id="toRSelect" style="width: 140px;">
+								<option>Select Type</option>
+						</select></td>
+						<td><input type="text" id="relateOToInput" /></td>
+					</tr>
+					<tr>
+						<td><br /></td>
+					</tr>
+					<tr>
+						<td class="sideBar">Relationship</td>
+						<td><select id="relationShipRSelect" style="width: 140px;">
+								<option>Select Type</option>
+						</select></td>
+					</tr>
+					<tr>
+						<td><br /></td>
+					</tr>
+					<tr>
+						<td class="sideBar">Status</td>
+						<td><input type="text" id="relateStatus" value="live"
+							style="width: 140px;" disabled="disabled"/></td>
+					</tr>
+					<tr>
+						<td><br /></td>
+					</tr>
+				</table>
+				<table style="padding: 10px;">
+					<tr>
+						<td><input type="button" id="relate" value="Add Relation"
+							onclick="" /></td>
+						<td><input type="button" id="resetRO" value="Reset"
+							onclick="" /></td>
+					</tr>
+				</table>
+				<p id="relp"></p>
+			</div>
+			<div id="fragment-8">	
+				<h3>Update/Delete Relationship</h3>
+				<table style="padding: 10px;" id="updateRelateObjectTable">
+					<tr>
+						<td class="sideBar">From Object</td>
+						<td><select id="updateRelationFromSelect" style="width: 140px;">
+								<option>Select Type</option>
+						</select></td>
+						<td><input type="text" id="updateRelationFromInput" /></td>
+					</tr>
+					<tr>
+						<td><br /></td>
+					</tr>
+					<tr>
+						<td class="sideBar">To Object</td>
+						<td><select id="updateRelationToSelect" style="width: 140px;">
+								<option>Select Type</option>
+						</select></td>
+						<td><input type="text" id="updateRelationToInput" /></td>
+					</tr>
+					<tr>
+						<td><br /></td>
+					</tr>
+					<tr>
+						<td class="sideBar">Relationship</td>
+						<td><select id="updateRelationRelationshipSelect" style="width: 140px;">
+								<option>Select Type</option>
+						</select></td>
+						<td><input type="button" id="updateRelationFetch" 
+								value="Fetch Relation" onclick=""/></td>
+					</tr>
+					<tr>
+						<td><br /></td>
+					</tr>
+					<tr>
+						<td class="sideBar">Status</td>
+						<td><input type="text" id="updateRelationStatus" value="live"
+							style="width: 140px;" disabled="disabled"/></td>
+					</tr>
+					<tr>
+						<td><br /></td>
+					</tr>
+				</table>
+				<table style="padding: 10px;">
+					<tr>
+						<td><input type="button" id="updateRelationUpdate" value="Update"
+							onclick="" /></td>
+							<td><input type="button" id="updateRelationDelete" value="Delete"
+							onclick="" /></td>
+						<td><input type="button" id="updateRelationReset" value="Reset"
+							onclick="" /></td>
+					</tr>
+				</table>
+				<p id="updeldrp"></p>
+			</div>
+		</div>
+		</ui:define>
+	</ui:composition>
+</html>
