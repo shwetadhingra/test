@@ -32,6 +32,15 @@ font-style: italic;
 
 #tabs {
 	background: #E0E0E0;
+	height: 80%;
+}
+
+#tabs h3 {
+	color: #336699;
+}
+
+#tabs select {
+	width: 150px;
 }
 
 #fragment-1, #fragment-2, #fragment-3, #fragment-4, #fragment-5, #fragment-6, #fragment-7, #fragment-8 {
@@ -48,7 +57,6 @@ font-style: italic;
 }
 
 .ui-tabs .ui-widget-content {
-	font-size: 13px;
 	overflow-y: scroll;
 }
 
