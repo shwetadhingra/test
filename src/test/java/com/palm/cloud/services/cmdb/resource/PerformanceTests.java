@@ -71,6 +71,18 @@ public class PerformanceTests {
     	deleteObjects();
     }
     
+    @Test
+    @Ignore
+    public void testLoadObjectsForPerformance() {
+    	loadObjects();
+    }
+    
+    @Test
+    @Ignore
+    public void testDeleteObjectsForPerformance() {
+    	deleteObjects();
+    }
+    
     private void loadObjects() {
     	long startTime = System.currentTimeMillis();
     	int dcIndex = 0;
