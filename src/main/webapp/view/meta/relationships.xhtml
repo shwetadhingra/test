@@ -9,6 +9,9 @@
 	template="/view/template/main.xhtml">
 	<ui:define name="body">
 		<rich:panel>
+			<h:outputLink target="_blank" value="#{facesContext.externalContext.requestContextPath}/rs/meta/relationships/viz">
+				<h:outputText value="Type Relationships Viz"/>
+			</h:outputLink>
 			<rich:dataTable id="metaClassRelationships" value="#{it}" var="r"
 				rendered="#{fn:length(it) > 0}">
 				<rich:column>

@@ -1,6 +1,8 @@
 package com.palm.cloud.services.cmdb.resource.meta;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -58,4 +60,15 @@ public class MetaClassRelationshipsResource extends AbstractBaseResource {
 		
 		return cmdbMetaService.getTypeRelationshipsByRelationType(relationType);
 	}
+
+	@Produces(MediaType.TEXT_HTML)
+	@GET
+	@Path("viz")
+	public Viewable getTypeRelationshipsVizAsHtml() {
+		Map<String, Object> model = new HashMap<String, Object>();
+		model.put("types", cmdbMetaService.getAllTypes());
+		model.put("relationships", this.getAllTypeRelationships());
+		return new Viewable("/view/meta/relationshipsviz.jsp", model);
+	}
+
 }
