@@ -17,12 +17,16 @@ out.println("digraph MetaTypeRelationships {");
 out.println();
 Map<String, Object> model = (Map<String, Object>) pageContext.findAttribute("it");
 List<MetaClass> types = (List<MetaClass>) model.get("types");
+String contextPath = request.getContextPath();
+String typeURL = contextPath + "/rs/meta/types/";
 if (types != null) {
 	for (MetaClass type : types) {
 		if (!type.isRelationshipType()) {
 			out.println(type.getName()
 					+ "[label = \""
 					+ type.getName()
+					+ "\",href=\""
+					+ typeURL + type.getName() + "/"
 					+ "\"];");
 		}
 	}
@@ -37,6 +41,8 @@ if (relationships != null) {
 				+ relationship.getToType().getName()
 				+ "[label = \""
 				+ relationship.getRelationshipType().getName()
+				+ "\",href=\""
+				+ typeURL + relationship.getRelationshipType().getName() + "/"
 				+ "\"];");
 	}
 }
@@ -46,7 +52,7 @@ out.println("}");
 
 </script>
 
-<script src="../../../resources/js/viz.js"></script>
+<script src="<%=contextPath%>/resources/js/viz.js"></script>
 
 <script>
 
