@@ -2,9 +2,9 @@
 #vm mapping
 ###########
 
-#1. define new VM host
-#----------------------
-curl --user cmdb:microlab -X POST -H "Content-Type: application/json" -d "{\"name\":\"scatestvm101\",\"type\":\"Host\",\"status\":\"live\",\"attributes\":[{\"name\":\"name\",\"value\":\"scatestvm101\"},{\"name\":\"primaryip\",\"value\":\"10.126.130.131\"},{\"name\":\"domain\",\"value\":\"palmws.com\"},{\"name\":\"netmask\",\"value\":\"255.255.255.0\"},{\"name\":\"gateway\",\"value\":\"10.126.130.2\"},{\"name\":\"hostgroup\",\"value\":\"prod\"}]}" "http://10.125.0.216:8080/oocmdb/rs/data/objects"
+#1. define new VM
+#-----------------
+curl --user cmdb:microlab -X POST -H "Content-Type: application/json" -d "{\"name\":\"scatestvm101\",\"type\":\"Host\",\"status\":\"live\",\"attributes\":[{\"name\":\"name\",\"value\":\"scatestvm101\"},{\"name\":\"primaryip\",\"value\":\"10.126.130.131\"},{\"name\":\"domain\",\"value\":\"palmws.com\"},{\"name\":\"netmask\",\"value\":\"255.255.255.0\"},{\"name\":\"gateway\",\"value\":\"10.126.130.2\"},{\"name\":\"hostgroup\",\"value\":\"prod\"},{\"name\":\"fqdn\",\"value\":\"scatestvm101.palmws.com\"},{\"name\":\"type\",\"value\":\"vm\"}]}" "http://10.125.0.216:8080/oocmdb/rs/data/objects"
 
 #2. define VM interface
 #----------------------
