@@ -7,6 +7,10 @@ public class Link implements Serializable {
 	private static final long serialVersionUID = 4113481661429712953L;
 
 	private Node node;
+	
+	private String type;
+	
+	private boolean isForward;
 
 	public Node getNode() {
 		return node;
@@ -16,4 +20,20 @@ public class Link implements Serializable {
 		this.node = node;
 	}
 	
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public boolean isForward() {
+		return isForward;
+	}
+
+	public void setForward(boolean isForward) {
+		this.isForward = isForward;
+	}
+
 }

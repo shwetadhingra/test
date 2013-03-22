@@ -71,5 +71,9 @@
 		<h:outputLink value="#{facesContext.externalContext.requestContextPath}/rs/data/collection/#{it.name}/">
 			<h:outputText value="Browse Collection" rendered="#{it.type == 'Collection'}"/>
 		</h:outputLink>
+		<br />
+		<h:outputLink value="#{facesContext.externalContext.requestContextPath}/rs/data/collectionviz/#{it.name}/">
+			<h:outputText value="Collection Viz" rendered="#{it.type == 'Collection'}"/>
+		</h:outputLink>
 	</ui:define>
 </ui:composition>

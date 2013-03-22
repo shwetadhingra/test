@@ -146,6 +146,8 @@ public class CollectionServiceImpl implements ICollectionService {
 			if (objects != null) {
 				for (CIObject object : objects) {
 					Link link = new Link();
+					link.setType(edge.getType());
+					link.setForward(isForward);
 					link.setNode(buildNode(edge.getVertex(), object));
 					node.addLink(link);
 				}
