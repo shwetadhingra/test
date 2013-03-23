@@ -1,6 +1,11 @@
 package com.palm.cloud.services.cmdb.resource.collection;
 
-import java.util.Arrays;
+import java.util.AbstractMap;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
@@ -12,6 +17,7 @@ import javax.ws.rs.core.MediaType;
 
 import org.springframework.stereotype.Component;
 
+import com.palm.cloud.services.cmdb.collection.Link;
 import com.palm.cloud.services.cmdb.collection.Node;
 import com.palm.cloud.services.cmdb.resource.AbstractBaseResource;
 import com.sun.jersey.api.view.Viewable;
@@ -28,9 +34,21 @@ public class CollectionVizResource extends AbstractBaseResource {
 			@QueryParam("offset") @DefaultValue("0") int offset,
 			@QueryParam("maxResults") @DefaultValue("100") int maxResults) {
 		
-		return new Viewable("/view/collection/nodesviz.jsp", 
-				collectionService.getCollection(collectionName, 
-						offset, maxResults));
+		Map<String, Object> model = new HashMap<String, Object>();
+		List<Node> nodes = collectionService.getCollection(collectionName, 
+				offset, maxResults);
+		if (nodes != null) {
+			Set<String> vertices = new HashSet<String>();
+			Set<Map.Entry<String, Map.Entry<String, String>>> edges 
+				= new HashSet<Map.Entry<String, Map.Entry<String, String>>>();
+			for (Node node : nodes) {
+				vertices = getVertices(node, vertices);
+				edges = getEdges(node, edges);
+			}
+			model.put("vertices", vertices);
+			model.put("edges", edges);
+		}
+		return new Viewable("/view/collection/nodesviz.jsp", model);
 	}
 	
 	@GET
@@ -40,9 +58,64 @@ public class CollectionVizResource extends AbstractBaseResource {
 			@PathParam("collectionName") String collectionName,
 			@PathParam("root") String root) {
 		
-		return new Viewable("/view/collection/nodesviz.jsp", 
-				Arrays.asList(new Node[] {collectionService
-						.getCollectionByRoot(collectionName, root)}));
+		Map<String, Object> model = new HashMap<String, Object>();
+		Node node = collectionService
+				.getCollectionByRoot(collectionName, root);
+		if (node != null) {
+			Set<String> vertices = new HashSet<String>();
+			Set<Map.Entry<String, Map.Entry<String, String>>> edges 
+				= new HashSet<Map.Entry<String, Map.Entry<String, String>>>();
+			vertices = getVertices(node, vertices);
+			edges = getEdges(node, edges);
+			model.put("vertices", vertices);
+			model.put("edges", edges);
+		}
+		
+		return new Viewable("/view/collection/nodesviz.jsp", model);
 	}
 	
+	private Set<String> getVertices(Node node, Set<String> vertices) {
+		if (vertices == null) {
+			vertices = new HashSet<String>();
+		}
+		vertices.add(node.getObject().getName());
+		if (node.getLinks() != null) {
+			for (Link link : node.getLinks()) {
+				vertices = getVertices(link.getNode(), vertices);
+			}
+		}
+		return vertices;
+	}
+
+	private Set<Map.Entry<String, Map.Entry<String, String>>> getEdges(
+			Node node, 
+			Set<Map.Entry<String, Map.Entry<String, String>>> edges) {
+		
+		if (edges == null) {
+			edges = new HashSet<Map.Entry<String, Map.Entry<String, String>>>();
+		}
+		String objectName = node.getObject().getName();
+		if (node.getLinks() != null) {
+			for (Link link : node.getLinks()) {
+				Node toNode = link.getNode();
+				String toObjectName = toNode.getObject().getName();
+				edges = getEdges(toNode, edges);
+				if (link.isForward()) {
+					edges.add(new AbstractMap.SimpleImmutableEntry<String, 
+							Map.Entry<String, String>>(objectName, 
+									new AbstractMap
+										.SimpleImmutableEntry<String, String>(
+												link.getType(), toObjectName)));
+				} else {
+					edges.add(new AbstractMap.SimpleImmutableEntry<String, 
+							Map.Entry<String, String>>(toObjectName, 
+									new AbstractMap
+										.SimpleImmutableEntry<String, String>(
+												link.getType(), objectName)));
+				}
+			}
+		}
+		return edges;
+	}
+
 }
