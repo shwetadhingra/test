@@ -28,7 +28,8 @@ import javax.persistence.UniqueConstraint;
 	@NamedQuery(name = "RelationshipDO.findByToObjectNamespaceAndClass", query = "SELECT r from RelationshipDO r where r.toObject.name = :objectName and r.toObject.namespace = :namespace and r.namespace = :namespace and r.klass.name = :className"),
 	@NamedQuery(name = "RelationshipDO.findByFromObjectAndNamespace", query = "SELECT r from RelationshipDO r where r.fromObject.name = :objectName and r.fromObject.namespace = :namespace and r.namespace = :namespace"),
 	@NamedQuery(name = "RelationshipDO.findByToObjectAndNamespace", query = "SELECT r from RelationshipDO r where r.toObject.name = :objectName and r.toObject.namespace = :namespace and r.namespace = :namespace"),
-	@NamedQuery(name = "RelationshipDO.findAllByClassAndNamespace", query = "SELECT r from RelationshipDO r where r.klass.name = :className and r.namespace = :namespace")
+	@NamedQuery(name = "RelationshipDO.findAllByClassAndNamespace", query = "SELECT r from RelationshipDO r where r.klass.name = :className and r.namespace = :namespace"),
+	@NamedQuery(name = "RelationshipDO.findAllByNamespace", query = "SELECT r from RelationshipDO r where r.namespace = :namespace")
 })			
 public class RelationshipDO extends BaseDO implements Serializable {
 

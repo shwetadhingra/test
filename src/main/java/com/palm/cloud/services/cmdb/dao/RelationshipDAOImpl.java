@@ -167,4 +167,24 @@ public class RelationshipDAOImpl
 				offset, maxResults);
 	}
 	
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly = true, 
+			noRollbackFor = EmptyResultDataAccessException.class)
+	public List<RelationshipDO> findAllByNamespace(String namespace, int offset, 
+			int maxResults) {
+		
+		Query query = this.getEntityManager().createNamedQuery(
+				"RelationshipDO.findAllByNamespace");
+		query.setParameter("namespace", namespace);
+		query.setFirstResult(offset);
+		query.setMaxResults(maxResults);
+		return (List<RelationshipDO>) query.getResultList();
+	}
+	
+	@Transactional(readOnly = true, 
+			noRollbackFor = EmptyResultDataAccessException.class)
+	public List<RelationshipDO> findAll(int offset, int maxResults) {
+		return this.findAllByNamespace(DEFAULT_NAMESPACE, offset, maxResults);
+	}
+	
 }

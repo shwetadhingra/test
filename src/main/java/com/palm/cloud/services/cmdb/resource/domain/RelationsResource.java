@@ -28,6 +28,35 @@ public class RelationsResource extends AbstractBaseResource {
 
 	}
 
+	@GET
+	public List<CIRelationship> getAllRelations(
+			@QueryParam("offset") @DefaultValue("0") int offset,
+			@QueryParam("maxResults") @DefaultValue("100") int maxResults) {
+
+		return cmdbDataService.getAllRelations(offset, maxResults);
+	}
+
+	@GET
+	@Produces(MediaType.TEXT_HTML)
+	public Viewable getAllRelationsAsHtml(
+			@QueryParam("offset") @DefaultValue("0") int offset,
+			@QueryParam("maxResults") @DefaultValue("100") int maxResults) {
+		
+		return new Viewable("/view/relation/relations.jsp", 
+				this.getAllRelations(offset, maxResults));
+	}
+	
+	@Produces(MediaType.TEXT_HTML)
+	@GET
+	@Path("viz")
+	public Viewable getAllRelationsVizAsHtml(
+			@QueryParam("offset") @DefaultValue("0") int offset,
+			@QueryParam("maxResults") @DefaultValue("100") int maxResults) {
+		
+		return new Viewable("/view/relation/relationsviz.jsp", 
+				this.getAllRelations(offset, maxResults));
+	}
+
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public void addRelation(CIRelationship relation) {

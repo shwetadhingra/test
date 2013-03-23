@@ -355,6 +355,17 @@ public class DataServiceTests {
 		for (CIRelationship relation : relationships) {
 			print(relation);
 		}
+		relationships = cmdbDataService.getAllRelations(0, 10);
+		Assert.assertTrue(relationships.size() > 0);
+		for (CIRelationship relation : relationships) {
+			print(relation);
+		}
+		relationships = cmdbDataService.getAllRelationsNS(
+				relation2.getNamespace(), 0, 10);
+		Assert.assertTrue(relationships.size() > 0);
+		for (CIRelationship relation : relationships) {
+			print(relation);
+		}
 		List<CIObject> objects = cmdbDataService.getFromObjectsByType(
 				toObject1.getName(), relationType1, fromObject1.getType());
 		Assert.assertTrue(objects.size() > 0);

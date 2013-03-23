@@ -101,6 +101,15 @@ public interface ICMDBDataService {
 			@WebParam(name="offset") int offset, 
 			@WebParam(name="maxResults") int maxResults);
 	
+	List<CIRelationship> getAllRelations(
+			@WebParam(name="offset") int offset, 
+			@WebParam(name="maxResults") int maxResults);
+	
+	List<CIRelationship> getAllRelationsNS(
+			@WebParam(name="namespace") String namespace,
+			@WebParam(name="offset") int offset, 
+			@WebParam(name="maxResults") int maxResults);
+	
 	List<CIRelationship> getFromRelations(
 			@WebParam(name="objectName") String objectName, 
 			@WebParam(name="relationType") String relationType);

@@ -38,4 +38,9 @@ public interface IRelationshipDAO extends IGenericDAO<RelationshipDO, Integer> {
 	List<RelationshipDO> findAllByClass(String className, int offset, 
 			int maxResults);
 	
+	List<RelationshipDO> findAllByNamespace(String namespace, int offset, 
+			int maxResults);
+	
+	List<RelationshipDO> findAll(int offset, int maxResults);
+	
 }

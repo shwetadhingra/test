@@ -226,6 +226,21 @@ public class CMDBDataServiceImpl extends AbstractBaseServiceImpl
 		return toRelationDomains(entities);
 	}
 
+	public List<CIRelationship> getAllRelations(int offset,int maxResults) {
+		
+		List<RelationshipDO> entities = relationshipDAO.findAll(offset, 
+				maxResults);
+		return toRelationDomains(entities);
+	}
+
+	public List<CIRelationship> getAllRelationsNS(String namespace, int offset, 
+			int maxResults) {
+
+		List<RelationshipDO> entities = relationshipDAO.findAllByNamespace(
+				namespace, offset, maxResults);
+		return toRelationDomains(entities);
+	}
+
 	public List<CIRelationship> getFromRelations(String objectName,
 			String relationType) {
 		

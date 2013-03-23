@@ -577,6 +577,18 @@ public class DAOTests {
 			print(r);
 		}
 
+		relationships = relationshipDAO.findAllByNamespace("DEFAULT", 0, 10);
+		Assert.assertTrue(relationships.size() > 0);
+		for (RelationshipDO r : relationships) {
+			print(r);
+		}
+
+		relationships = relationshipDAO.findAll(0, 10);
+		Assert.assertTrue(relationships.size() > 0);
+		for (RelationshipDO r : relationships) {
+			print(r);
+		}
+
 		List<RelationshipAttributeDO> attributes = relationshipAttributeDAO
 			.findAllByRelationName(relationship2.getName());
 		Assert.assertNotNull(attributes);
