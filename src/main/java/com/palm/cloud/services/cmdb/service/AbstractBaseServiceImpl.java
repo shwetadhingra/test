@@ -141,7 +141,9 @@ public abstract class AbstractBaseServiceImpl {
 				}
 			}
 			if (isUpdate && data.getAttributes() != null) {
-				for (RelationshipAttributeDO ra : data.getAttributes()) {
+				List<RelationshipAttributeDO> dataAttributes 
+					= new ArrayList<RelationshipAttributeDO>(data.getAttributes());
+				for (RelationshipAttributeDO ra : dataAttributes) {
 					if (domain.getAttribute(ra.getName()) == null) {
 						data.getAttributes().remove(ra);
 					}
@@ -211,7 +213,9 @@ public abstract class AbstractBaseServiceImpl {
 				}
 			}
 			if (isUpdate && data.getAttributes() != null) {
-				for (ObjectAttributeDO oa : data.getAttributes()) {
+				List<ObjectAttributeDO> dataAttributes 
+					= new ArrayList<ObjectAttributeDO>(data.getAttributes());
+				for (ObjectAttributeDO oa : dataAttributes) {
 					if (domain.getAttribute(oa.getName()) == null) {
 						data.getAttributes().remove(oa);
 					}
