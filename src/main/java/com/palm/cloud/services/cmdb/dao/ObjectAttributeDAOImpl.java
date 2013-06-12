@@ -34,7 +34,7 @@ public class ObjectAttributeDAOImpl
 	@Override
 	public void delete(ObjectAttributeDO entity) {
 		entity.getObject().getAttributes().remove(entity);
-		this.getEntityManager().flush();
+		super.delete(entity);
 	}
 
 	@Transactional(readOnly = true, 

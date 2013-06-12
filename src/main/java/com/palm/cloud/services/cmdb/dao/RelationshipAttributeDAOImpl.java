@@ -34,7 +34,7 @@ public class RelationshipAttributeDAOImpl
 	@Override
 	public void delete(RelationshipAttributeDO entity) {
 		entity.getRelationship().getAttributes().remove(entity);
-		this.getEntityManager().flush();
+		super.delete(entity);
 	}
 
 	@Transactional(readOnly = true, 

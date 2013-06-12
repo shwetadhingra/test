@@ -26,6 +26,14 @@ public class MetaClassRelationshipDAOImpl
 	}
 
 	@Override
+	public MetaClassRelationshipDO create(MetaClassRelationshipDO entity) {
+		entity.getFromKlass().addFromType(entity);
+		entity.getToKlass().addToType(entity);
+		entity.getRelationshipKlass().addRelType(entity);
+		return super.create(entity);
+	}
+	
+	@Override
 	public void delete(MetaClassRelationshipDO entity) {
 		entity.getFromKlass().getFromTypes().remove(entity);
 		entity.getToKlass().getToTypes().remove(entity);

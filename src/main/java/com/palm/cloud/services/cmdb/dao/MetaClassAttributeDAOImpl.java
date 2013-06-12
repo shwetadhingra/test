@@ -23,7 +23,7 @@ public class MetaClassAttributeDAOImpl
 	}
 
 	public MetaClassAttributeDO create(MetaClassAttributeDO entity) {
-		entity.getType().getClassAttributes().add(entity);
+		entity.getType().addClassAttribute(entity);
 		return super.create(entity);
 	}
 	
