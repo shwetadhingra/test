@@ -19,6 +19,9 @@
 	<jersey.version>1.8</jersey.version>
 	<org.richfaces.bom.version>4.0.0.Final</org.richfaces.bom.version>
 	<mojarra.version>2.1.2</mojarra.version>
+	<skipTests>true</skipTests>
+	<maven.compiler.source>1.6</maven.compiler.source>
+	<maven.compiler.target>1.6</maven.compiler.target>
   </properties>
 
 	<dependencyManagement>
@@ -81,6 +84,11 @@
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>com.springsource.org.aspectj.weaver</artifactId>
+			<version>1.6.8.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>com.springsource.org.aspectj.runtime</artifactId>
 			<version>1.6.8.RELEASE</version>
 		</dependency>
 
@@ -371,13 +379,30 @@
 			   </executions>
 			</plugin>
 			<plugin>
+			    <groupId>org.codehaus.mojo</groupId>
+			    <artifactId>aspectj-maven-plugin</artifactId>
+			    <version>1.4</version>
+			    <executions>
+			        <execution>
+			            <goals>
+			                <goal>compile</goal>
+			                <goal>test-compile</goal>
+			            </goals>
+			        </execution>
+			    </executions>
+			    <configuration>
+			        <source>${maven.compiler.source}</source>
+			        <target>${maven.compiler.target}</target>
+			    </configuration>
+			</plugin>
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>2.3.2</version>
 				<configuration>
 					<verbose>true</verbose>
-					<source>1.6</source>
-					<target>1.6</target>
+					<source>${maven.compiler.source}</source>
+					<target>${maven.compiler.target}</target>
 					<showWarnings>true</showWarnings>
 					<annotationProcessors>
 						<annotationProcessor>org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor</annotationProcessor>
