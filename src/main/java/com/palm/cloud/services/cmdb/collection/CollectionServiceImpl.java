@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.palm.cloud.services.cmdb.aspect.Loggable;
 import com.palm.cloud.services.cmdb.collection.xml.Edge;
 import com.palm.cloud.services.cmdb.collection.xml.Vertex;
 import com.palm.cloud.services.cmdb.collection.xml.XMLParser;
@@ -30,6 +31,7 @@ public class CollectionServiceImpl implements ICollectionService {
 
 	private static final String DEFINITION_ATTRIBUTE = "definition";
 	
+	@Loggable
 	public List<Node> getCollection(String collectionName, int offset,
 			int maxResults) {
 		
@@ -39,6 +41,7 @@ public class CollectionServiceImpl implements ICollectionService {
 		return nodes;
 	}
 
+	@Loggable
 	public Node getCollectionByRoot(String collectionName, String root) {
 		Node node = null;
 		Vertex vertex = this.getDefinitionByName(collectionName);
@@ -47,6 +50,7 @@ public class CollectionServiceImpl implements ICollectionService {
 		return node;
 	}
 
+	@Loggable
 	public List<Node> getCollectionByXML(String definition, int offset, 
 			int maxResults) {
 		
@@ -56,6 +60,7 @@ public class CollectionServiceImpl implements ICollectionService {
 		return nodes;
 	}
 
+	@Loggable
 	public List<Node> getCollectionByDefinition(Vertex vertex, int offset,
 			int maxResults) {
 
