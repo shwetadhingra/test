@@ -10,6 +10,7 @@ import javax.persistence.Query;
 
 import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 public class GenericDAOImpl<T, ID extends Serializable> 
 		implements IGenericDAO<T, ID> {
 
