@@ -69,6 +69,12 @@ public class CollectionServiceTests {
 	
 	private String collection3 = "template-3";
 	
+	private String collection4 = "template-4";
+	
+	private String collection5 = "template-5";
+	
+	private String collection6 = "template-6";
+	
 	@Before
 	public void setup() {
 		cmdbMetaService.addStatus(status1);
@@ -134,12 +140,21 @@ public class CollectionServiceTests {
 		object6.addAttribute(new CIAttribute(attribute1, "acs"));
 		object6.addAttribute(new CIAttribute(attribute2, "2.0"));
 
+		CIObject object7 = new CIObject("10.1.1.15", null, fromType, status1);
+		object7.addAttribute(new CIAttribute(attribute1, "host-5.palm.com"));
+		object7.addAttribute(new CIAttribute(attribute3, null));
+
+		CIObject object8 = new CIObject("10.1.1.16", null, fromType, status1);
+		object8.addAttribute(new CIAttribute(attribute1, "host-6.palm.com"));
+
 		cmdbDataService.addObject(object1);
 		cmdbDataService.addObject(object2);
 		cmdbDataService.addObject(object3);
 		cmdbDataService.addObject(object4);
 		cmdbDataService.addObject(object5);
 		cmdbDataService.addObject(object6);
+		cmdbDataService.addObject(object7);
+		cmdbDataService.addObject(object8);
 		
 		CIRelationship relation1 = new CIRelationship(null, 
 				object1.getName(), object5.getName(), relationType1, status1);
@@ -187,6 +202,8 @@ public class CollectionServiceTests {
 		cmdbDataService.deleteObject("10.1.1.12");
 		cmdbDataService.deleteObject("10.1.1.13");
 		cmdbDataService.deleteObject("10.1.1.14");
+		cmdbDataService.deleteObject("10.1.1.15");
+		cmdbDataService.deleteObject("10.1.1.16");
 		cmdbDataService.deleteObject("pws");
 		cmdbDataService.deleteObject("acs");
 		cmdbDataService.deleteObject(collection1);
@@ -279,6 +296,45 @@ public class CollectionServiceTests {
 	@Test
 	public void testGetCollectionByDefinition() throws Exception {
 		String definition = readFile(collection3 + ".xml");
+		Vertex vertex = XMLParser.unmarshall(Vertex.class, definition);
+		List<Node> nodes = collectionService.getCollectionByDefinition(vertex, 
+				0, 10);
+		Assert.assertTrue(nodes.size() > 0);
+		for (Node node : nodes) {
+			print(node);
+			System.out.println("----------------------------------");
+		}
+	}
+	
+	@Test
+	public void testIsNullCondition() throws Exception {
+		String definition = readFile(collection4 + ".xml");
+		Vertex vertex = XMLParser.unmarshall(Vertex.class, definition);
+		List<Node> nodes = collectionService.getCollectionByDefinition(vertex, 
+				0, 10);
+		Assert.assertTrue(nodes.size() > 0);
+		for (Node node : nodes) {
+			print(node);
+			System.out.println("----------------------------------");
+		}
+	}
+	
+	@Test
+	public void testIsNotNullCondition() throws Exception {
+		String definition = readFile(collection5 + ".xml");
+		Vertex vertex = XMLParser.unmarshall(Vertex.class, definition);
+		List<Node> nodes = collectionService.getCollectionByDefinition(vertex, 
+				0, 10);
+		Assert.assertTrue(nodes.size() > 0);
+		for (Node node : nodes) {
+			print(node);
+			System.out.println("----------------------------------");
+		}
+	}
+	
+	@Test
+	public void testInCondition() throws Exception {
+		String definition = readFile(collection6 + ".xml");
 		Vertex vertex = XMLParser.unmarshall(Vertex.class, definition);
 		List<Node> nodes = collectionService.getCollectionByDefinition(vertex, 
 				0, 10);

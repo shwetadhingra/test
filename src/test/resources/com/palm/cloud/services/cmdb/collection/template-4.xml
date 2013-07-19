@@ -1,0 +1,3 @@
+<vertex type="Server">
+	<conditional name="region" oper="isNull"/>
+</vertex>

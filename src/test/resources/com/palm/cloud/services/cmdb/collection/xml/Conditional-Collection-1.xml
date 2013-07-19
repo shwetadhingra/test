@@ -2,6 +2,9 @@
 	<logical oper="and">
 		<conditional name="label" oper="equal" value="m"/>
 		<conditional name="label" oper="notEqual" value="n"/>
+		<conditional name="label" oper="isNull"/>
+		<conditional name="label" oper="isNotNull"/>
+		<conditional name="label" oper="in" value="a,b,c"/>
 		<logical oper="or">
 			<conditional name="label" oper="like" value="o"/>
 			<logical oper="not">

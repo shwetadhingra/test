@@ -361,12 +361,37 @@ public class ObjectDAOImpl extends GenericDAOImpl<ObjectDO, Integer>
 			Predicate namePredicate = cb.equal(oam.get(MetaAttributeDO_.name), 
 					((ValueCondition) condition).getName());
 			Expression<?> lhs = oa.get(ObjectAttributeDO_.value);
-			String rhs = condition.getValue();
-			Method method = CriteriaBuilder.class.getMethod(
+			Method method = condition.getOper().getObjectType().getMethod(
 					condition.getOper().getOperation(), 
 					condition.getOper().getParameterTypes());
-			Predicate valuePredicate = (Predicate) method.invoke(cb, lhs, rhs);
-			predicate = cb.and(namePredicate, valuePredicate);
+			if (condition.getOper().getObjectType()
+					.equals(CriteriaBuilder.class)) {
+				
+				String rhs = condition.getValue();
+				Predicate valuePredicate = (Predicate) method
+						.invoke(cb, lhs, rhs);
+				predicate = cb.and(namePredicate, valuePredicate);
+			} else if (condition.getOper().getObjectType()
+					.equals(Expression.class)) {
+				
+				Predicate valuePredicate = null;
+				Object[] rhs = null;
+				if (condition.getOper().getParameterTypes() != null
+						&& condition.getOper().getParameterTypes().length > 0
+						&& condition.getValue() != null) {
+					
+					if (condition.getValue().contains(",")) {
+						rhs = condition.getValue().split(",");
+					} else {
+						rhs = new String[] {condition.getValue()};
+					}
+					valuePredicate = (Predicate) method.invoke(lhs, 
+							(Object) rhs);
+				} else {
+					valuePredicate = (Predicate) method.invoke(lhs, rhs);
+				}
+				predicate = cb.and(namePredicate, valuePredicate);
+			}
 		} catch (Exception e) {
 			log.error("Error generating value condition predicate", e);
 		}
