@@ -7,7 +7,7 @@ var attributeArray;
 var SPACE = /^[ ]*$/;
 var ALPHA = /^[A-Za-z]*$/;
 var ALPHA_SYM = /^[A-Za-z-_]*$/;
-var ALPHANUM_SYM = /^[A-Za-z0-9-_]*$/;
+var ALPHANUM_SYM = /^[A-Za-z0-9-_.:]*$/;
 
 $(document).ready(function() {
 	$("#tabs").tabs();
@@ -189,7 +189,7 @@ $(document).ready(function() {
 
 	$("#name").keyup(function() {
 		if(!(ALPHANUM_SYM.test($(this).val()))) {
-			$("#object_span").html("Only [A-Z] [a-z] [0-9] '-' '_'");
+			$("#object_span").html("Only [A-Z] [a-z] [0-9] '-' '_' '.' ':'");
 		} else {
 			$("#object_span").contents().remove();
 		}
