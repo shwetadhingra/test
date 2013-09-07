@@ -16,6 +16,7 @@ import com.palm.cloud.services.cmdb.collection.xml.XMLParser;
 import com.palm.cloud.services.cmdb.condition.Condition;
 import com.palm.cloud.services.cmdb.domain.CIAttribute;
 import com.palm.cloud.services.cmdb.domain.CIObject;
+import com.palm.cloud.services.cmdb.domain.CIRelationship;
 import com.palm.cloud.services.cmdb.service.ICMDBDataService;
 
 @Transactional
@@ -155,6 +156,41 @@ public class CollectionServiceImpl implements ICollectionService {
 					link.setForward(isForward);
 					link.setNode(buildNode(edge.getVertex(), object));
 					node.addLink(link);
+				}
+			}
+		}
+	}
+
+	@Loggable
+	public void writeCollection(List<Node> collection) {
+		if (collection != null) {
+			for (Node node : collection) {
+				writeNode(node);
+			}
+		}
+	}
+	
+	private void writeNode(Node node) {
+		if (node != null) {
+			CIObject parent = node.getObject();
+			cmdbDataService.addOrUpdateObject(parent);
+			if (node.getLinks() != null) {
+				for (Link link : node.getLinks()) {
+					CIObject child = link.getNode().getObject();
+					cmdbDataService.addOrUpdateObject(child);
+					CIRelationship relationship = new CIRelationship();
+					relationship.setType(link.getType());
+					if (link.isForward()) {
+						relationship.setFromObject(parent.getName());
+						relationship.setToObject(child.getName());
+					} else {
+						relationship.setFromObject(child.getName());
+						relationship.setToObject(parent.getName());
+					}
+					relationship.setNamespace(parent.getNamespace());
+					relationship.setStatus(parent.getStatus());
+					cmdbDataService.addOrUpdateRelation(relationship);
+					writeNode(link.getNode());
 				}
 			}
 		}

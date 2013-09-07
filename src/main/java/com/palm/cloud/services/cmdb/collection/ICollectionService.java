@@ -30,4 +30,6 @@ public interface ICollectionService {
 			@WebParam(name = "offset") int offset,
 			@WebParam(name = "maxResults") int maxResults);
 	
+	void writeCollection(@WebParam(name="collection") List<Node> collection);
+	
 }

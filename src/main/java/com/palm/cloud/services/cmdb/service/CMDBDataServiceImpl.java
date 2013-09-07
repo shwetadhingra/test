@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.jws.WebService;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.palm.cloud.services.cmdb.condition.Condition;
@@ -35,6 +36,25 @@ public class CMDBDataServiceImpl extends AbstractBaseServiceImpl
 		}
 	}
 
+	public boolean addOrUpdateObject(CIObject object) {
+		boolean isUpdate = false;
+		ObjectDO entity = null;
+		try {
+			entity = objectDAO.findByName(object.getName());
+		} catch (EmptyResultDataAccessException erdae) {
+			
+		}
+		if (entity != null) {
+			entity = toData(object, true);
+			entity = objectDAO.update(entity);
+			isUpdate = true;
+		} else {
+			entity = toData(object, false);
+			objectDAO.create(entity);
+		}
+		return isUpdate;
+	}
+	
 	public void deleteObject(String name) {
 		ObjectDO entity = objectDAO.findByName(name);
 		objectDAO.delete(entity);
@@ -187,6 +207,32 @@ public class CMDBDataServiceImpl extends AbstractBaseServiceImpl
 		}
 	}
 
+	public boolean addOrUpdateRelation(CIRelationship relation) {
+		boolean isUpdate = false;
+		StringBuilder derivedName = new StringBuilder();
+		derivedName.append(relation.getFromObject())
+			.append("~")
+			.append(relation.getType())
+			.append("~")
+			.append(relation.getToObject());
+		relation.setName(derivedName.toString());
+		RelationshipDO entity = null;
+		try {
+			entity = relationshipDAO.findByName(relation.getName());
+		} catch (EmptyResultDataAccessException erdae) {
+			
+		}
+		if (entity != null) {
+			entity = toData(relation, true);
+			entity = relationshipDAO.update(entity);
+			isUpdate = true;
+		} else {
+			entity = toData(relation, false);
+			relationshipDAO.create(entity);
+		}
+		return isUpdate;
+	}
+	
 	public void deleteRelation(String name) {
 		RelationshipDO entity = relationshipDAO.findByName(name);
 		relationshipDAO.delete(entity);

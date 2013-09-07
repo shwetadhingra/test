@@ -18,6 +18,8 @@ public interface ICMDBDataService {
 	
 	void updateObject(@WebParam(name="object") CIObject object);
 	
+	boolean addOrUpdateObject(@WebParam(name="object") CIObject object);
+	
 	void deleteObject(@WebParam(name="name") String name);
 	
 	void deleteObjectNS(@WebParam(name="name") String name, 
@@ -79,6 +81,9 @@ public interface ICMDBDataService {
 	void addRelation(@WebParam(name="relation") CIRelationship relation);
 	
 	void updateRelation(@WebParam(name="relation") CIRelationship relation);
+	
+	boolean addOrUpdateRelation(
+			@WebParam(name="relation") CIRelationship relation);
 	
 	void deleteRelation(@WebParam(name="name") String name);
 

@@ -345,6 +345,31 @@ public class CollectionServiceTests {
 		}
 	}
 	
+	@Test
+	public void testWriteCollection() {
+		List<Node> nodes = collectionService.getCollection(collection1, 0, 10);
+		Assert.assertTrue(nodes.size() > 0);
+		for (Node node : nodes) {
+			print(node);
+			System.out.println("----------------------------------");
+		}
+		cmdbDataService.deleteObject("10.1.1.11");
+		cmdbDataService.deleteObject("10.1.1.12");
+		cmdbDataService.deleteObject("10.1.1.13");
+		cmdbDataService.deleteObject("10.1.1.14");
+		cmdbDataService.deleteObject("10.1.1.15");
+		cmdbDataService.deleteObject("10.1.1.16");
+		cmdbDataService.deleteObject("pws");
+		cmdbDataService.deleteObject("acs");
+		collectionService.writeCollection(nodes);
+		nodes = collectionService.getCollection(collection1, 0, 10);
+		Assert.assertTrue(nodes.size() > 0);
+		for (Node node : nodes) {
+			print(node);
+			System.out.println("----------------------------------");
+		}
+	}
+	
 	private void print(CIObject object) {
 		System.out.printf("%s %s %s %s\n", object.getName(), 
 				object.getNamespace(), object.getStatus(), object.getType());
