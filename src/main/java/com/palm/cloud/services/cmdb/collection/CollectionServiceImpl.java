@@ -176,8 +176,8 @@ public class CollectionServiceImpl implements ICollectionService {
 			cmdbDataService.addOrUpdateObject(parent);
 			if (node.getLinks() != null) {
 				for (Link link : node.getLinks()) {
+					writeNode(link.getNode());
 					CIObject child = link.getNode().getObject();
-					cmdbDataService.addOrUpdateObject(child);
 					CIRelationship relationship = new CIRelationship();
 					relationship.setType(link.getType());
 					if (link.isForward()) {
@@ -190,7 +190,6 @@ public class CollectionServiceImpl implements ICollectionService {
 					relationship.setNamespace(parent.getNamespace());
 					relationship.setStatus(parent.getStatus());
 					cmdbDataService.addOrUpdateRelation(relationship);
-					writeNode(link.getNode());
 				}
 			}
 		}
