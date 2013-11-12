@@ -32,7 +32,7 @@ public class Node implements Serializable {
 		this.links = links;
 	}
 
-	public void addLink(Link link) {
+	public synchronized void addLink(Link link) {
 		if (this.links == null) {
 			this.links = new ArrayList<Link>();
 		}

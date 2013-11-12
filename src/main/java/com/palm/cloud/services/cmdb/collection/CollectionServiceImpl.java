@@ -2,6 +2,9 @@ package com.palm.cloud.services.cmdb.collection;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 import javax.jws.WebService;
 
@@ -103,11 +106,41 @@ public class CollectionServiceImpl implements ICollectionService {
 				roots = cmdbDataService.getObjects(vertex.getType(), 
 						offset, maxResults);
 			}
+			List<Future<Node>> futures = new ArrayList<Future<Node>>();
 			for (CIObject root : roots) {
-				nodes.add(buildNode(vertex, root));
+				futures.add(SharedThreadPool.getInstance()
+						.getNormalThreadPool()
+						.submit(new NodeBuildingTask(vertex, root)));
+			}
+			for (Future<Node> future : futures) {
+				try {
+					nodes.add(future.get());
+				} catch (InterruptedException ie) {
+					log.error("Error fetching node building task result", ie);
+				} catch (ExecutionException ee) {
+					log.error("Error fetching node building task result", ee);
+				}
 			}
 		}
 		return nodes;
+	}
+	
+	private class NodeBuildingTask implements Callable<Node> {
+
+		private Vertex vertex;
+		
+		private CIObject root;
+		
+		private NodeBuildingTask(Vertex vertex, CIObject root) {
+			this.vertex = vertex;
+			this.root = root;
+		}
+		
+		@Override
+		public Node call() throws Exception {
+			return buildNode(this.vertex, this.root);
+		}
+		
 	}
 	
 	private Node buildNode(Vertex vertex, CIObject root) {
