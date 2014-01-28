@@ -1,6 +1,8 @@
 package com.palm.cloud.services.cmdb.ui;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -29,6 +31,12 @@ public class TypesBean {
 			if (!type.isRelationshipType())
 				typeOptions.add(new SelectItem(type.getName(), type.getName()));
 		}
+		Collections.sort(typeOptions, new Comparator<SelectItem>() {
+
+			public int compare(SelectItem o1, SelectItem o2) {
+				return o1.getLabel().compareTo(o2.getLabel());
+			}
+		});
 	}
 	
 	public List<MetaClass> getTypes() {
