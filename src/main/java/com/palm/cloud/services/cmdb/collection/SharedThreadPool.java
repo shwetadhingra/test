@@ -5,7 +5,7 @@ import java.util.concurrent.Executors;
 
 public class SharedThreadPool {
 
-	private static final int DEFAULT_NORMAL_THREAD_POOL_SIZE = 32;
+	private static final int DEFAULT_NORMAL_THREAD_POOL_SIZE = 8;
 	
 	private static SharedThreadPool INSTANCE;
 	

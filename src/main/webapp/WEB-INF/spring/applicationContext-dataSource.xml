@@ -19,6 +19,8 @@
 			p:driverClassName="${jdbc.driverClassName}" p:url="${jdbc.url}"
 			p:username="${jdbc.username}" p:password="${jdbc.password}"
 			p:testWhileIdle="true" p:validationQuery="${jdbc.validationQuery}"
-			p:timeBetweenEvictionRunsMillis="60000"/>
+			p:timeBetweenEvictionRunsMillis="60000"
+			p:initialSize="${jdbc.initialSize}"
+			p:maxActive="${jdbc.maxActive}"/>
 	
 </beans>
