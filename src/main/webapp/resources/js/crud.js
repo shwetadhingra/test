@@ -141,7 +141,10 @@ $(document).ready(function() {
 
 	$("#deleteType").click(function() {
 		if($("#updateTypeSelect").val() != 'Select Type') {
-			deleteType();
+			var result = confirm("Are you sure you want to delete " + $("#updateTypeSelect").val() + "?");
+			if(result == true) {
+				deleteType();
+			}
 		} else {
 			$("#updeltp").html("<b>Select Type to Delete</b>");
 		}
@@ -156,7 +159,10 @@ $(document).ready(function() {
 	$("#deleteRelation").click(function() {
 		var relationship = $("#updateRelationSelect").val();
 		if(relationship != 'Select Type Relationship') {
-			deletetypeRelationship(relationship);
+			var result = confirm("Are you sure you want to delete " + $("#updateRelationSelect").val() + "?");
+			if(result == true) {
+				deletetypeRelationship(relationship);
+			}
 		} else {
 			$("#updelrp").html("<b>Select a Relationship to Delete</b>");
 		}
@@ -271,7 +277,10 @@ $(document).ready(function() {
 		$("#updelop").contents().remove();
 		if($("#updateObjectSelect").val() != 'Select Type'
 			&& $("#updateObjectInput").val() != '') {
-			deleteObject();
+			var result = confirm("Are you sure you want to delete " + $("#updateObjectInput").val() + "?");
+			if(result == true) {
+				deleteObject();
+			}
 		} else {
 			$("#updelop").html("<b>Select Type and Enter Object Name</b>");
 		}
@@ -502,7 +511,10 @@ $(document).ready(function() {
 		if(fromSelect != 'Select Type' && fromInput != '' &&
 				toSelect != 'Select Type' && toInput != '' &&
 				relSelect != 'Select Type') {
-			deleteRelation(fromInput,relSelect, toInput);
+			var result = confirm("Are you sure you want to delete the relation?");
+			if(result == true) {
+				deleteRelation(fromInput,relSelect, toInput);
+			}
 		}
 	});
 
