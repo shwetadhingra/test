@@ -10,7 +10,7 @@
 	<!--
 	<Loader loaderClass="org.springframework.instrument.classloading.tomcat.TomcatInstrumentableClassLoader" useSystemClassLoaderAsParent="false"/>
 	-->
-	<Valve className="org.apache.catalina.valves.FastCommonAccessLogValve"
+	<Valve className="org.apache.catalina.valves.AccessLogValve"
 		directory="logs"
 		resolveHosts="false"
 		prefix="oocmdb-access."
