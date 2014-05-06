@@ -109,7 +109,6 @@ public class CollectionServiceImpl implements ICollectionService {
 			List<Future<Node>> futures = new ArrayList<Future<Node>>();
 			for (CIObject root : roots) {
 				futures.add(SharedThreadPool.getInstance()
-						.getNormalThreadPool()
 						.submit(new NodeBuildingTask(vertex, root)));
 			}
 			for (Future<Node> future : futures) {

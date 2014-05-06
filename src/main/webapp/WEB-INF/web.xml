@@ -59,7 +59,7 @@
 		- both for getBean(name) calls and (external) bean references.
 	-->
  <listener>
-  <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  <listener-class>com.palm.cloud.services.cmdb.request.OOCMDBContextLoaderListener</listener-class>
  </listener>
  <listener>
   <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
